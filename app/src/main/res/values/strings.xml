@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Splitter</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account_label">Delete Account</string>
+    <string name="user_profile_header">User Profile</string>
+    <string name="profile_picture_content_desc">User Picture</string>
+    <string name="signed_in_header">Authenticated</string>
+    <string name="sign_out_failed">Signed Out Failed</string>
+    <string name="delete_account_failed">Delete Account Failed</string>
+    <string name="sign_in_cancelled">Sign in cancelled</string>
+    <string name="unknown_sign_in_response">Unkown code for sign in</string>
+    <string name="unknown_response">Unkown response</string>
     <integer name="splash_screen_animation_duration">900</integer>
 </resources>
