@@ -13,5 +13,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void testeGit (){
         int i = 1+5;
+        String v = "Caue viadinho!";
     }
 }
