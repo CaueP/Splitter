@@ -44,11 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        //setContentView(R.layout.activity_login);
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         if (auth.getCurrentUser() != null) {
-            startActivity(SignedInActivity.createIntent(this));
+            //startActivity(SignedInActivity.createIntent(this));
+            startActivity(MainPageActivity.createIntent(this));
             finish();
         }
 
@@ -93,7 +94,8 @@ public class LoginActivity extends AppCompatActivity {
     @MainThread
     private void handleSignInResponse(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            startActivity(SignedInActivity.createIntent(this));
+            //startActivity(SignedInActivity.createIntent(this));
+            startActivity(MainPageActivity.createIntent(this));
             finish();
             return;
         }

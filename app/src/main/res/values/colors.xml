@@ -4,8 +4,15 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <!-- Splash Sccreen Colors-->
+    <!-- Splash Screen Colors-->
     <color name="colorSplashScreenBackground">#9c27b0</color>
     <color name="textColorSplashScreen">#FFF</color>
+
+    <!-- Colors used in the Red Theme (Standard -->
+    <color name="colorPrimaryRed">#E53935</color>
+    <color name="colorPrimaryDarkRed">#B71C1C</color>
+    <color name="colorAccentRed">#D50000</color>
+    <color name="textColorRed">#F8F8F8</color>
+
 
 </resources>

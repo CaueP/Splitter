@@ -50,16 +50,16 @@ public class SignedInActivity extends AppCompatActivity {
     @BindView(android.R.id.content)
     View mRootView;
 
-    @BindView(R.id.user_profile_picture)
+    @BindView(R.id.user_profile_picture2)
     ImageView mUserProfilePicture;
 
-    @BindView(R.id.user_email)
+    @BindView(R.id.user_email2)
     TextView mUserEmail;
 
-    @BindView(R.id.user_display_name)
+    @BindView(R.id.user_display_name2)
     TextView mUserDisplayName;
 
-    @BindView(R.id.user_enabled_providers)
+    @BindView(R.id.user_enabled_providers2)
     TextView mEnabledProviders;
 
     @Override

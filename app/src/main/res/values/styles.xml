@@ -13,4 +13,15 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+
+    <!-- Red Theme-->
+    <!--<style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
+    <!-- without action bar-->
+    <style name="DarkRedTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- <item name="colorPrimary">@color/colorPrimaryRed</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
+        <item name="colorAccent">@color/colorAccentRed</item>
+        <item name="android:textColor">@color/textColorRed</item> -->
+    </style>
+
 </resources>
