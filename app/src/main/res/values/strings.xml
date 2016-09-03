@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Splitter</string>
+    <integer name="splash_screen_animation_duration">900</integer>
 </resources>
