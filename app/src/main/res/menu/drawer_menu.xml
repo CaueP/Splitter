@@ -20,5 +20,11 @@
             android:icon="@drawable/ic_info_about"
             android:title="About Splitter" />
 
+        <item
+            android:id="@+id/sign_out"
+            android:checked="false"
+            android:icon="@drawable/ic_info_about"
+            android:title="Sign Off" />
+
     </group>
 </menu>
