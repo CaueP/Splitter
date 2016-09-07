@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     public void signIn(View view) {
         Log.d("LoginActivity","SignIn Button Click");
         startActivityForResult(
+
                 AuthUI.getInstance().createSignInIntentBuilder()
                         //.setTheme(getSelectedTheme())
                         .setLogo(getSelectedLogo())

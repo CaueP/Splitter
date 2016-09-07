@@ -17,11 +17,14 @@
     <!-- Red Theme-->
     <!--<style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
     <!-- without action bar-->
-    <style name="DarkRedTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="PurpleTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- <item name="colorPrimary">@color/colorPrimaryRed</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
         <item name="colorAccent">@color/colorAccentRed</item>
         <item name="android:textColor">@color/textColorRed</item> -->
+        <item name="colorPrimary">@color/colorPurplePrimary</item>
+        <item name="colorPrimaryDark">@color/colorPurpleDark</item>
+        <item name="colorAccent">@color/colorPurpleAccent</item>
     </style>
 
 </resources>

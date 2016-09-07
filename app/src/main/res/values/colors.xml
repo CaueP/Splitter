@@ -4,6 +4,15 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <!-- General App Colors-->
+    <color name="colorPurpleBase">#9c27b0</color>
+    <color name="colorPurplePrimary">#C671D5</color>
+    <color name="colorPurpleDark">#6A037C</color>
+    <color name="colorPurpleAccent">#E02E73</color>
+    <color name="textColorWhite">#FFF</color>
+    <color name="colorDarkGray">#505050</color>
+    <color name="colorBlack">#000</color>
+
     <!-- Splash Screen Colors-->
     <color name="colorSplashScreenBackground">#9c27b0</color>
     <color name="textColorSplashScreen">#FFF</color>
