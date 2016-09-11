@@ -73,10 +73,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 AuthUI.getInstance().createSignInIntentBuilder()
                         //.setTheme(getSelectedTheme())
-                        .setLogo(getSelectedLogo())
-                        .setProviders(getSelectedProviders())
-                        .setTosUrl(getSelectedTosUrl())
-                        .setIsSmartLockEnabled(false)
+                        //.setLogo(getSelectedLogo())
+                        .setProviders(AuthUI.EMAIL_PROVIDER,
+                                AuthUI.GOOGLE_PROVIDER)
+                        //.setTosUrl(getSelectedTosUrl())
+                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
                         .build(),
                 RC_SIGN_IN);
     }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Splitter</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="delete_account_label">Deletar Conta</string>
+    <string name="user_profile_header">Perfil de Usuário</string>
+    <string name="profile_picture_content_desc">Foto do Perfil</string>
+    <string name="signed_in_header">Auntenticado</string>
+    <string name="sign_out_failed">Falha ao Sair</string>
+    <string name="delete_account_failed">Falha ao Deletar a Conta</string>
+    <string name="sign_in_cancelled">Autenticação Cancelada</string>
+    <string name="unknown_sign_in_response">Código desconhecido ao autenticar</string>
+    <string name="unknown_response">Resposta desconhecida</string>
+    <string name="openDrawer">Abrir Drawer</string>
+    <string name="closeDrawer">Fechar Drawer</string>
+    <integer name="splash_screen_animation_duration">900</integer>
+</resources>

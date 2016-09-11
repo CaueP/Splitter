@@ -3,10 +3,10 @@
     >
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item1"
+            android:id="@+id/account_info"
             android:checked="false"
             android:icon="@drawable/ic_info_about"
-            android:title="Item 1" />
+            android:title="Account Info" />
 
         <item
             android:id="@+id/item2"
@@ -19,6 +19,12 @@
             android:checked="false"
             android:icon="@drawable/ic_info_about"
             android:title="About Splitter" />
+
+        <item
+            android:id="@+id/sign_out"
+            android:checked="false"
+            android:icon="@drawable/ic_info_about"
+            android:title="Sign Out" />
 
     </group>
 </menu>

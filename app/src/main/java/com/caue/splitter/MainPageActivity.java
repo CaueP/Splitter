@@ -1,14 +1,20 @@
 package com.caue.splitter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -21,14 +27,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by Caue on 9/5/2016.
  */
 public class MainPageActivity extends AppCompatActivity
-    implements NavigationView.OnNavigationItemSelectedListener{
+    implements NavigationView.OnNavigationItemSelectedListener,
+                AccountInfoFragment.OnFragmentInteractionListener{
 
 
     //@BindView(R.id.user_profile_picture)
@@ -41,7 +55,7 @@ public class MainPageActivity extends AppCompatActivity
     //TextView mUserDisplayName;
 
 
-    //@BindView(android.R.id.content)
+    @BindView(android.R.id.content)
     View mRootView;
 
     //@BindView(R.id.user_enabled_providers)
@@ -60,6 +74,9 @@ public class MainPageActivity extends AppCompatActivity
     String userEmail;
     String userDisplayName;
 
+    //
+    FirebaseUser user;
+
     //mUserProfilePicture = (ImageView) findViewById(R.id.user_profile_picture);
 
     @Override
@@ -67,7 +84,7 @@ public class MainPageActivity extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         // se o usuario nao estiver logado, retorne para a pagina de Login
         if (user == null) {
             startActivity(LoginActivity.createIntent(this));
@@ -76,7 +93,7 @@ public class MainPageActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main_page);
-
+        ButterKnife.bind(this);
 
         // Using findview
         //mUserEmail = (TextView) this.findViewById(R.id.user_email);
@@ -88,6 +105,7 @@ public class MainPageActivity extends AppCompatActivity
         userEmail = TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail();
         userDisplayName = TextUtils.isEmpty(user.getDisplayName()) ? "No display name" : user.getDisplayName();
 
+
         Log.d("MainPageActivity","User Info: " + userDisplayName + " " + userEmail + " " + userProfilePictureUri);
 
 
@@ -97,7 +115,7 @@ public class MainPageActivity extends AppCompatActivity
 
         // Inicializando a NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-//        navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
+        navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
 
         // Inicializando Drawer Layout
         drawerLayout =(DrawerLayout) findViewById(R.id.drawer_layout);
@@ -121,22 +139,25 @@ public class MainPageActivity extends AppCompatActivity
         // calling sync state is necessary or else your hamburger icon won't show up
         actionBarDrawerToggle.syncState();
 
-        //ButterKnife.bind(this);
+
 
         // popular o perfil
         //populateProfile();
 
-        /* // Carrega o Fragment
+         // Carrega o Fragment da Main Page
         if(savedInstanceState == null) {
             // Restore the fragment's instance
             mContent = MainPageFragment.newInstance(R.id.main_page_fragment);
-
-
-            //
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, mContent)
+                    .replace(R.id.content_frame, mContent)
                     .commit();
-        }*/
+        }
+    }
+
+    @MainThread
+    private void showSnackbar(@StringRes int errorMessageRes) {
+        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -181,10 +202,12 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
         switch (id){
-            case R.id.item1:
-                Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this, RecyclerViewActivity.class);
-                //startActivity(intent);
+            case R.id.account_info:
+                ;;Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
+                getSupportFragmentManager().beginTransaction()
+                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment))
+                     .addToBackStack(null)
+                   .commit();
                 break;
             case R.id.item2:
                 Toast.makeText(MainPageActivity.this, "Item2 clicked", Toast.LENGTH_SHORT).show();
@@ -198,6 +221,21 @@ public class MainPageActivity extends AppCompatActivity
                    //     .addToBackStack(null)
                      //   .commit();
                 break;
+
+            case R.id.sign_out:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    startActivity(LoginActivity.createIntent(MainPageActivity.this));
+                                    finish();
+                                } else {
+                                    showSnackbar(R.string.sign_out_failed);
+                                }
+                            }
+                        });
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -208,5 +246,42 @@ public class MainPageActivity extends AppCompatActivity
         Intent in = new Intent();
         in.setClass(context, MainPageActivity.class);
         return in;
+    }
+
+
+    // Interactions ocurring on AccountInfoFragment
+    @Override
+    public void OnDeleteButtonCliked() {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setMessage("Are you sure you want to delete this account?")
+                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteAccount();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .create();
+
+        dialog.show();
+    }
+
+    private void deleteAccount() {
+        FirebaseAuth.getInstance()
+                .getCurrentUser()
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("MainPageActivity","deleteAccount Task succeeded.");
+                            startActivity(LoginActivity.createIntent(MainPageActivity.this));
+                            finish();
+                        } else {
+                            Log.d("MainPageActivity","deleteAccount Task didn't succeed.");
+                            showSnackbar(R.string.delete_account_failed);
+                        }
+                    }
+                });
     }
 }

@@ -48,8 +48,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        app:itemIconTint="@color/colorPurplePrimary"
-        android:backgroundTint="@color/colorBlack"
+        android:backgroundTint="@color/bodyTextColor"
+        app:itemIconTint="@color/textColorWhite"
+        app:itemTextColor="@color/textColorWhite"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu"
         />

@@ -10,7 +10,7 @@
     <string name="sign_in_cancelled">Sign in cancelled</string>
     <string name="unknown_sign_in_response">Unkown code for sign in</string>
     <string name="unknown_response">Unkown response</string>
-    <string name="openDrawer">Abrir Drawer</string>
-    <string name="closeDrawer">Fechar Drawer</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
     <integer name="splash_screen_animation_duration">900</integer>
 </resources>
