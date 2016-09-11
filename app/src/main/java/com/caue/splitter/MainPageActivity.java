@@ -4,7 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,8 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import butterknife.OnClick;
 
 /**
  * Created by Caue on 9/5/2016.
@@ -97,7 +106,7 @@ public class MainPageActivity extends AppCompatActivity
 
         // Inicializando a NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-//        navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
+        navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
 
         // Inicializando Drawer Layout
         drawerLayout =(DrawerLayout) findViewById(R.id.drawer_layout);
@@ -137,6 +146,15 @@ public class MainPageActivity extends AppCompatActivity
                     .replace(R.id.container, mContent)
                     .commit();
         }*/
+    }
+
+
+
+
+    @MainThread
+    private void showSnackbar(@StringRes int errorMessageRes) {
+        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
+                .show();
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -198,6 +216,21 @@ public class MainPageActivity extends AppCompatActivity
                    //     .addToBackStack(null)
                      //   .commit();
                 break;
+
+            case R.id.sign_out:
+                AuthUI.getInstance()
+                        .signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    startActivity(LoginActivity.createIntent(MainPageActivity.this));
+                                    finish();
+                                } else {
+                                    showSnackbar(R.string.sign_out_failed);
+                                }
+                            }
+                        });
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
