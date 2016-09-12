@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @MainThread
     private String getSelectedTosUrl() {
-            return GOOGLE_TOS_URL;
+        return GOOGLE_TOS_URL;
         //return FIREBASE_TOS_URL;
     }
 
@@ -123,10 +123,10 @@ public class LoginActivity extends AppCompatActivity {
         ArrayList<String> selectedProviders = new ArrayList<>();
 
 
-            selectedProviders.add(AuthUI.EMAIL_PROVIDER);
+        selectedProviders.add(AuthUI.EMAIL_PROVIDER);
 
-            //selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
-            selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
+        //selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
+        selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
 
         return selectedProviders.toArray(new String[selectedProviders.size()]);
     }
