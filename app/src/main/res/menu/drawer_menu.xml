@@ -3,10 +3,10 @@
     >
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item1"
+            android:id="@+id/AccountInfo"
             android:checked="false"
             android:icon="@drawable/ic_info_about"
-            android:title="Item 1" />
+            android:title="Sua Conta" />
 
         <item
             android:id="@+id/item2"

@@ -99,14 +99,14 @@ public class SignedInActivity extends AppCompatActivity {
     public void deleteAccountClicked() {
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to delete this account?")
-                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener() {
+                .setMessage("Tem certeza que deseja deletar esta conta?")
+                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
                     }
                 })
-                .setNegativeButton("No", null)
+                .setNegativeButton("Não", null)
                 .create();
 
         dialog.show();
