@@ -1,6 +1,7 @@
 package com.caue.splitter;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -148,15 +150,6 @@ public class MainPageActivity extends AppCompatActivity
         }*/
     }
 
-
-
-
-    @MainThread
-    private void showSnackbar(@StringRes int errorMessageRes) {
-        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
-                .show();
-    }
-
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -199,10 +192,11 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
         switch (id){
-            case R.id.item1:
-                Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this, RecyclerViewActivity.class);
-                //startActivity(intent);
+            case R.id.AccountInfo:
+                getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, AccountInfoFragment.newInstance(R.id.account_info_fragment))
+                .addToBackStack(null)
+                .commit();
                 break;
             case R.id.item2:
                 Toast.makeText(MainPageActivity.this, "Item2 clicked", Toast.LENGTH_SHORT).show();
@@ -242,4 +236,12 @@ public class MainPageActivity extends AppCompatActivity
         in.setClass(context, MainPageActivity.class);
         return in;
     }
+
+    @MainThread
+    private void showSnackbar(@StringRes int errorMessageRes) {
+        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
 }
+
