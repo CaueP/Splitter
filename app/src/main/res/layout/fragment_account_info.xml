@@ -5,30 +5,54 @@
     android:layout_height="match_parent"
     tools:context="com.caue.splitter.MainPageActivity"
     android:id="@+id/account_info_fragment">
+    <!--
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/user_profile_header"
+        android:layout_gravity="center_horizontal"
+        />-->
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/user_profile_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_info_about" />
+
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin">
 
         <TextView
-            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:id="@+id/text_view_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/user_profile_header"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/text_view_user_name"/>
 
-        <Button
-            android:id="@+id/delete_account"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/user_display_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="16dp"
-            android:text="@string/delete_account_label"
-            />
+            android:layout_toRightOf="@+id/text_view_user_name"/>
+
+
+
+
         <!-- android:theme="@style/WarnButton" -->
 
-    </LinearLayout>
-
+    </RelativeLayout>
+    <Button
+        android:id="@+id/delete_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:text="@string/delete_account_label"
+        android:layout_below="@+id/text_view_user_name"
+        />
 </LinearLayout>

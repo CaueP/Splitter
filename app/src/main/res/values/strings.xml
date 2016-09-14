@@ -12,5 +12,9 @@
     <string name="unknown_response">Unkown response</string>
     <string name="openDrawer">Open Drawer</string>
     <string name="closeDrawer">Close Drawer</string>
+    <string name="text_view_user_name">User Name:</string>
+    <string name="mainPageTitle">Splitter</string>
+    <string name="accountInfoTitle">Account Information</string>
+    <string name="account_info_save">Save</string>
     <integer name="splash_screen_animation_duration">900</integer>
 </resources>

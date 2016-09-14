@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.utils.MyDownloadUserDataJson;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +45,6 @@ import butterknife.OnClick;
 public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener{
-
 
     //@BindView(R.id.user_profile_picture)
     //ImageView mUserProfilePicture;
@@ -79,6 +80,7 @@ public class MainPageActivity extends AppCompatActivity
 
     //mUserProfilePicture = (ImageView) findViewById(R.id.user_profile_picture);
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
@@ -90,6 +92,14 @@ public class MainPageActivity extends AppCompatActivity
             startActivity(LoginActivity.createIntent(this));
             finish();
             return;
+        }
+
+        // check if account already exists
+        String url = UserDataJson.PHP_SERVER + "email/" + user.getEmail();
+        Log.d("MainPageActivity","User Email: " + user.getEmail() );
+        if (url != null) {
+            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if user exists
+            task.execute(url);  // executing task
         }
 
         setContentView(R.layout.activity_main_page);
@@ -283,5 +293,10 @@ public class MainPageActivity extends AppCompatActivity
                         }
                     }
                 });
+    }
+
+    // metodo que será chamado pela task para tomar uma ação quando for usuario recem cadastrado
+    public void newUser(){
+        Log.d("MainPageActivity","newUser called");
     }
 }

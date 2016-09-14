@@ -18,7 +18,8 @@ import java.util.Map;
  */
 public class UserDataJson {
 
-    public final String PHP_SERVER = "http://localhost:444/splitter/user/"; // String para API dos usuarios
+    public static final String PHP_SERVER = "http://192.168.98.114:444/splitter/user/";
+    // String para API dos usuarios, necessario alterar o ip de acordo com a rede
 
     HashMap userData;
 
@@ -71,6 +72,7 @@ public class UserDataJson {
         new Thread(runnable).start();
     }
 
+    // DownloadUserJson to be used in the MyDownloadUserDataJson to download user info
     public static HashMap downloadUserJson(String url){
 
         String jsonString = null;
@@ -83,27 +85,31 @@ public class UserDataJson {
                 if (userJsonObj != null) {
 
                     String id = userJsonObj.optString("id");
-                    String login = userJsonObj.optString("login");
-                    String password = userJsonObj.optString("password");
-                    String name = userJsonObj.optString("name");
-                    int cpf = Integer.parseInt(userJsonObj.optString("cpf"));
+                    String login = userJsonObj.optString("txt_login");
 
-                    Log.d("UserDataJson",
-                            "Id: " + id +
-                                    "name: " + name +
-                                    "login: " + login+
-                                    "cpf: " + cpf + "\n");
+                    Log.d("downloadUserJson",
+                            "id: " + id +
+                                    " txt_login: " + login +
+                                    "\n");
 
-                    // return the created movie
-                    return createUser(id, login, password, name, cpf);
+                    // return the created user
+                    return createUser(id, login);
 
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        else Log.d("MovieDataJson", "jsonString was null");
+        else Log.d("downloadUserJson", "jsonString was null");
         return null;
+    }
+
+    private static HashMap createUser(String userId, String userLogin) {
+        HashMap userData = new HashMap();
+        userData.put("id", userId);
+        userData.put("login", userLogin);
+        Log.d("createUser", "user " + userLogin + " created.");
+        return userData;
     }
 
     private static HashMap createUser(String userId, String userLogin, String userPassword, String userName, int userCPF) {
@@ -115,6 +121,43 @@ public class UserDataJson {
         userData.put("name", userName);
         userData.put("cpf",userCPF);
         return userData;
+    }
+
+    public static boolean usuarioExiste(String email){
+
+        String url = PHP_SERVER + "email/" + email;
+        String jsonString = null;
+        jsonString =  MyUtility.downloadJSONusingHTTPGetRequest(url);
+        Log.d("usuarioExiste", url);
+        //Log.d("usuarioExiste", jsonString);
+        if(jsonString != null){
+            Log.d("UserDataJson", "jsonString wasn't null");
+
+            try {
+                JSONArray jsonArray = new JSONArray(jsonString);
+                JSONObject userJsonObj = jsonArray.getJSONObject(0);
+                if (userJsonObj != null) {
+
+                    String id = userJsonObj.optString("id");
+
+                    Log.d("UserDataJson",
+                            "Id: " + id + "\n");
+
+                    if (id.equals(null)) {
+                        Log.d("UserDataJson", "jsonString was null");
+                        return false;
+                    }
+                    else return true;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            Log.d("UserDataJson", "jsonString was null");
+            return false;
+        }
+        return false;
     }
 
 }

@@ -1,12 +1,18 @@
 package com.caue.splitter;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -83,13 +89,27 @@ public class AccountInfoFragment extends Fragment {
         return rootView;
     }
 
-
-
     // Interactions ocurring on AccountInfoFragment
     public interface OnFragmentInteractionListener{
         void OnDeleteButtonCliked();
     }
 
+    // inflate the menu for the fragment and define the actions
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
+        //if(menu.findItem(R.id.action_share) == null)
+        inflater.inflate(R.menu.menu_account_info_fragment, menu);    // add action items inside fragment
 
+        MenuItem saveItem = menu.findItem(R.id.action_save);
+        Log.d("AccountInfoFragment", "Save Button Clicked");
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Set title
+        getActivity().setTitle(R.string.accountInfoTitle);
+    }
 }
