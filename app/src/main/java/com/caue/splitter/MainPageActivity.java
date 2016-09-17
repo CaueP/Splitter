@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,9 +36,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Caue on 9/5/2016.
@@ -46,21 +48,13 @@ public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener{
 
-    //@BindView(R.id.user_profile_picture)
-    //ImageView mUserProfilePicture;
 
-    //@BindView(R.id.user_email)
-    //TextView mUserEmail;
 
-    //@BindView(R.id.user_display_name)
-    //TextView mUserDisplayName;
-
+    @BindView(R.id.main_page_progressBar)
+    ProgressBar mainPageProgressBar;
 
     @BindView(android.R.id.content)
     View mRootView;
-
-    //@BindView(R.id.user_enabled_providers)
-    //TextView mEnabledProviders;
 
     Fragment mContent;      // Fragment object that will receive the current Fragment on the screen
     // in order to be restored when the activity is destroyed, after
@@ -75,48 +69,43 @@ public class MainPageActivity extends AppCompatActivity
     String userEmail;
     String userDisplayName;
 
-    //
-    FirebaseUser user;
+    // user data
+    FirebaseUser firebaseUser;
+    UserDataJson userDB = null;
 
-    //mUserProfilePicture = (ImageView) findViewById(R.id.user_profile_picture);
-
+    // User Registration request codes
+    static final int REGISTRATION_SUCCESSFULL = 1;  // The request code
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
 
         super.onCreate(savedInstanceState);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         // se o usuario nao estiver logado, retorne para a pagina de Login
-        if (user == null) {
+        if (firebaseUser == null) {
             startActivity(LoginActivity.createIntent(this));
             finish();
             return;
         }
 
         // check if account already exists
-        String url = UserDataJson.PHP_SERVER + "email/" + user.getEmail();
-        Log.d("MainPageActivity","User Email: " + user.getEmail() );
+        String url = UserDataJson.PHP_SERVER + "email/" + firebaseUser.getEmail();
         if (url != null) {
-            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if user exists
+            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if firebaseUser exists
             task.execute(url);  // executing task
         }
 
         setContentView(R.layout.activity_main_page);
         ButterKnife.bind(this);
 
-        // Using findview
-        //mUserEmail = (TextView) this.findViewById(R.id.user_email);
-        //mUserDisplayName = (TextView) this.findViewById(R.id.user_display_name);
-        //mUserProfilePicture = (ImageView) this.findViewById(R.id.user_profile_picture);
-
-        // getting user info
-        userProfilePictureUri = user.getPhotoUrl();
-        userEmail = TextUtils.isEmpty(user.getEmail()) ? "No email" : user.getEmail();
-        userDisplayName = TextUtils.isEmpty(user.getDisplayName()) ? "No display name" : user.getDisplayName();
+        // getting firebaseUser info
+        userProfilePictureUri = firebaseUser.getPhotoUrl();
+        userEmail = TextUtils.isEmpty(firebaseUser.getEmail()) ? "No email" : firebaseUser.getEmail();
+        userDisplayName = TextUtils.isEmpty(firebaseUser.getDisplayName()) ? "No display name" : firebaseUser.getDisplayName();
 
 
-        Log.d("MainPageActivity","User Info: " + userDisplayName + " " + userEmail + " " + userProfilePictureUri);
+        Log.d("MainPageActivity","firebaseUser: " + userDisplayName + " " + userEmail + " " + userProfilePictureUri);
 
 
         // Inicializando a Toolbar and a configurando como a ActionBar
@@ -173,12 +162,6 @@ public class MainPageActivity extends AppCompatActivity
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content view
-        //boolean drawerOpen = drawerLayout.isDrawerOpen(drawerLayout);
-        //menu.findItem(R.id.about).setVisible(!drawerOpen);
-
-        //mUserProfilePicture = (ImageView) this.findViewById(R.id.user_profile_picture);
-        //mUserEmail = (TextView) this.findViewById(R.id.user_email);
 
         ImageView mUserProfilePicture = (ImageView) findViewById(R.id.user_profile_picture);
         TextView mUserDisplayName = (TextView) this.findViewById(R.id.user_display_name);
@@ -213,19 +196,28 @@ public class MainPageActivity extends AppCompatActivity
         Intent intent;
         switch (id){
             case R.id.account_info:
-                ;;Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
+                Bundle data = new Bundle();
+                data.putSerializable("UserData",userDB.getUserData());
                 getSupportFragmentManager().beginTransaction()
-                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment))
+                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, data))
                      .addToBackStack(null)
                    .commit();
                 break;
-            case R.id.item2:
-                Toast.makeText(MainPageActivity.this, "Item2 clicked", Toast.LENGTH_SHORT).show();
+            case R.id.orders:
+                Toast.makeText(MainPageActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();
+                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
+                //startActivity(intent);
+                break;
+
+            case R.id.payments:
+                Toast.makeText(MainPageActivity.this, R.string.payments_menu, Toast.LENGTH_SHORT).show();
                 //intent = new Intent(this, RecyclerViewActivity_Task3.class);
                 //startActivity(intent);
                 break;
 
             case R.id.about:
+                Toast.makeText(MainPageActivity.this, R.string.about_splitter, Toast.LENGTH_SHORT).show();
                 //getSupportFragmentManager().beginTransaction()
                  //       .replace(R.id.container, AboutMeFragment.newInstance(R.id.about_me_fragment))
                    //     .addToBackStack(null)
@@ -295,8 +287,49 @@ public class MainPageActivity extends AppCompatActivity
                 });
     }
 
+    // method that will be called when the JSON data is downloaded
+    public void userDataDownloaded(HashMap<String, ?> userData){
+
+        // se usuario existe
+        if (userData != null){
+            Log.d("MainPageActivity","registeredUser called");
+            userDB = new UserDataJson(userData);
+            Log.d("MainPageActivity",userDB.toString());
+            mainPageProgressBar.setVisibility(View.INVISIBLE);
+        }
+        // se usuario nao existe
+        else{
+            Log.d("MainPageActivity","nonRegisteredUser called");
+            Intent intent = new Intent(this, UserRegistrationActivity.class);
+            startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REGISTRATION_SUCCESSFULL) {
+            Log.d("MainPageActivity","REGISTRATION_SUCCESSFULL");
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Log.d("MainPageActivity","RESULT_OK");
+                //Bundle bundle = this.getIntent().getExtras();
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
+                    Log.d("MainPageActivity",userDB.toString());
+                    mainPageProgressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+    }
+
     // metodo que será chamado pela task para tomar uma ação quando for usuario recem cadastrado
-    public void newUser(){
-        Log.d("MainPageActivity","newUser called");
+    public void nonRegisteredUser(){
+
+    }
+
+    public void registeredUser(HashMap userData){
+
     }
 }

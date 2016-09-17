@@ -38,6 +38,14 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/main_page_toolbar"
             ></FrameLayout>
+
+        <ProgressBar
+            android:id="@+id/main_page_progressBar"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            />
         <!-- FrameLayout that only loads the content of my fragments-->
     </RelativeLayout>
 

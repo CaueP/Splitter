@@ -30,15 +30,11 @@ public class MyDownloadUserDataJson extends AsyncTask<String, Void, HashMap> {
 
     @Override
     protected void onPostExecute(HashMap user){
-        if(user != null){
-            final MainPageActivity mActivity = activityReference.get();
-            if(mActivity != null){
-                Log.d("MyDownloadUserDataJson", "user Json is NOT null");
-                mActivity.newUser();
-            }
-        }
-        else{
-            Log.d("MyDownloadUserDataJson", "user Json is null");
+
+        final MainPageActivity mActivity = activityReference.get();
+        if(mActivity != null) {
+            Log.d("MyDownloadUserDataJson", "Registered User");
+            mActivity.userDataDownloaded(user);
         }
     }
 }

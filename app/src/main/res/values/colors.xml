@@ -5,10 +5,11 @@
     <color name="colorAccent">#FF4081</color>
 
     <!-- General App Colors-->
+    <!--Color Schema: http://paletton.com/#uid=54R0u0kpuz3fsLKkOE4vTvgwOnA -->
     <color name="colorPurpleBase">#9c27b0</color>
     <color name="colorPurplePrimary">#C671D5</color>
     <color name="colorPurpleDark">#6A037C</color>
-    <color name="colorPurpleAccent">#E02E73</color>
+    <color name="colorPurpleAccent">#6333B6</color>
     <color name="textColorWhite">#FFF</color>
     <color name="colorDarkGray">#505050</color>
     <color name="colorBlack">#000</color>

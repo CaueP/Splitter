@@ -17,4 +17,27 @@
     <string name="accountInfoTitle">Account Information</string>
     <string name="account_info_save">Save</string>
     <integer name="splash_screen_animation_duration">900</integer>
+
+
+    <!-- Drawer Menu Titles -->
+    <string name="account_info">My Account</string>
+    <string name="orders_menu">My Orders</string>
+    <string name="about_splitter">About Splitter</string>
+    <string name="payments_menu">Payments</string>
+
+    <!-- Account Information Fragment -->
+
+
+    <!-- User Registration Activity -->
+    <string name="message_welcome">Welcome! This is your first on our app, we want to know more about you :)</string>
+    <string name="textview_user_registration_name">Name</string>
+    <string name="textview_user_registration_cpf">CPF</string>
+    <string name="textview_user_registration_email">E-mail</string>
+    <string name="textview_user_registration_password">Password</string>
+    <string name="textview_user_registration_date_birth">Date of Birth</string>
+    <string name="textview_user_registration_phone">Phone</string>
+    <string name="save">Save</string>
+
+    <!-- Account Information Fragment -->
+
 </resources>

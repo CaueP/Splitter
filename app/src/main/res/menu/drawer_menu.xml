@@ -5,26 +5,33 @@
         <item
             android:id="@+id/account_info"
             android:checked="false"
-            android:icon="@drawable/ic_info_about"
-            android:title="Account Info" />
+            android:icon="@drawable/ic_account"
+            android:title="@string/account_info" />
 
         <item
-            android:id="@+id/item2"
+            android:id="@+id/orders"
             android:checked="false"
-            android:icon="@drawable/ic_info_about"
-            android:title="Item 2" />
+            android:icon="@drawable/ic_orders"
+            android:title="@string/orders_menu" />
+
+        <item
+            android:id="@+id/payments"
+            android:checked="false"
+            android:icon="@drawable/ic_credit_card"
+            android:title="@string/payments_menu" />
+
 
         <item
             android:id="@+id/about"
             android:checked="false"
             android:icon="@drawable/ic_info_about"
-            android:title="About Splitter" />
+            android:title="@string/about_splitter" />
 
         <item
             android:id="@+id/sign_out"
             android:checked="false"
-            android:icon="@drawable/ic_info_about"
-            android:title="Sign Out" />
+            android:icon="@drawable/ic_sign_out"
+            android:title="@string/sign_out" />
 
     </group>
 </menu>

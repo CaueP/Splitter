@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Splitter</string>
-    <string name="sign_out">Sign Out</string>
+    <string name="sign_out">Sair</string>
     <string name="delete_account_label">Deletar Conta</string>
     <string name="user_profile_header">Perfil de Usuário</string>
     <string name="profile_picture_content_desc">Foto do Perfil</string>
@@ -13,5 +13,27 @@
     <string name="unknown_response">Resposta desconhecida</string>
     <string name="openDrawer">Abrir Drawer</string>
     <string name="closeDrawer">Fechar Drawer</string>
+    <string name="text_view_user_name">Nome do Usuário:</string>
+    <string name="mainPageTitle">Splitter</string>
+    <string name="accountInfoTitle">Informações da Conta</string>
+    <string name="account_info_save">Salvar</string>
     <integer name="splash_screen_animation_duration">900</integer>
+
+    <!-- Drawer Menu Titles -->
+    <string name="account_info">Minha Conta</string>
+    <string name="orders_menu">Meus Pedidos</string>
+    <string name="about_splitter">Sobre Splitter</string>
+    <string name="payments_menu">Pagamentos</string>
+
+    <!-- Account Information Fragment -->
+
+    <!-- User Registration Activity -->
+    <string name="message_welcome">Bem vind@! Essa é a sua primeira vez em nosso app, nós queremos saber mais sobre você:)</string>
+    <string name="textview_user_registration_name">Nome</string>
+    <string name="textview_user_registration_cpf">CPF</string>
+    <string name="textview_user_registration_email">E-mail</string>
+    <string name="textview_user_registration_password">Senha</string>
+    <string name="textview_user_registration_date_birth">Data de Nascimento</string>
+    <string name="textview_user_registration_phone">Celular</string>
+    <string name="save">Salvar</string>
 </resources>
