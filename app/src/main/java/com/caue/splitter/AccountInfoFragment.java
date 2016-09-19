@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -31,7 +33,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Caue on 9/13/2016.
  */
-public class AccountInfoFragment extends Fragment {
+public class AccountInfoFragment extends Fragment{
     @BindView(R.id.user_profile_picture) ImageView userPicture;
     @BindView(R.id.edittext_user_reg_name) EditText name;
     @BindView(R.id.edittext_user_reg_email) EditText email;
@@ -89,6 +91,8 @@ public class AccountInfoFragment extends Fragment {
             dateOfBirth.setText((String) userData.get("dateOfBirth"));
         }
 
+
+
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Uri userProfilePictureUri = null;
         if(firebaseUser != null)
@@ -100,10 +104,7 @@ public class AccountInfoFragment extends Fragment {
                     .into(userPicture);
         }
 
-
-
         // findView
-
         btnDeleteAccount = (Button) rootView.findViewById(R.id.delete_account);
 
         // create mListener to do the button actions in the activities

@@ -19,7 +19,8 @@ import java.util.Map;
  */
 public class UserDataJson {
 
-    public static final String PHP_SERVER = "http://splitter.mybluemix.net/user/";
+    //public static final String PHP_SERVER = "http://splitter.mybluemix.net/user/";    // hostname da API no IBM Bluemix
+    public static final String PHP_SERVER = "http://api.splitter.cf/user/";         // hostname da API utilizando o dominio registrado
     // String para API dos usuarios, necessario alterar o ip de acordo com a rede
 
     HashMap userData;

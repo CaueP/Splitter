@@ -29,7 +29,7 @@
 
 
     <!-- User Registration Activity -->
-    <string name="message_welcome">Welcome! This is your first on our app, we want to know more about you :)</string>
+    <string name="message_welcome">Welcome! This is your first time in our app, we want to know more about you :)</string>
     <string name="textview_user_registration_name">Name</string>
     <string name="textview_user_registration_cpf">CPF</string>
     <string name="textview_user_registration_email">E-mail</string>

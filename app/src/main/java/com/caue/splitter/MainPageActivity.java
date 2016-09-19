@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -29,6 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.utils.DatePickerFragment;
 import com.caue.splitter.utils.MyDownloadUserDataJson;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,7 +49,7 @@ import butterknife.ButterKnife;
  */
 public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
-                AccountInfoFragment.OnFragmentInteractionListener{
+                AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener{
 
 
 
@@ -251,6 +254,47 @@ public class MainPageActivity extends AppCompatActivity
     }
 
 
+    // method that will be called when the JSON data is downloaded
+    public void userDataDownloaded(HashMap<String, ?> userData){
+
+        // se usuario existe
+        if (userData != null){
+            Log.d("MainPageActivity","registeredUser called");
+            userDB = new UserDataJson(userData);
+            Log.d("MainPageActivity",userDB.toString());
+            mainPageProgressBar.setVisibility(View.INVISIBLE);
+        }
+        // se usuario nao existe
+        else{
+            Log.d("MainPageActivity","nonRegisteredUser called");
+            Intent intent = new Intent(this, UserRegistrationActivity.class);
+            startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+        }
+    }
+
+    // Retorna os valores da Activity de cadastro de usuario e os dados do usuario enviado para cadastro
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == REGISTRATION_SUCCESSFULL) {
+            Log.d("MainPageActivity","REGISTRATION_SUCCESSFULL");
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                Log.d("MainPageActivity","RESULT_OK");
+                //Bundle bundle = this.getIntent().getExtras();
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
+                    Log.d("MainPageActivity",userDB.toString());
+                    mainPageProgressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+        }
+    }
+
+
+
+
     // Interactions ocurring on AccountInfoFragment
     @Override
     public void OnDeleteButtonCliked() {
@@ -287,49 +331,20 @@ public class MainPageActivity extends AppCompatActivity
                 });
     }
 
-    // method that will be called when the JSON data is downloaded
-    public void userDataDownloaded(HashMap<String, ?> userData){
+    // Chamado ao clicar no campo de data
+    public void showDatePicker(View view) {
+        // Antigo DatePickerDialog
+        //showDialog(DIALOG_ID);
 
-        // se usuario existe
-        if (userData != null){
-            Log.d("MainPageActivity","registeredUser called");
-            userDB = new UserDataJson(userData);
-            Log.d("MainPageActivity",userDB.toString());
-            mainPageProgressBar.setVisibility(View.INVISIBLE);
-        }
-        // se usuario nao existe
-        else{
-            Log.d("MainPageActivity","nonRegisteredUser called");
-            Intent intent = new Intent(this, UserRegistrationActivity.class);
-            startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
-        }
+        // Novo DatePickerDialog utilizando um fragment
+        DialogFragment newFragment = new DatePickerFragment();
+        newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    // Listener do DatePickerFragment para setar a data
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == REGISTRATION_SUCCESSFULL) {
-            Log.d("MainPageActivity","REGISTRATION_SUCCESSFULL");
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                Log.d("MainPageActivity","RESULT_OK");
-                //Bundle bundle = this.getIntent().getExtras();
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
-                    Log.d("MainPageActivity",userDB.toString());
-                    mainPageProgressBar.setVisibility(View.INVISIBLE);
-                }
-            }
-        }
-    }
-
-    // metodo que será chamado pela task para tomar uma ação quando for usuario recem cadastrado
-    public void nonRegisteredUser(){
-
-    }
-
-    public void registeredUser(HashMap userData){
-
+    public void OnDateSet(int year, int month, int day) {
+        EditText dateOfBirth = (EditText) findViewById(R.id.edittext_user_reg_dob);
+        dateOfBirth.setText(day + "/" + month + "/" + year);
     }
 }
