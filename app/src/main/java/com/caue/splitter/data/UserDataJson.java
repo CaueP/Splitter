@@ -73,6 +73,23 @@ public class UserDataJson {
         };
         new Thread(runnable).start();
     }
+
+    // updating a user in the database
+    public void updateUser(Map<String, ?> user){
+        final JSONObject json;
+        if(user != null) {
+            json = new JSONObject(user);
+        }else json = null;
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                String url = PHP_SERVER + "update";
+                MyUtility.sendHttPostRequest(url, json);
+            }
+        };
+        new Thread(runnable).start();
+    }
 /*
     public void deleteUser(Map<String, ?> item){
         final JSONObject json;

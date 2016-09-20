@@ -25,15 +25,31 @@
         android:layout_height="match_parent">
             <include layout="@layout/registration_form"/>
     </ScrollView>
-    <Button
-        android:id="@+id/delete_account"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:text="@string/delete_account_label"
-        android:layout_below="@id/account_info_fragment"
-        />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/update_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="@string/update"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/delete_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="16dp"
+            android:text="@string/delete_account_label"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

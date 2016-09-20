@@ -28,6 +28,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -42,6 +43,7 @@ public class AccountInfoFragment extends Fragment{
     @BindView(R.id.edittext_user_reg_cpf) EditText cpf;
     @BindView(R.id.edittext_user_reg_dob) EditText dateOfBirth;
     Button btnDeleteAccount;
+    Button btnUpdateAccount;
 
     HashMap userData = null;
 
@@ -80,8 +82,8 @@ public class AccountInfoFragment extends Fragment{
 
         // get user data
         userData = (HashMap) getArguments().getSerializable("UserData");
-        UserDataJson user = new UserDataJson(userData);
-        Log.d("UserRegActivity", user.toString());
+        //UserDataJson user = new UserDataJson(userData);
+        //Log.d("UserRegActivity", user.toString());
         // set user data
         if(userData != null) {
             name.setText((String) userData.get("name"));
@@ -104,9 +106,6 @@ public class AccountInfoFragment extends Fragment{
                     .into(userPicture);
         }
 
-        // findView
-        btnDeleteAccount = (Button) rootView.findViewById(R.id.delete_account);
-
         // create mListener to do the button actions in the activities
         final OnFragmentInteractionListener mListener;
         try{
@@ -116,6 +115,12 @@ public class AccountInfoFragment extends Fragment{
                     "forgot to implement OnFragmentInteractionListener");
         }
 
+
+        // Buttons findView
+        btnDeleteAccount = (Button) rootView.findViewById(R.id.delete_account);
+        btnUpdateAccount = (Button) rootView.findViewById(R.id.update_account);
+
+        // delete button listener
         btnDeleteAccount.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -125,12 +130,33 @@ public class AccountInfoFragment extends Fragment{
             }
         });
 
+
+        // update button listener
+        btnUpdateAccount.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Log.d("AccountInfoFragment", "Update Button Clicked");
+
+                UserDataJson updatedUserData = new UserDataJson(
+                        (int)userData.get("id"),
+                        name.getText().toString(),
+                        Long.parseLong(cpf.getText().toString()),
+                        dateOfBirth.getText().toString(),
+                        email.getText().toString(),
+                        Long.parseLong(phone.getText().toString()),
+                        password.getText().toString());
+
+                mListener.OnUpdateButtonCliked(updatedUserData.getUserData());
+            }
+        });
         return rootView;
     }
 
     // Interactions ocurring on AccountInfoFragment
     public interface OnFragmentInteractionListener{
         void OnDeleteButtonCliked();
+        void OnUpdateButtonCliked(HashMap accountUpdates);
     }
 
     // inflate the menu for the fragment and define the actions

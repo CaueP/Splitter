@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "674283432985",
+    "project_id": "firebase-splitter"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:674283432985:android:3f923a2ea9956d18",
+        "android_client_info": {
+          "package_name": "com.caue.splitter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "674283432985-u2qiflkuk7tdh6uegm0b6bn40lko45c1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.caue.splitter",
+            "certificate_hash": "F18E7DA3F8EED3719EC34C532664F859A95BFD6A"
+          }
+        },
+        {
+          "client_id": "674283432985-0jkg1k08gu43v17sd0iiu8r6ijb5jlir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzWDW_kEmDvI_jf8Xm4O7ucJxBWirg6r4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -38,6 +38,8 @@
     <string name="textview_user_registration_phone">Phone</string>
     <string name="save">Save</string>
 
+
     <!-- Account Information Fragment -->
+    <string name="update">Update</string>
 
 </resources>

@@ -312,6 +312,13 @@ public class MainPageActivity extends AppCompatActivity
         dialog.show();
     }
 
+    @Override
+    public void OnUpdateButtonCliked(HashMap accountUpdated) {
+        Log.d("OnUpdateButtobClicked", "User Updated");
+        userDB = new UserDataJson(accountUpdated);
+        userDB.updateUser(accountUpdated);
+    }
+
     private void deleteAccount() {
         FirebaseAuth.getInstance()
                 .getCurrentUser()

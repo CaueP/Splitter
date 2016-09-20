@@ -26,6 +26,7 @@
     <string name="payments_menu">Pagamentos</string>
 
     <!-- Account Information Fragment -->
+    <string name="update">Atualizar</string>
 
     <!-- User Registration Activity -->
     <string name="message_welcome">Bem vind@! Essa é a sua primeira vez em nosso app, nós queremos saber mais sobre você:)</string>
