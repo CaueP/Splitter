@@ -19,14 +19,15 @@
     <string name="account_info_save">Salvar</string>
     <integer name="splash_screen_animation_duration">900</integer>
 
+
+    <string name="delete_account_succeed">Conta Excluída</string>
     <!-- Drawer Menu Titles -->
     <string name="account_info">Minha Conta</string>
     <string name="orders_menu">Meus Pedidos</string>
     <string name="about_splitter">Sobre Splitter</string>
     <string name="payments_menu">Pagamentos</string>
 
-    <!-- Account Information Fragment -->
-    <string name="update">Atualizar</string>
+
 
     <!-- User Registration Activity -->
     <string name="message_welcome">Bem vind@! Essa é a sua primeira vez em nosso app, nós queremos saber mais sobre você:)</string>
@@ -37,4 +38,9 @@
     <string name="textview_user_registration_date_birth">Data de Nascimento</string>
     <string name="textview_user_registration_phone">Celular</string>
     <string name="save">Salvar</string>
+
+    <!-- Account Information Fragment -->
+    <string name="update">Atualizar</string>
+    <string name="ask_delete_account_confirmation">Tem certeza que deseja excluir esta conta?</string>
+    <string name="asnwer_yes_delete">Yes, exclua!</string>
 </resources>

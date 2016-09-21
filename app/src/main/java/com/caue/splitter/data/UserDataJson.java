@@ -90,23 +90,24 @@ public class UserDataJson {
         };
         new Thread(runnable).start();
     }
-/*
-    public void deleteUser(Map<String, ?> item){
+
+    public void deleteUser(){
+        HashMap user = userData;
         final JSONObject json;
-        if(item != null) {
-            json = new JSONObject(item);
+        if(user != null) {
+            json = new JSONObject(user);
         }else json = null;
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                String url = PHP_SERVER + "delete";
+                String url = PHP_SERVER + "deactivate/" + userData.get("login");
                 MyUtility.sendHttPostRequest(url, json);
             }
         };
         new Thread(runnable).start();
     }
-*/
+
     // DownloadUserJson to be used in the MyDownloadUserDataJson to download the user data
     public static HashMap downloadUserJson(String url){
 

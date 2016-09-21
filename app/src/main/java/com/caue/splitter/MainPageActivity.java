@@ -299,8 +299,8 @@ public class MainPageActivity extends AppCompatActivity
     @Override
     public void OnDeleteButtonCliked() {
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to delete this account?")
-                .setPositiveButton("Yes, nuke it!", new DialogInterface.OnClickListener() {
+                .setMessage(R.string.ask_delete_account_confirmation)
+                .setPositiveButton(R.string.asnwer_yes_delete, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         deleteAccount();
@@ -312,12 +312,6 @@ public class MainPageActivity extends AppCompatActivity
         dialog.show();
     }
 
-    @Override
-    public void OnUpdateButtonCliked(HashMap accountUpdated) {
-        Log.d("OnUpdateButtobClicked", "User Updated");
-        userDB = new UserDataJson(accountUpdated);
-        userDB.updateUser(accountUpdated);
-    }
 
     private void deleteAccount() {
         FirebaseAuth.getInstance()
@@ -328,6 +322,8 @@ public class MainPageActivity extends AppCompatActivity
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.d("MainPageActivity","deleteAccount Task succeeded.");
+                            showSnackbar(R.string.delete_account_succeed);
+                            userDB.deleteUser();        // excluir conta do BD
                             startActivity(LoginActivity.createIntent(MainPageActivity.this));
                             finish();
                         } else {
@@ -337,6 +333,14 @@ public class MainPageActivity extends AppCompatActivity
                     }
                 });
     }
+
+    @Override
+    public void OnUpdateButtonCliked(HashMap accountUpdated) {
+        Log.d("OnUpdateButtobClicked", "User Updated");
+        userDB = new UserDataJson(accountUpdated);
+        userDB.updateUser(accountUpdated);
+    }
+
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {
