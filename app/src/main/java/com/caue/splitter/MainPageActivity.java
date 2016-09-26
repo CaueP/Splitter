@@ -151,7 +151,7 @@ public class MainPageActivity extends AppCompatActivity
             // Restore the fragment's instance
             mContent = MainPageFragment.newInstance(R.id.main_page_fragment);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, mContent)
+                    .replace(R.id.container, mContent)
                     .commit();
         }
     }
@@ -198,14 +198,26 @@ public class MainPageActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
         switch (id){
+            case R.id.home:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, MainPageFragment.newInstance(R.id.main_page_fragment))
+                        .addToBackStack(null)
+                        .commit();
+                break;
             case R.id.account_info:
                 //Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
                 Bundle data = new Bundle();
                 data.putSerializable("UserData",userDB.getUserData());
                 getSupportFragmentManager().beginTransaction()
-                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, data))
+                       .replace(R.id.container, AccountInfoFragment.newInstance(R.id.account_info_fragment, data))
                      .addToBackStack(null)
                    .commit();
+                break;
+            case R.id.new_order:
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.container, NewOrderFragment.newInstance(R.id.new_order_fragment))
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.orders:
                 Toast.makeText(MainPageActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();

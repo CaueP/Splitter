@@ -2,11 +2,24 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
     <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home"
+            android:checked="false"
+            android:icon="@drawable/ic_account"
+            android:title="@string/home" />
+
         <item
             android:id="@+id/account_info"
             android:checked="false"
             android:icon="@drawable/ic_account"
             android:title="@string/account_info" />
+
+        <item
+            android:id="@+id/new_order"
+            android:checked="false"
+            android:icon="@drawable/ic_account"
+            android:title="@string/new_order" />
 
         <item
             android:id="@+id/orders"
