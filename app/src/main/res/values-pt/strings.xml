@@ -20,12 +20,17 @@
     <integer name="splash_screen_animation_duration">900</integer>
 
 
+    <string name="newOrderTitle">Novo Pedido</string>
+    <string name="MyOrdersTitle">Meus Pedidos</string>
+
     <string name="delete_account_succeed">Conta Excluída</string>
     <!-- Drawer Menu Titles -->
     <string name="account_info">Minha Conta</string>
     <string name="orders_menu">Meus Pedidos</string>
     <string name="about_splitter">Sobre Splitter</string>
     <string name="payments_menu">Pagamentos</string>
+    <string name="home">Página Inicial</string>
+    <string name="new_order">Novo Pedido</string>
 
 
 

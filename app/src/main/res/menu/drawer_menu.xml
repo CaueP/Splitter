@@ -9,6 +9,13 @@
             android:title="@string/account_info" />
 
         <item
+            android:id="@+id/new_order"
+            android:checked="false"
+            android:icon="@drawable/ic_account"
+            android:title="@string/new_order" />
+
+
+        <item
             android:id="@+id/orders"
             android:checked="false"
             android:icon="@drawable/ic_orders"
