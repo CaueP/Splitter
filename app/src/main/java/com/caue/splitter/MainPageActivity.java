@@ -85,7 +85,7 @@ public class MainPageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        // se o usuario nao estiver logado, retorne para a pagina de Login
+        // se o Usuario nao estiver logado, retorne para a pagina de Login
         if (firebaseUser == null) {
             startActivity(LoginActivity.createIntent(this));
             finish();
@@ -263,14 +263,14 @@ public class MainPageActivity extends AppCompatActivity
     // method that will be called when the JSON data is downloaded
     public void userDataDownloaded(HashMap<String, ?> userData){
 
-        // se usuario existe
+        // se Usuario existe
         if (userData != null){
             Log.d("MainPageActivity","registeredUser called");
             userDB = new UserDataJson(userData);
             Log.d("MainPageActivity",userDB.toString());
             mainPageProgressBar.setVisibility(View.INVISIBLE);
         }
-        // se usuario nao existe
+        // se Usuario nao existe
         else{
             Log.d("MainPageActivity","nonRegisteredUser called");
             Intent intent = new Intent(this, UserRegistrationActivity.class);
@@ -278,7 +278,7 @@ public class MainPageActivity extends AppCompatActivity
         }
     }
 
-    // Retorna os valores da Activity de cadastro de usuario e os dados do usuario enviado para cadastro
+    // Retorna os valores da Activity de cadastro de Usuario e os dados do Usuario enviado para cadastro
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to

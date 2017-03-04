@@ -49,7 +49,7 @@ public class UserRegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        // se o usuario nao estiver logado, retorne para a pagina de Login
+        // se o Usuario nao estiver logado, retorne para a pagina de Login
         if (firebaseUser == null) {
             startActivity(LoginActivity.createIntent(this));
             finish();
