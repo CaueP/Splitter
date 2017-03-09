@@ -66,7 +66,7 @@ public class UserRegistrationActivity extends AppCompatActivity
             finish();
             return;
         }
-
+        mRestManager = new RestManager();
         // setting information based on firebaseUser
         email.setText(firebaseUser.getEmail());
         name.setText(firebaseUser.getDisplayName());
@@ -86,7 +86,7 @@ public class UserRegistrationActivity extends AppCompatActivity
         usuario = new Usuario(1,name.getText().toString(),
                 password.getText().toString(),
                 Long.parseLong(cpf.getText().toString()),
-                dateOfBirth.getText().toString(),
+                "24/02/1990",
                 email.getText().toString(),
                 Long.parseLong(phone.getText().toString()),
                 1

@@ -44,6 +44,20 @@ public class Usuario implements Serializable {
     @SerializedName("conta_ativa")
     private int contaAtiva;
 
+    // construtor
+
+
+    public Usuario(int id, String nome, String senha, long cpf, String dtNascimento, String email, long telefone, int contaAtiva) {
+        this.id = id;
+        this.nome = nome;
+        this.senha = senha;
+        this.cpf = cpf;
+        this.dtNascimento = dtNascimento;
+        this.email = email;
+        this.telefone = telefone;
+        this.contaAtiva = contaAtiva;
+    }
+
     // Getters e Setters
     public int getId() {
         return id;
