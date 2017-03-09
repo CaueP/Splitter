@@ -12,19 +12,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
+import com.caue.splitter.controller.RestManager;
 import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.callback.UsuarioService;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Caue on 9/17/2016.
  */
 public class UserRegistrationActivity extends AppCompatActivity
-    implements DatePickerFragment.OnDateSetListener{
+    implements DatePickerFragment.OnDateSetListener, Callback<Usuario> {
 
     @BindView(android.R.id.content) View mRootView;
 
@@ -40,7 +47,11 @@ public class UserRegistrationActivity extends AppCompatActivity
     static final int DIALOG_ID=0;*/
 
     UserDataJson userData;
+    Usuario usuario;
     FirebaseUser firebaseUser;
+
+    // REST API manager
+    private RestManager mRestManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -72,6 +83,15 @@ public class UserRegistrationActivity extends AppCompatActivity
         Log.d("UserRegistrationActivit","saveButton Clicked");
 
 
+        usuario = new Usuario(1,name.getText().toString(),
+                password.getText().toString(),
+                Long.parseLong(cpf.getText().toString()),
+                dateOfBirth.getText().toString(),
+                email.getText().toString(),
+                Long.parseLong(phone.getText().toString()),
+                1
+                );
+
         userData = new UserDataJson(1,name.getText().toString(),
                 Long.parseLong(cpf.getText().toString()),
                 dateOfBirth.getText().toString(),
@@ -92,9 +112,19 @@ public class UserRegistrationActivity extends AppCompatActivity
         setResult(Activity.RESULT_OK,returnIntent);
 
         // create user on the database
-        userData.createUser(userData.getUserData());
+        criarUsuario(usuario);
+        //userData.createUser(userData.getUserData());
 
         finish();
+    }
+
+    private void criarUsuario(Usuario usuario) {
+        // Service para baixar objeto com a lista de imoveis
+        UsuarioService service = mRestManager.getUsuarioService();
+        Call<Usuario> listCall = service.postUsuario(usuario);
+
+        // call
+        listCall.enqueue(this);
     }
 
 
@@ -121,6 +151,33 @@ public class UserRegistrationActivity extends AppCompatActivity
     @Override
     public void OnDateSet(int year, int month, int day) {
         dateOfBirth.setText(day + "/" + month + "/" + year);
+    }
+
+    @Override
+    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+        Log.d("onResponse", "entered in onResponse");
+        if (response.isSuccessful()) {
+            Log.d("onResponse", "isSuccessful");
+            Log.d("onResponse", "Body: " + response.body());
+            usuario = response.body();
+
+            if(usuario == null) {
+                Log.d("onResponse", "Usuario inexistente");
+            }
+            Log.d("retorno usuario", usuario.getEmail());
+
+        } else {
+            Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+            if (response.code() == 404){    // usuario nao cadastrado
+                Log.d("onResponse","erro ao registrar usuario");
+            }
+        }
+
+    }
+
+    @Override
+    public void onFailure(Call<Usuario> call, Throwable t) {
+
     }
 
 /* // Antigo DatePickerDialog

@@ -30,9 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.caue.splitter.controller.RestManager;
 import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.callback.UsuarioService;
 import com.caue.splitter.utils.DatePickerFragment;
-import com.caue.splitter.utils.MyDownloadUserDataJson;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,15 +45,18 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Caue on 9/5/2016.
  */
 public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
-                AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener{
+                AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener, Callback<Usuario> {
 
-
+    private RestManager mRestManager;
 
     @BindView(R.id.main_page_progressBar)
     ProgressBar mainPageProgressBar;
@@ -76,6 +81,8 @@ public class MainPageActivity extends AppCompatActivity
     FirebaseUser firebaseUser;
     UserDataJson userDB = null;
 
+    Usuario usuario = null;
+
     // User Registration request codes
     static final int REGISTRATION_SUCCESSFULL = 1;  // The request code
 
@@ -92,12 +99,17 @@ public class MainPageActivity extends AppCompatActivity
             return;
         }
 
+        // instancia o RestManager
+        mRestManager = new RestManager();
+
+        carregarUsuario(firebaseUser.getEmail());
+
         // check if account already exists
-        String url = UserDataJson.PHP_SERVER + "email/" + firebaseUser.getEmail();
-        if (url != null) {
-            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if firebaseUser exists
-            task.execute(url);  // executing task
-        }
+//        String url = UserDataJson.PHP_SERVER + "email/" + firebaseUser.getEmail();
+//        if (url != null) {
+//            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if firebaseUser exists
+//            task.execute(url);  // executing task
+//        }
 
         setContentView(R.layout.activity_main_page);
         ButterKnife.bind(this);
@@ -154,6 +166,15 @@ public class MainPageActivity extends AppCompatActivity
                     .replace(R.id.content_frame, mContent)
                     .commit();
         }
+    }
+
+    private void carregarUsuario(String email) {
+        // Service para baixar objeto com a lista de imoveis
+        UsuarioService service = mRestManager.getUsuarioService();
+        Call<Usuario> listCall = service.getUsuario(email);
+
+        // call
+        listCall.enqueue(this);
     }
 
     @MainThread
@@ -363,5 +384,33 @@ public class MainPageActivity extends AppCompatActivity
     public void OnDateSet(int year, int month, int day) {
         EditText dateOfBirth = (EditText) findViewById(R.id.edittext_user_reg_dob);
         dateOfBirth.setText(day + "/" + month + "/" + year);
+    }
+
+    @Override
+    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+        Log.d("onResponse", "entered in onResponse");
+        if (response.isSuccessful()) {
+            Log.d("onResponse", "isSuccessful");
+            Log.d("onResponse", "Body: " + response.body());
+             usuario = response.body();
+
+            if(usuario == null) {
+                Log.d("onResponse", "Usuario inexistente");
+            }
+            Log.d("retorno usuario", usuario.getEmail());
+
+        } else {
+            Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+            if (response.code() == 404){    // usuario nao cadastrado
+                Log.d("onResponse","nonRegisteredUser called");
+                Intent intent = new Intent(this, UserRegistrationActivity.class);
+                startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+            }
+        }
+    }
+
+    @Override
+    public void onFailure(Call<Usuario> call, Throwable t) {
+
     }
 }

@@ -18,10 +18,10 @@ import retrofit2.http.Path;
 public interface UsuarioService {
 
     // GET para consultar um usuario
-    @GET("user/{txt_email}")
+    @GET("usuario/{txt_email}")
     Call<Usuario> getUsuario(@Path("txt_email") String email);
 
     // POST para cadastrar um usuario
-    @POST("user/")
+    @POST("usuario/")
     Call<Usuario> postUsuario(@Body Usuario usuario);
 }
