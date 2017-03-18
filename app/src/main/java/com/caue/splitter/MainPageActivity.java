@@ -30,10 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.caue.splitter.controller.RestManager;
+import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.data.UserDataJson;
 import com.caue.splitter.model.Usuario;
-import com.caue.splitter.model.services.UsuarioService;
+import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,8 +55,6 @@ import retrofit2.Response;
 public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener, Callback<Usuario> {
-
-    private RestManager mRestManager;
 
     @BindView(R.id.main_page_progressBar)
     ProgressBar mainPageProgressBar;
@@ -98,9 +96,6 @@ public class MainPageActivity extends AppCompatActivity
             finish();
             return;
         }
-
-        // instancia o RestManager
-        mRestManager = new RestManager();
 
         carregarUsuario(firebaseUser.getEmail());
 
@@ -171,7 +166,7 @@ public class MainPageActivity extends AppCompatActivity
     private void carregarUsuario(String email) {
         Log.d("carregarUsuario", "Carregando usuario");
         // Service para baixar objeto com a lista de imoveis
-        UsuarioService service = mRestManager.getUsuarioService();
+        UsuarioClient service = ServiceGenerator.createService(UsuarioClient.class);
         Call<Usuario> listCall = service.getUsuario(email);
 
         // call
@@ -316,7 +311,7 @@ public class MainPageActivity extends AppCompatActivity
                 startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
             }
             Log.d("retorno usuario", usuario.getEmail());
-
+            mainPageProgressBar.setVisibility(View.INVISIBLE);
         } else {
             Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
             if (response.code() == 404){    // usuario nao cadastrado

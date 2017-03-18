@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.caue.splitter.controller.RestManager;
+import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.data.UserDataJson;
 import com.caue.splitter.model.Usuario;
-import com.caue.splitter.model.services.UsuarioService;
+import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -48,9 +48,6 @@ public class UserRegistrationActivity extends AppCompatActivity
     Usuario usuario;
     FirebaseUser firebaseUser;
 
-    // REST API manager
-    private RestManager mRestManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -64,7 +61,7 @@ public class UserRegistrationActivity extends AppCompatActivity
             finish();
             return;
         }
-        mRestManager = new RestManager();
+
         // setting information based on firebaseUser
         email.setText(firebaseUser.getEmail());
         name.setText(firebaseUser.getDisplayName());
@@ -106,7 +103,7 @@ public class UserRegistrationActivity extends AppCompatActivity
 
     private void criarUsuario(Usuario usuario) {
         // Service para baixar objeto com a lista de imoveis
-        UsuarioService service = mRestManager.getUsuarioService();
+        UsuarioClient service = ServiceGenerator.createService(UsuarioClient.class);
         Call<Usuario> listCall = service.postUsuario(usuario);
 
         // call

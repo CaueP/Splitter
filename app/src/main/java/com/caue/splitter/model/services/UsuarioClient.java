@@ -10,13 +10,13 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 /**
- * @author Caue
+ * @author Caue Polimanti
  * @version 1.0
- * @date 4/03/2017
+ * created on 4/03/2017
  */
 
 // Definição dos callbacks da REST API
-public interface UsuarioService {
+public interface UsuarioClient {
 
     // GET para consultar um usuario
     @GET("usuario/{email}")
