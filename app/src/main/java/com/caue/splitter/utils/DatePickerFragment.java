@@ -3,7 +3,8 @@ package com.caue.splitter.utils;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
-import android.icu.util.Calendar;
+//import android.icu.util.Calendar;
+import java.util.Calendar;
 import android.os.Bundle;
 import android.widget.DatePicker;
 

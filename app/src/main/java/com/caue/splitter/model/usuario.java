@@ -17,37 +17,37 @@ public class Usuario implements Serializable {
     private int id;
 
     @Expose
-    @SerializedName("txt_nome")
+    @SerializedName("nome")
     private String nome;
 
     @Expose
-    @SerializedName("txt_senha")
+    @SerializedName("senha")
     private String senha;
 
     @Expose
-    @SerializedName("nr_cpf")
+    @SerializedName("cpf")
     private long cpf;
 
     @Expose
-    @SerializedName("dt_nascimento")
+    @SerializedName("dataNascimento")
     private String dtNascimento;
 
     @Expose
-    @SerializedName("txt_email")
+    @SerializedName("email")
     private String email;
 
     @Expose
-    @SerializedName("nr_telefone")
+    @SerializedName("telefone")
     private long telefone;
 
     @Expose
-    @SerializedName("conta_ativa")
-    private int contaAtiva;
+    @SerializedName("contaAtiva")
+    private boolean contaAtiva;
 
     // construtor
 
 
-    public Usuario(int id, String nome, String senha, long cpf, String dtNascimento, String email, long telefone, int contaAtiva) {
+    public Usuario(int id, String nome, String senha, long cpf, String dtNascimento, String email, long telefone, boolean contaAtiva) {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
@@ -115,11 +115,11 @@ public class Usuario implements Serializable {
         this.telefone = telefone;
     }
 
-    public int getContaAtiva() {
+    public boolean getContaAtiva() {
         return contaAtiva;
     }
 
-    public void setContaAtiva(int contaAtiva) {
+    public void setContaAtiva(boolean contaAtiva) {
         this.contaAtiva = contaAtiva;
     }
 

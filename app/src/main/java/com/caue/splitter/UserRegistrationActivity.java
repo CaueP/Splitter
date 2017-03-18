@@ -1,8 +1,6 @@
 package com.caue.splitter;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
@@ -10,13 +8,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.caue.splitter.controller.RestManager;
 import com.caue.splitter.data.UserDataJson;
 import com.caue.splitter.model.Usuario;
-import com.caue.splitter.model.callback.UsuarioService;
+import com.caue.splitter.model.services.UsuarioService;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -82,14 +80,13 @@ public class UserRegistrationActivity extends AppCompatActivity
     public void saveButton() {
         Log.d("UserRegistrationActivit","saveButton Clicked");
 
-
         usuario = new Usuario(1,name.getText().toString(),
                 password.getText().toString(),
                 Long.parseLong(cpf.getText().toString()),
-                "24/02/1990",
+                dateOfBirth.getText().toString(),
                 email.getText().toString(),
                 Long.parseLong(phone.getText().toString()),
-                1
+                true
                 );
 
         userData = new UserDataJson(1,name.getText().toString(),
@@ -99,23 +96,12 @@ public class UserRegistrationActivity extends AppCompatActivity
                 Long.parseLong(phone.getText().toString()),
                 password.getText().toString());
 
-
-        // create return intent for startActivityForResult
-        Intent returnIntent = new Intent();
-
-        Bundle data = new Bundle();
-        // serialize data
-        data.putSerializable("UserData",userData.getUserData());
-        returnIntent.putExtras(data);
-
-        //returnIntent.putExtra("userData",userData);
-        setResult(Activity.RESULT_OK,returnIntent);
-
         // create user on the database
         criarUsuario(usuario);
         //userData.createUser(userData.getUserData());
 
-        finish();
+        //Toast.makeText(this, "Usuario criado", Toast.LENGTH_SHORT).show();
+
     }
 
     private void criarUsuario(Usuario usuario) {
@@ -139,9 +125,6 @@ public class UserRegistrationActivity extends AppCompatActivity
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {
-        // Antigo DatePickerDialog
-        //showDialog(DIALOG_ID);
-
         // Novo DatePickerDialog utilizando um fragment
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -155,17 +138,22 @@ public class UserRegistrationActivity extends AppCompatActivity
 
     @Override
     public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+
         Log.d("onResponse", "entered in onResponse");
         if (response.isSuccessful()) {
             Log.d("onResponse", "isSuccessful");
-            Log.d("onResponse", "Body: " + response.body());
-            usuario = response.body();
+            Log.d("onResponse", "Usuario criado: " + response.body());
 
-            if(usuario == null) {
-                Log.d("onResponse", "Usuario inexistente");
+
+            if(response.body() == null) {
+                Log.d("onResponse", "Usuario não registrado");
+            } else {
+                usuario = response.body();
             }
             Log.d("retorno usuario", usuario.getEmail());
+            Toast.makeText(this, R.string.account_created, Toast.LENGTH_SHORT).show();
 
+            finishActivity();
         } else {
             Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
             if (response.code() == 404){    // usuario nao cadastrado
@@ -173,31 +161,22 @@ public class UserRegistrationActivity extends AppCompatActivity
             }
         }
 
+
     }
 
     @Override
     public void onFailure(Call<Usuario> call, Throwable t) {
-
+        Log.d("onFailure","Ocorreu um erro ao chamar a API - UserRegistrationActivity" + t.getMessage());
+        Log.d("onFailure","Erro:" + t.toString());
     }
 
-/* // Antigo DatePickerDialog
-    @Override
-    protected Dialog onCreateDialog(int id){
-        if(id == DIALOG_ID)
-            return new DatePickerDialog(this, dpickerListener, year, month, day);
+    // prepara a activiy para ser finalizada e a finaliza
+    private void finishActivity() {
+        // create return intent for startActivityForResult
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("userData", usuario);
+        setResult(Activity.RESULT_OK,returnIntent);
 
-        return null;
+        finish();
     }
-
-    private DatePickerDialog.OnDateSetListener dpickerListener
-            = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-            year = y;
-            month = m+1;
-            day = d;
-            dateOfBirth.setText(day + "/" + month + "/" + year);
-        }
-    };
-    */
 }

@@ -1,6 +1,6 @@
 package com.caue.splitter.controller;
 
-import com.caue.splitter.model.callback.UsuarioService;
+import com.caue.splitter.model.services.UsuarioService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

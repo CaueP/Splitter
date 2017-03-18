@@ -33,7 +33,7 @@ import com.bumptech.glide.Glide;
 import com.caue.splitter.controller.RestManager;
 import com.caue.splitter.data.UserDataJson;
 import com.caue.splitter.model.Usuario;
-import com.caue.splitter.model.callback.UsuarioService;
+import com.caue.splitter.model.services.UsuarioService;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -169,6 +169,7 @@ public class MainPageActivity extends AppCompatActivity
     }
 
     private void carregarUsuario(String email) {
+        Log.d("carregarUsuario", "Carregando usuario");
         // Service para baixar objeto com a lista de imoveis
         UsuarioService service = mRestManager.getUsuarioService();
         Call<Usuario> listCall = service.getUsuario(email);
@@ -222,9 +223,10 @@ public class MainPageActivity extends AppCompatActivity
             case R.id.account_info:
                 //Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
                 Bundle data = new Bundle();
-                data.putSerializable("UserData",userDB.getUserData());
+                //data.putSerializable("UserData",userDB.getUserData());
+                data.putSerializable("UserData",usuario);
                 getSupportFragmentManager().beginTransaction()
-                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, data))
+                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, data, usuario))
                      .addToBackStack(null)
                    .commit();
                 break;
@@ -299,6 +301,37 @@ public class MainPageActivity extends AppCompatActivity
         }
     }
 
+    // Resposta da consulta de usuário
+    @Override
+    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+        Log.d("onResponse", "entered in onResponse");
+        if (response.isSuccessful()) {
+            Log.d("onResponse", "isSuccessful");
+            Log.d("onResponse", "Body: " + response.body());
+            usuario = response.body();
+
+            if(usuario == null || !usuario.getContaAtiva()) {
+                Log.d("onResponse", "Usuario inexistente/inativo: " + usuario.getEmail() + " " + usuario.getContaAtiva());
+                Intent intent = new Intent(this, UserRegistrationActivity.class);
+                startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+            }
+            Log.d("retorno usuario", usuario.getEmail());
+
+        } else {
+            Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+            if (response.code() == 404){    // usuario nao cadastrado
+                Log.d("onResponse","Usuario nao registrado. Chamando tela de cadastro de usuario");
+                Intent intent = new Intent(this, UserRegistrationActivity.class);
+                startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+            }
+        }
+    }
+
+    @Override
+    public void onFailure(Call<Usuario> call, Throwable t) {
+        Log.d("onFailure","Ocorreu um erro ao chamar a API - MainPageActivity");
+    }
+
     // Retorna os valores da Activity de cadastro de Usuario e os dados do Usuario enviado para cadastro
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -311,8 +344,9 @@ public class MainPageActivity extends AppCompatActivity
                 //Bundle bundle = this.getIntent().getExtras();
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-                    userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
-                    Log.d("MainPageActivity",userDB.toString());
+                    usuario = (Usuario) bundle.getSerializable("userData");
+                    //userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
+                    Log.d("onActivityResult",usuario.getEmail());
                     mainPageProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -371,9 +405,6 @@ public class MainPageActivity extends AppCompatActivity
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {
-        // Antigo DatePickerDialog
-        //showDialog(DIALOG_ID);
-
         // Novo DatePickerDialog utilizando um fragment
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -386,31 +417,5 @@ public class MainPageActivity extends AppCompatActivity
         dateOfBirth.setText(day + "/" + month + "/" + year);
     }
 
-    @Override
-    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-        Log.d("onResponse", "entered in onResponse");
-        if (response.isSuccessful()) {
-            Log.d("onResponse", "isSuccessful");
-            Log.d("onResponse", "Body: " + response.body());
-             usuario = response.body();
 
-            if(usuario == null) {
-                Log.d("onResponse", "Usuario inexistente");
-            }
-            Log.d("retorno usuario", usuario.getEmail());
-
-        } else {
-            Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
-            if (response.code() == 404){    // usuario nao cadastrado
-                Log.d("onResponse","nonRegisteredUser called");
-                Intent intent = new Intent(this, UserRegistrationActivity.class);
-                startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
-            }
-        }
-    }
-
-    @Override
-    public void onFailure(Call<Usuario> call, Throwable t) {
-
-    }
 }

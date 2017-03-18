@@ -41,7 +41,7 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
-        Log.d("FrontPageFragment", "FrontPageFragment just entered in its onCreateView");
+        Log.d("MainPageFragment", "MainPageFragment just entered in its onCreateView");
 
         int option = getArguments().getInt(ARG_SECTION_NUMBER);    // save the arguments to
         // restore the fragments opened on this Fragment

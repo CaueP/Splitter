@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.model.Usuario;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,16 +47,17 @@ public class AccountInfoFragment extends Fragment{
     Button btnUpdateAccount;
 
     HashMap userData = null;
-
+    Usuario usuario = null;
     View rootView = null;
     private static final String ARG_SECTION_NUMBER = "section_number";
 
 
-    public static AccountInfoFragment newInstance(int sectionNumber, Bundle userData) {
+    public static AccountInfoFragment newInstance(int sectionNumber, Bundle userData, Usuario usuario) {
         AccountInfoFragment fragment = new AccountInfoFragment();
         Bundle args = new Bundle();
         //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable("UserData",(HashMap)userData.get("UserData"));
+        args.putSerializable("UserData",usuario);
+        //(HashMap)userData.get("UserData")
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,19 +83,19 @@ public class AccountInfoFragment extends Fragment{
         ButterKnife.bind(this, rootView);
 
         // get user data
-        userData = (HashMap) getArguments().getSerializable("UserData");
+        usuario = (Usuario) getArguments().getSerializable("UserData");
+        Log.d("AccountInfo: ", usuario.getEmail());
+        //userData = (HashMap) getArguments().getSerializable("UserData");
         //UserDataJson user = new UserDataJson(userData);
         //Log.d("UserRegActivity", user.toString());
         // set user data
-        if(userData != null) {
-            name.setText((String) userData.get("name"));
-            email.setText((String) userData.get("login"));
-            phone.setText(String.valueOf((Long)userData.get("phone")));
-            cpf.setText(String.valueOf((Long)userData.get("cpf")));
-            dateOfBirth.setText((String) userData.get("dateOfBirth"));
+        if(usuario != null) {
+            name.setText(usuario.getNome());
+            email.setText(usuario.getEmail());
+            phone.setText(String.valueOf(usuario.getTelefone()));
+            cpf.setText(String.valueOf(usuario.getCpf()));
+            dateOfBirth.setText(usuario.getDtNascimento());
         }
-
-
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Uri userProfilePictureUri = null;
