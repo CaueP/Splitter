@@ -2,8 +2,10 @@ package com.caue.splitter.model.services;
 
 import com.caue.splitter.model.Usuario;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -28,5 +30,9 @@ public interface UsuarioClient {
 
     // PUT para atualizar um usuario
     @PUT("usuario/{email}")
-    Call<Usuario> atualizarUsuario(@Body Usuario usuario);
+    Call<Usuario> atualizarUsuario(@Body Usuario usuario, @Path("email") String email);
+
+    // DELETE para desativar um usuário
+    @DELETE("usuario/{email}")
+    Call<ResponseBody> desativarUsuario(@Path("email") String email);
 }

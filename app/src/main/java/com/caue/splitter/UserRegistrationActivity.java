@@ -12,7 +12,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.caue.splitter.controller.ServiceGenerator;
-import com.caue.splitter.data.UserDataJson;
 import com.caue.splitter.model.Usuario;
 import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
@@ -26,7 +25,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by Caue on 9/17/2016.
+ * @author Caue Polimanti
+ * @version 1.0
+ * created on 9/17/2016
  */
 public class UserRegistrationActivity extends AppCompatActivity
     implements DatePickerFragment.OnDateSetListener, Callback<Usuario> {
@@ -40,11 +41,6 @@ public class UserRegistrationActivity extends AppCompatActivity
     @BindView(R.id.edittext_user_reg_cpf) EditText cpf;
     @BindView(R.id.edittext_user_reg_dob) EditText dateOfBirth;
 
-    // utilizado pelo antigo DatePicker (substituido pelo DatePickerFragment)
-    /*int year,month,day;
-    static final int DIALOG_ID=0;*/
-
-    UserDataJson userData;
     Usuario usuario;
     FirebaseUser firebaseUser;
 
@@ -77,21 +73,14 @@ public class UserRegistrationActivity extends AppCompatActivity
     public void saveButton() {
         Log.d("UserRegistrationActivit","saveButton Clicked");
 
-        usuario = new Usuario(1,name.getText().toString(),
-                password.getText().toString(),
+        usuario = new Usuario(1,name.getText().toString().trim(),
+                password.getText().toString().trim(),
                 Long.parseLong(cpf.getText().toString()),
                 dateOfBirth.getText().toString(),
-                email.getText().toString(),
+                email.getText().toString().trim(),
                 Long.parseLong(phone.getText().toString()),
                 true
                 );
-
-        userData = new UserDataJson(1,name.getText().toString(),
-                Long.parseLong(cpf.getText().toString()),
-                dateOfBirth.getText().toString(),
-                email.getText().toString(),
-                Long.parseLong(phone.getText().toString()),
-                password.getText().toString());
 
         // create user on the database
         criarUsuario(usuario);
@@ -109,16 +98,6 @@ public class UserRegistrationActivity extends AppCompatActivity
         // call
         listCall.enqueue(this);
     }
-
-
-    // parse to Int to check if the user typed an int
-    public int parseToInt(String maybeInt, int defaultValue){
-        if (maybeInt == null) return defaultValue;
-        maybeInt = maybeInt.trim();
-        if (maybeInt.isEmpty()) return defaultValue;
-            return Integer.parseInt(maybeInt);
-    }
-
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {

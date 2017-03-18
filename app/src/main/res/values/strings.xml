@@ -50,6 +50,9 @@
     <string name="home">Home</string>
     <string name="MyOrdersTitle">My Orders</string>
     <string name="account_created">Account created</string>
+    <string name="user_updated">User updated</string>
+    <string name="user_not_updated">User not updated</string>
+    <string name="user_not_deleted">User not deleted</string>
 
 
 </resources>

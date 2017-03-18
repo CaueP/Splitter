@@ -16,7 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Caue on 9/3/2016.
+ * @author Caue Polimanti
+ * @version 1.0
+ * created on 9/3/2016
  */
 public class SplashScreenActivity extends AppCompatActivity{
 
