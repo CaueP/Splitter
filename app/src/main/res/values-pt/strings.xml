@@ -47,5 +47,9 @@
     <!-- Account Information Fragment -->
     <string name="update">Atualizar</string>
     <string name="ask_delete_account_confirmation">Tem certeza que deseja excluir esta conta?</string>
-    <string name="asnwer_yes_delete">Yes, exclua!</string>
+    <string name="asnwer_yes_delete">Sim, exclua!</string>
+    <string name="account_created">Conta criada</string>
+    <string name="user_not_updated">Usuário não atualizado</string>
+    <string name="user_updated">Usuário atualizado</string>
+    <string name="user_not_deleted">Usuário não excluído</string>
 </resources>

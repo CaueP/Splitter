@@ -1,8 +1,6 @@
 package com.caue.splitter;
 
 import android.app.Activity;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 
 import android.support.v4.app.DialogFragment;
 import android.content.Intent;
@@ -10,21 +8,29 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import com.caue.splitter.data.UserDataJson;
+import android.widget.Toast;
+
+import com.caue.splitter.controller.ServiceGenerator;
+import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * Created by Caue on 9/17/2016.
+ * @author Caue Polimanti
+ * @version 1.0
+ * created on 9/17/2016
  */
 public class UserRegistrationActivity extends AppCompatActivity
-    implements DatePickerFragment.OnDateSetListener{
+    implements DatePickerFragment.OnDateSetListener, Callback<Usuario> {
 
     @BindView(android.R.id.content) View mRootView;
 
@@ -35,11 +41,7 @@ public class UserRegistrationActivity extends AppCompatActivity
     @BindView(R.id.edittext_user_reg_cpf) EditText cpf;
     @BindView(R.id.edittext_user_reg_dob) EditText dateOfBirth;
 
-    // utilizado pelo antigo DatePicker (substituido pelo DatePickerFragment)
-    /*int year,month,day;
-    static final int DIALOG_ID=0;*/
-
-    UserDataJson userData;
+    Usuario usuario;
     FirebaseUser firebaseUser;
 
     @Override
@@ -49,7 +51,7 @@ public class UserRegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        // se o usuario nao estiver logado, retorne para a pagina de Login
+        // se o Usuario nao estiver logado, retorne para a pagina de Login
         if (firebaseUser == null) {
             startActivity(LoginActivity.createIntent(this));
             finish();
@@ -71,47 +73,34 @@ public class UserRegistrationActivity extends AppCompatActivity
     public void saveButton() {
         Log.d("UserRegistrationActivit","saveButton Clicked");
 
-
-        userData = new UserDataJson(1,name.getText().toString(),
+        usuario = new Usuario(1,name.getText().toString().trim(),
+                password.getText().toString().trim(),
                 Long.parseLong(cpf.getText().toString()),
                 dateOfBirth.getText().toString(),
-                email.getText().toString(),
+                email.getText().toString().trim(),
                 Long.parseLong(phone.getText().toString()),
-                password.getText().toString());
-
-
-        // create return intent for startActivityForResult
-        Intent returnIntent = new Intent();
-
-        Bundle data = new Bundle();
-        // serialize data
-        data.putSerializable("UserData",userData.getUserData());
-        returnIntent.putExtras(data);
-
-        //returnIntent.putExtra("userData",userData);
-        setResult(Activity.RESULT_OK,returnIntent);
+                true
+                );
 
         // create user on the database
-        userData.createUser(userData.getUserData());
+        criarUsuario(usuario);
+        //userData.createUser(userData.getUserData());
 
-        finish();
+        //Toast.makeText(this, "Usuario criado", Toast.LENGTH_SHORT).show();
+
     }
 
+    private void criarUsuario(Usuario usuario) {
+        // Service para baixar objeto com a lista de imoveis
+        UsuarioClient service = ServiceGenerator.createService(UsuarioClient.class);
+        Call<Usuario> listCall = service.postUsuario(usuario);
 
-    // parse to Int to check if the user typed an int
-    public int parseToInt(String maybeInt, int defaultValue){
-        if (maybeInt == null) return defaultValue;
-        maybeInt = maybeInt.trim();
-        if (maybeInt.isEmpty()) return defaultValue;
-            return Integer.parseInt(maybeInt);
+        // call
+        listCall.enqueue(this);
     }
-
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {
-        // Antigo DatePickerDialog
-        //showDialog(DIALOG_ID);
-
         // Novo DatePickerDialog utilizando um fragment
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -123,24 +112,47 @@ public class UserRegistrationActivity extends AppCompatActivity
         dateOfBirth.setText(day + "/" + month + "/" + year);
     }
 
-/* // Antigo DatePickerDialog
     @Override
-    protected Dialog onCreateDialog(int id){
-        if(id == DIALOG_ID)
-            return new DatePickerDialog(this, dpickerListener, year, month, day);
+    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
 
-        return null;
+        Log.d("onResponse", "entered in onResponse");
+        if (response.isSuccessful()) {
+            Log.d("onResponse", "isSuccessful");
+            Log.d("onResponse", "Usuario criado: " + response.body());
+
+
+            if(response.body() == null) {
+                Log.d("onResponse", "Usuario não registrado");
+            } else {
+                usuario = response.body();
+            }
+            Log.d("retorno usuario", usuario.getEmail());
+            Toast.makeText(this, R.string.account_created, Toast.LENGTH_SHORT).show();
+
+            finishActivity();
+        } else {
+            Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+            if (response.code() == 404){    // usuario nao cadastrado
+                Log.d("onResponse","erro ao registrar usuario");
+            }
+        }
+
+
     }
 
-    private DatePickerDialog.OnDateSetListener dpickerListener
-            = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int y, int m, int d) {
-            year = y;
-            month = m+1;
-            day = d;
-            dateOfBirth.setText(day + "/" + month + "/" + year);
-        }
-    };
-    */
+    @Override
+    public void onFailure(Call<Usuario> call, Throwable t) {
+        Log.d("onFailure","Ocorreu um erro ao chamar a API - UserRegistrationActivity" + t.getMessage());
+        Log.d("onFailure","Erro:" + t.toString());
+    }
+
+    // prepara a activiy para ser finalizada e a finaliza
+    private void finishActivity() {
+        // create return intent for startActivityForResult
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("userData", usuario);
+        setResult(Activity.RESULT_OK,returnIntent);
+
+        finish();
+    }
 }

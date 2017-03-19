@@ -18,7 +18,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import butterknife.OnClick;
 
 /**
- * Created by Caue on 9/5/2016.
+ * MainPageFragment é o conteúdo da activity principal do app. Tem o objetivo de controlar o Menu Drawer e as ações realizadas em todos os fragments
+ * @author Caue Polimanti
+ * @version 1.0
+ * Created on 9/5/2016.
  */
 public class MainPageFragment extends Fragment {
 
@@ -41,7 +44,7 @@ public class MainPageFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container,
                               Bundle savedInstanceState) {
-        Log.d("FrontPageFragment", "FrontPageFragment just entered in its onCreateView");
+        Log.d("MainPageFragment", "MainPageFragment just entered in its onCreateView");
 
         int option = getArguments().getInt(ARG_SECTION_NUMBER);    // save the arguments to
         // restore the fragments opened on this Fragment

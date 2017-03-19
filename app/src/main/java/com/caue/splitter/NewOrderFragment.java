@@ -13,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by noron on 25/09/2016.
+ * @author Victor Noronha
+ * @author Caue Polimanti
+ * @version 1.0
+ * Created on 25/09/2016.
  */
-
 public class NewOrderFragment extends Fragment {
 
     View rootView = null;

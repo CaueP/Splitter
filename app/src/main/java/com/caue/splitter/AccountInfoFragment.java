@@ -1,11 +1,8 @@
 package com.caue.splitter;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,12 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.caue.splitter.data.UserDataJson;
-import com.caue.splitter.utils.DatePickerFragment;
+import com.caue.splitter.model.Usuario;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,7 +26,9 @@ import butterknife.OnClick;
 
 
 /**
- * Created by Caue on 9/13/2016.
+ * @author Caue Polimanti
+ * @version 2.0
+ * Created on 9/13/2016.
  */
 public class AccountInfoFragment extends Fragment{
     @BindView(R.id.user_profile_picture) ImageView userPicture;
@@ -45,17 +41,16 @@ public class AccountInfoFragment extends Fragment{
     Button btnDeleteAccount;
     Button btnUpdateAccount;
 
-    HashMap userData = null;
-
+    Usuario usuario = null;
     View rootView = null;
     private static final String ARG_SECTION_NUMBER = "section_number";
 
 
-    public static AccountInfoFragment newInstance(int sectionNumber, Bundle userData) {
+    public static AccountInfoFragment newInstance(int sectionNumber, Usuario usuario) {
         AccountInfoFragment fragment = new AccountInfoFragment();
         Bundle args = new Bundle();
         //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable("UserData",(HashMap)userData.get("UserData"));
+        args.putSerializable("UserData",usuario);
         fragment.setArguments(args);
         return fragment;
     }
@@ -81,19 +76,17 @@ public class AccountInfoFragment extends Fragment{
         ButterKnife.bind(this, rootView);
 
         // get user data
-        userData = (HashMap) getArguments().getSerializable("UserData");
-        //UserDataJson user = new UserDataJson(userData);
-        //Log.d("UserRegActivity", user.toString());
+        usuario = (Usuario) getArguments().getSerializable("UserData");
+        Log.d("AccountInfo: ", usuario.getEmail());
+
         // set user data
-        if(userData != null) {
-            name.setText((String) userData.get("name"));
-            email.setText((String) userData.get("login"));
-            phone.setText(String.valueOf((Long)userData.get("phone")));
-            cpf.setText(String.valueOf((Long)userData.get("cpf")));
-            dateOfBirth.setText((String) userData.get("dateOfBirth"));
+        if(usuario != null) {
+            name.setText(usuario.getNome());
+            email.setText(usuario.getEmail());
+            phone.setText(String.valueOf(usuario.getTelefone()));
+            cpf.setText(String.valueOf(usuario.getCpf()));
+            dateOfBirth.setText(usuario.getDtNascimento());
         }
-
-
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Uri userProfilePictureUri = null;
@@ -138,16 +131,15 @@ public class AccountInfoFragment extends Fragment{
             public void onClick(View view) {
                 Log.d("AccountInfoFragment", "Update Button Clicked");
 
-                UserDataJson updatedUserData = new UserDataJson(
-                        (int)userData.get("id"),
-                        name.getText().toString(),
-                        Long.parseLong(cpf.getText().toString()),
-                        dateOfBirth.getText().toString(),
-                        email.getText().toString(),
-                        Long.parseLong(phone.getText().toString()),
-                        password.getText().toString());
+                Usuario updatedUser = usuario;
+                usuario.setNome(name.getText().toString().trim());
+                usuario.setCpf(Long.parseLong(cpf.getText().toString()));
+                usuario.setDtNascimento(dateOfBirth.getText().toString());
+                usuario.setEmail(email.getText().toString().trim());
+                usuario.setTelefone(Long.parseLong(phone.getText().toString()));
+                usuario.setSenha(password.getText().toString());
 
-                mListener.OnUpdateButtonCliked(updatedUserData.getUserData());
+                mListener.OnUpdateButtonCliked(updatedUser);
             }
         });
         return rootView;
@@ -156,7 +148,7 @@ public class AccountInfoFragment extends Fragment{
     // Interactions ocurring on AccountInfoFragment
     public interface OnFragmentInteractionListener{
         void OnDeleteButtonCliked();
-        void OnUpdateButtonCliked(HashMap accountUpdates);
+        void OnUpdateButtonCliked(Usuario updatedUser);
     }
 
     // inflate the menu for the fragment and define the actions

@@ -30,9 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.caue.splitter.data.UserDataJson;
+import com.caue.splitter.controller.ServiceGenerator;
+import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
-import com.caue.splitter.utils.MyDownloadUserDataJson;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,21 +44,29 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
- * Created by Caue on 9/5/2016.
+ * MainPageActivity é a activity principal do app. Tem o objetivo de controlar o Menu Drawer e as ações realizadas em todos os fragments
+ * @author Caue Polimanti
+ * @version 2.0
+ * Created on 9/5/2016.
  */
 public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener{
-
-
 
     @BindView(R.id.main_page_progressBar)
     ProgressBar mainPageProgressBar;
 
     @BindView(android.R.id.content)
     View mRootView;
+
+    // criação do serviço para realizar operações na conta do usuário
+    UsuarioClient service = ServiceGenerator.createService(UsuarioClient.class);
 
     Fragment mContent;      // Fragment object that will receive the current Fragment on the screen
     // in order to be restored when the activity is destroyed, after
@@ -74,7 +83,7 @@ public class MainPageActivity extends AppCompatActivity
 
     // user data
     FirebaseUser firebaseUser;
-    UserDataJson userDB = null;
+    Usuario usuario = null;
 
     // User Registration request codes
     static final int REGISTRATION_SUCCESSFULL = 1;  // The request code
@@ -85,19 +94,14 @@ public class MainPageActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        // se o usuario nao estiver logado, retorne para a pagina de Login
+        // se o Usuario nao estiver logado, retorne para a pagina de Login
         if (firebaseUser == null) {
             startActivity(LoginActivity.createIntent(this));
             finish();
             return;
         }
 
-        // check if account already exists
-        String url = UserDataJson.PHP_SERVER + "email/" + firebaseUser.getEmail();
-        if (url != null) {
-            MyDownloadUserDataJson task = new MyDownloadUserDataJson(this);    // creating task to check if firebaseUser exists
-            task.execute(url);  // executing task
-        }
+        carregarUsuario(firebaseUser.getEmail());
 
         setContentView(R.layout.activity_main_page);
         ButterKnife.bind(this);
@@ -156,6 +160,49 @@ public class MainPageActivity extends AppCompatActivity
         }
     }
 
+    private void carregarUsuario(String email) {
+        Log.d("carregarUsuario", "Carregando usuario");
+        // Service para baixar objeto com o usuário
+        Call<Usuario> listCall = service.getUsuario(email);
+
+        // callback ao receber a resposta da API
+        Callback<Usuario> carregaUsuarioCallback = new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                Log.d("onResponse", "entered in onResponse");
+                if (response.isSuccessful()) {
+                    Log.d("onResponse", "isSuccessful");
+                    Log.d("onResponse", "Body: " + response.body());
+                    usuario = response.body();
+
+                    if(usuario == null || !usuario.getContaAtiva()) {
+                        Log.d("onResponse", "Usuario inexistente/inativo: " + usuario.getEmail() + " " + usuario.getContaAtiva());
+                        Intent intent = new Intent(MainPageActivity.this, UserRegistrationActivity.class);
+                        startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+                    }
+                    Log.d("retorno usuario", usuario.getEmail());
+                    mainPageProgressBar.setVisibility(View.INVISIBLE);
+                } else {
+                    Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+                    if (response.code() == 404){    // usuario nao cadastrado
+                        Log.d("onResponse","Usuario nao registrado. Chamando tela de cadastro de usuario");
+                        Intent intent = new Intent(MainPageActivity.this, UserRegistrationActivity.class);
+                        startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("onFailure","Ocorreu um erro ao chamar a API - MainPageActivity");
+            }
+        };
+
+        // call
+        listCall.enqueue(carregaUsuarioCallback);
+    }
+
     @MainThread
     private void showSnackbar(@StringRes int errorMessageRes) {
         Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
@@ -201,9 +248,10 @@ public class MainPageActivity extends AppCompatActivity
             case R.id.account_info:
                 //Toast.makeText(MainPageActivity.this, "Item1 clicked", Toast.LENGTH_SHORT).show();
                 Bundle data = new Bundle();
-                data.putSerializable("UserData",userDB.getUserData());
+                //data.putSerializable("UserData",userDB.getUserData());
+                data.putSerializable("UserData",usuario);
                 getSupportFragmentManager().beginTransaction()
-                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, data))
+                       .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, usuario))
                      .addToBackStack(null)
                    .commit();
                 break;
@@ -259,26 +307,7 @@ public class MainPageActivity extends AppCompatActivity
         return in;
     }
 
-
-    // method that will be called when the JSON data is downloaded
-    public void userDataDownloaded(HashMap<String, ?> userData){
-
-        // se usuario existe
-        if (userData != null){
-            Log.d("MainPageActivity","registeredUser called");
-            userDB = new UserDataJson(userData);
-            Log.d("MainPageActivity",userDB.toString());
-            mainPageProgressBar.setVisibility(View.INVISIBLE);
-        }
-        // se usuario nao existe
-        else{
-            Log.d("MainPageActivity","nonRegisteredUser called");
-            Intent intent = new Intent(this, UserRegistrationActivity.class);
-            startActivityForResult(intent, REGISTRATION_SUCCESSFULL);
-        }
-    }
-
-    // Retorna os valores da Activity de cadastro de usuario e os dados do usuario enviado para cadastro
+    // Retorna os valores da Activity de cadastro de Usuario e os dados do Usuario enviado para cadastro
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
@@ -290,8 +319,8 @@ public class MainPageActivity extends AppCompatActivity
                 //Bundle bundle = this.getIntent().getExtras();
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
-                    userDB = new UserDataJson((HashMap) bundle.getSerializable("UserData"));
-                    Log.d("MainPageActivity",userDB.toString());
+                    usuario = (Usuario) bundle.getSerializable("userData");
+                    Log.d("onActivityResult",usuario.getEmail());
                     mainPageProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
@@ -320,6 +349,35 @@ public class MainPageActivity extends AppCompatActivity
 
 
     private void deleteAccount() {
+
+        // Service para atualizar o usuário
+        Call<ResponseBody> listCall = service.desativarUsuario(usuario.getEmail());
+
+        // callback ao receber a resposta da API
+        Callback<ResponseBody> desativarUsuarioCallback = new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("desativarUsuarioCb", "entered in onResponse");
+                if (response.isSuccessful()) {
+                    Log.d("desativarUsuarioCb", "isSuccessful");
+                    Log.d("desativarUsuarioCb", "Response: " + response.body());
+                } else {
+                    Log.d("desativarUsuarioCb", "isNOTSuccessful (code: " + response.code() + ")");
+                    Toast.makeText(MainPageActivity.this, R.string.user_not_deleted, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.d("onFailure","Ocorreu um erro ao chamar a API - MainPageActivity");
+                Toast.makeText(MainPageActivity.this, R.string.user_not_deleted, Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        // call
+        listCall.enqueue(desativarUsuarioCallback);
+
         FirebaseAuth.getInstance()
                 .getCurrentUser()
                 .delete()
@@ -329,7 +387,6 @@ public class MainPageActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
                             Log.d("MainPageActivity","deleteAccount Task succeeded.");
                             showSnackbar(R.string.delete_account_succeed);
-                            userDB.deleteUser();        // excluir conta do BD
                             startActivity(LoginActivity.createIntent(MainPageActivity.this));
                             finish();
                         } else {
@@ -341,18 +398,49 @@ public class MainPageActivity extends AppCompatActivity
     }
 
     @Override
-    public void OnUpdateButtonCliked(HashMap accountUpdated) {
+    public void OnUpdateButtonCliked(Usuario updatedUser) {
         Log.d("OnUpdateButtobClicked", "User Updated");
-        userDB = new UserDataJson(accountUpdated);
-        userDB.updateUser(accountUpdated);
+
+        // Service para atualizar o usuário
+        Call<Usuario> listCall = service.atualizarUsuario(updatedUser, updatedUser.getEmail());
+
+        // callback ao receber a resposta da API
+        Callback<Usuario> atualizarUsuarioCallback = new Callback<Usuario>() {
+
+            @Override
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                Log.d("atualizarUsuarioCb", "entered in onResponse");
+                if (response.isSuccessful()) {
+                    Log.d("atualizarUsuarioCb", "isSuccessful");
+                    Log.d("atualizarUsuarioCb", "Body: " + response.body());
+
+
+                    if(usuario == null || !usuario.getContaAtiva()) {
+                        Log.d("atualizarUsuarioCb","usuario nao atualizado ou conta inativa");
+                    } else {
+                        Toast.makeText(MainPageActivity.this, R.string.user_updated, Toast.LENGTH_SHORT).show();
+                        usuario = response.body();
+                    }
+                    Log.d("retorno usuario", usuario.getEmail());
+                } else {
+                    Log.d("atualizarUsuarioCb", "isNOTSuccessful (code: " + response.code() + ")");
+                    Toast.makeText(MainPageActivity.this, R.string.user_not_updated, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Usuario> call, Throwable t) {
+                Log.d("onFailure","Ocorreu um erro ao chamar a API - MainPageActivity");
+            }
+        };
+
+        // call
+        listCall.enqueue(atualizarUsuarioCallback);
     }
 
 
     // Chamado ao clicar no campo de data
     public void showDatePicker(View view) {
-        // Antigo DatePickerDialog
-        //showDialog(DIALOG_ID);
-
         // Novo DatePickerDialog utilizando um fragment
         DialogFragment newFragment = new DatePickerFragment();
         newFragment.show(getSupportFragmentManager(), "datePicker");
@@ -364,4 +452,6 @@ public class MainPageActivity extends AppCompatActivity
         EditText dateOfBirth = (EditText) findViewById(R.id.edittext_user_reg_dob);
         dateOfBirth.setText(day + "/" + month + "/" + year);
     }
+
+
 }
