@@ -38,6 +38,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/main_page_toolbar"
             ></FrameLayout>
+        <!-- FrameLayout that only loads the content of my fragments-->
 
         <ProgressBar
             android:id="@+id/main_page_progressBar"
@@ -46,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             />
-        <!-- FrameLayout that only loads the content of my fragments-->
+
     </RelativeLayout>
 
 

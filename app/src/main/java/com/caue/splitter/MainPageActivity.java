@@ -1,8 +1,11 @@
 package com.caue.splitter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
@@ -23,6 +26,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -31,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.controller.ServiceGenerator;
+import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Usuario;
 import com.caue.splitter.model.services.UsuarioClient;
 import com.caue.splitter.utils.DatePickerFragment;
@@ -39,6 +44,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.HashMap;
 
@@ -65,6 +72,9 @@ public class MainPageActivity extends AppCompatActivity
     @BindView(android.R.id.content)
     View mRootView;
 
+    // connectivity manager
+    ConnectivityManager cm;
+    NetworkInfo netInfo;
     // criação do serviço para realizar operações na conta do usuário
     UsuarioClient service = ServiceGenerator.createService(UsuarioClient.class);
 
@@ -87,6 +97,10 @@ public class MainPageActivity extends AppCompatActivity
 
     // User Registration request codes
     static final int REGISTRATION_SUCCESSFULL = 1;  // The request code
+
+    //QR Code
+    private Button scanBtn;
+    static final int QR_CODE_SCAN = 49374;  // request code for scan qr intent
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -324,11 +338,74 @@ public class MainPageActivity extends AppCompatActivity
                     mainPageProgressBar.setVisibility(View.INVISIBLE);
                 }
             }
+        } else if (requestCode == QR_CODE_SCAN){    // if qr code result
+            IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+            if(result != null){
+                if(result.getContents()==null){
+                    Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    mainPageProgressBar.setVisibility(View.VISIBLE);
+                    String qrCodeResult;
+                    qrCodeResult = result.getContents();
+
+                    //Toast.makeText(this, "QR Code Lido:" + qrCodeResult, Toast.LENGTH_SHORT).show();
+
+                    // setting checkin parameters
+                    Checkin check = new Checkin();
+                    check.setUsuario(usuario);
+                    check.getMesa().setQrCode(qrCodeResult);
+                    check.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
+                    check.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
+
+                    if(usuario != null){
+                        Log.d("qrCodeRead"," qrCode" + check.getMesa().getQrCode());
+                        Log.d("qrCodeRead", "Email usuario: "+ check.getUsuario().getEmail() +
+                                " CodEstabelecimento: " + check.getMesa().getCodEstabelecimento()+
+                                " NrMesa:" + check.getMesa().getNrMesa());
+                        check.realizarCheckin(this);
+                    } else {
+                        Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
+                    }
+
+                    mainPageProgressBar.setVisibility(View.INVISIBLE);
+                }
+            }
+            else {
+                super.onActivityResult(requestCode, resultCode, data);
+            }
         }
     }
 
+    /**
+     * Método que é chamado quando receber a resposta da realização de checkin
+     * @param checkinResponse parâmetro com a resposta de checkin
+     */
+    public void responseCheckinReceived(Checkin checkinResponse){
+        Log.d("responseCheckinReceived", "Status resposta: " + checkinResponse.isSucesso());
 
+        if(checkinResponse.isSucesso()) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, CheckedInFragment.newInstance(R.id.checked_in_fragment, usuario, checkinResponse))
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            switch (checkinResponse.getError()) {
+                case "MesaOcupada":
+                    Toast.makeText(this, "Obtenha o código de acesso com o usuário " + checkinResponse.getMesa().getUsuarioResponsavel(), Toast.LENGTH_LONG).show();
+                    break;
+                case "ErroDesconhecido":
+                    Toast.makeText(this, "Ocorreu um erro com sua solicização. Tente novamente", Toast.LENGTH_LONG).show();
+                    break;
+                case "MesaNaoEncontrada":
+                    Toast.makeText(this, "Mesa inexistente", Toast.LENGTH_LONG).show();
+                    break;
 
+            }
+
+        }
+
+    }
 
     // Interactions ocurring on AccountInfoFragment
     @Override
