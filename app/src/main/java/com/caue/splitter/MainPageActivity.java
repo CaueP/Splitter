@@ -66,6 +66,7 @@ public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener{
 
+
     @BindView(R.id.main_page_progressBar)
     ProgressBar mainPageProgressBar;
 
@@ -101,6 +102,7 @@ public class MainPageActivity extends AppCompatActivity
     //QR Code
     private Button scanBtn;
     static final int QR_CODE_SCAN = 49374;  // request code for scan qr intent
+    private static final String CHECKIN_FRAGMENT_TAG = "checkin_fragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -266,7 +268,7 @@ public class MainPageActivity extends AppCompatActivity
                 data.putSerializable("UserData",usuario);
                 getSupportFragmentManager().beginTransaction()
                        .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, usuario))
-                     .addToBackStack(null)
+                     .addToBackStack(null)        // add to back stack
                    .commit();
                 break;
             case R.id.new_order:
@@ -386,7 +388,7 @@ public class MainPageActivity extends AppCompatActivity
 
         if(checkinResponse.isSucesso()) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, CheckedInFragment.newInstance(R.id.checked_in_fragment, usuario, checkinResponse))
+                    .replace(R.id.content_frame, CheckedInFragment.newInstance(R.id.checked_in_fragment, usuario, checkinResponse),CHECKIN_FRAGMENT_TAG)
                     .addToBackStack(null)
                     .commit();
         } else {
@@ -530,5 +532,31 @@ public class MainPageActivity extends AppCompatActivity
         dateOfBirth.setText(day + "/" + month + "/" + year);
     }
 
+    /**
+     * Overriding onBackPressed para alterar funcionalidade ao pressionar o botão para voltar
+     */
+    @Override
+    public void onBackPressed() {
 
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            int fragments = getSupportFragmentManager().getBackStackEntryCount();
+            Fragment checkinFrag = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT_TAG);
+
+            Log.d("onBackPressed","Quantidade de fragments na stack: " + fragments);
+            if (checkinFrag != null && fragments == 1){  // se o checkin frag estiver na stack e houver apenas 1 fragment na stack, nao retornar
+                Log.d("onBackPressed","Checkin fragment está na stack");
+                Toast.makeText(this, R.string.accound_should_be_closed, Toast.LENGTH_SHORT).show();
+                //finish();
+            } else {
+                if (getFragmentManager().getBackStackEntryCount() > 1) {
+                    getFragmentManager().popBackStack();
+                } else {
+                    super.onBackPressed();
+                }
+            }
+        }
+    }
 }

@@ -10,7 +10,7 @@ public class Constants {
     public static class HTTP{
 
         //public static final String API_URL = "http://splitter.mybluemix.net/api/";
-        public static final String API_URL = "http://192.168.43.107:6001/api/";
+        public static final String API_URL = "http://192.168.2.170:6003/api/";
     }
 
     public static class KEY {

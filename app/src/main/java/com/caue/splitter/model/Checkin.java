@@ -30,6 +30,10 @@ public class Checkin implements Serializable {
     private Mesa mesa = new Mesa();
 
     @Expose
+    @SerializedName("comanda")
+    private Comanda comanda = new Comanda();
+
+    @Expose
     @SerializedName("isPrimeiroUsuario")
     private boolean isPrimeiroUsuario;
 
@@ -40,6 +44,8 @@ public class Checkin implements Serializable {
     @Expose
     @SerializedName("error")
     private String error;
+
+    // getters and setters
 
     public Usuario getUsuario() {
         return usuario;
@@ -81,10 +87,21 @@ public class Checkin implements Serializable {
         this.mesa = mesa;
     }
 
-    Checkin resposta;
+    public Comanda getComanda() {
+        return comanda;
+    }
 
-    public void realizarCheckin(final MainPageActivity activity){
-        Checkin checkinResponse = new Checkin();
+    public void setComanda(Comanda comanda) {
+        this.comanda = comanda;
+    }
+
+
+    /**
+     * Método para realizar o check-in através da API
+     *
+     * @param activity activity que invocou o método para ser invocada aquando receber a resposta
+     */
+    public void realizarCheckin(final MainPageActivity activity) {
 
         // criação do serviço para realizar operações na conta do usuário
         CheckinClient service = ServiceGenerator.createService(CheckinClient.class);
@@ -97,13 +114,14 @@ public class Checkin implements Serializable {
 
             @Override
             public void onResponse(Call<Checkin> call, Response<Checkin> response) {
+                Checkin checkinResposta;
                 Log.d("onResponse", "entered in onResponse - Checkin");
                 if (response.isSuccessful()) {
                     Log.d("onResponse", "isSuccessful");
                     Log.d("onResponse", "Body: " + response.body());
-                    resposta = response.body();
+                    checkinResposta = response.body();
                     //Log.d("resposta Checkin", "isSucesso: " + Boolean.toString(resposta.isSucesso()));
-                    activity.responseCheckinReceived(resposta);
+                    activity.responseCheckinReceived(checkinResposta);
                 } else {
                     Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
                 }
@@ -111,8 +129,7 @@ public class Checkin implements Serializable {
 
             @Override
             public void onFailure(Call<Checkin> call, Throwable t) {
-                Log.d("onFailure","Ocorreu um erro ao chamar a API - Checkin");
-
+                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Checkin");
             }
         };
 
