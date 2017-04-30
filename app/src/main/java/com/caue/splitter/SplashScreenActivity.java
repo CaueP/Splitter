@@ -22,7 +22,7 @@ import butterknife.ButterKnife;
  */
 public class SplashScreenActivity extends AppCompatActivity{
 
-    private final int DURACAO_SPLASHSCREEN = 1500;  // tempo de duracao da splash screen (ms)
+    private final int DURACAO_SPLASHSCREEN = 0;  // tempo de duracao da splash screen (ms)
 
 
     @BindView(R.id.textLogo) TextView logoTextView;// = (TextView) findViewById(R.id.textLogo);
