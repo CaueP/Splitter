@@ -25,7 +25,11 @@
         <activity android:name=".SignedInActivity"
             android:theme="@style/AppTheme"/>
         <activity android:name=".MainPageActivity"
-            android:theme="@style/PurpleTheme"/>
+            android:theme="@style/PurpleTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.RUN" /> />
+            </intent-filter>
+        </activity>
         <activity android:name=".UserRegistrationActivity"
             android:theme="@style/PurpleTheme"
             />

@@ -27,9 +27,6 @@
     <string name="about_splitter">About Splitter</string>
     <string name="payments_menu">Payments</string>
 
-    <!-- Account Information Fragment -->
-
-
     <!-- User Registration Activity -->
     <string name="message_welcome">Welcome! This is your first time in our app, we want to know more about you :)</string>
     <string name="textview_user_registration_name">Name</string>
@@ -53,6 +50,9 @@
     <string name="user_updated">User updated</string>
     <string name="user_not_updated">User not updated</string>
     <string name="user_not_deleted">User not deleted</string>
+    <string name="check_internet_connection">Check your internet connection</string>
+    <string name="aim_to_qrcode">Please, aim to your QR Code</string>
+    <string name="accound_should_be_closed">Your account should be closed first</string>
 
 
 </resources>

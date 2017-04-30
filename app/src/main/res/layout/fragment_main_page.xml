@@ -5,13 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.caue.splitter.MainPageActivity"
-    android:id="@+id/main_page_fragment">
+    android:id="@+id/main_page_fragment"
+    android:tag="checkin_fragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
+        <Button
+            android:id="@+id/scan_qr_code_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Capture QR Code"/>
     </RelativeLayout>
 
 </LinearLayout>
