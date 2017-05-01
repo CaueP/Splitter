@@ -184,7 +184,9 @@ public class CheckedInActivity extends AppCompatActivity
                 Fragment menuFragment = new MenuFragment();
                 if(cardapio != null){   // se o cardapio foi baixado com sucesso
                     Bundle menuBundle = new Bundle();
-                    menuBundle.putString(Constants.KEY.CARDAPIO_DATA, new Gson().toJson(cardapio));
+                    menuBundle.putSerializable(Constants.KEY.CARDAPIO_DATA,cardapio);
+                    //menuBundle.putParcelableArrayList(Constants.KEY.CARDAPIO_DATA, cardapio);
+                    //menuBundle.putString(Constants.KEY.CARDAPIO_DATA, new Gson().toJson(cardapio));
                     menuFragment.setArguments(menuBundle);
                 }
                 getSupportFragmentManager()
