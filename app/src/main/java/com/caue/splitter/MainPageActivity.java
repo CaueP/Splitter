@@ -271,18 +271,6 @@ public class MainPageActivity extends AppCompatActivity
                      .addToBackStack(null)        // add to back stack
                    .commit();
                 break;
-            case R.id.new_order:
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.content_frame, NewOrderFragment.newInstance(R.id.new_order_fragment))
-                        .addToBackStack(null)
-                        .commit();
-                break;
-            case R.id.orders:
-                Toast.makeText(MainPageActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
-                //startActivity(intent);
-                break;
-
             case R.id.payments:
                 Toast.makeText(MainPageActivity.this, R.string.payments_menu, Toast.LENGTH_SHORT).show();
                 //intent = new Intent(this, RecyclerViewActivity_Task3.class);
