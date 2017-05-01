@@ -1,6 +1,7 @@
 package com.caue.splitter;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
+import com.caue.splitter.model.Pedido;
 import com.caue.splitter.model.Produto;
 import com.caue.splitter.model.Usuario;
 import com.firebase.ui.auth.AuthUI;
@@ -46,7 +48,8 @@ import butterknife.ButterKnife;
  */
 public class CheckedInActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        MenuFragment.OnListItemSelectedListener{
+        MenuFragment.OnListItemSelectedListener,
+        ProductDetailsFragment.OnOrderListener{
 
     // custom toolbars and navigation drawer
     private Toolbar toolbar;
@@ -144,6 +147,12 @@ public class CheckedInActivity extends AppCompatActivity
                 .show();
     }
 
+    @MainThread
+    private void showSnackbarMessage(String message) {
+        Snackbar.make(mRootView, message, Snackbar.LENGTH_LONG)
+                .show();
+    }
+
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -237,6 +246,20 @@ public class CheckedInActivity extends AppCompatActivity
         cardapio = cardapioRecebido;
     }
 
+    /**
+     * Callback de resposta para a realização de pedido
+     */
+    public void responseRealizarPedidoReceived(Pedido pedido){
+        Resources res = getResources();
+        String msgResponse = "-";
+        if( pedido != null && pedido.getCodigo() >=0 ){
+            msgResponse= res.getString(R.string.msg_product_ordered, pedido.getCodigo());
+        } else{
+            msgResponse = res.getString(R.string.msg_product_order_failed);
+        }
+        showSnackbarMessage(msgResponse);
+    }
+
     /*
     Interfaces
      */
@@ -263,6 +286,19 @@ public class CheckedInActivity extends AppCompatActivity
                     .addToBackStack(null)        // add to back stack
                     .commit();
         }
+    }
+
+    /**
+     * Implementação da interface para realizar o pedido de um produto
+     * @param codProduto codigo do produto
+     * @param qtdProduto quantidade de itens do produto
+     * @param obs observacao do cliente
+     */
+    @Override
+    public void orderProduct(int codProduto, int qtdProduto, String obs) {
+        Pedido pedido = new Pedido(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), codProduto, qtdProduto,obs);
+        // realizar pedido
+        pedido.pedir(this);
     }
 
 
@@ -294,4 +330,5 @@ public class CheckedInActivity extends AppCompatActivity
             }
         }
     }
+
 }

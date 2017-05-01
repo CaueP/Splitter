@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class Comanda implements Serializable {
 
     @Expose
-    @SerializedName("codComanda")
+    @SerializedName("cod_comanda")
     private int codComanda;
 
     public int getCodComanda() {

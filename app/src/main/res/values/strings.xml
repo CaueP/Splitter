@@ -67,5 +67,8 @@
     <string name="txt_hint_obs">Notes</string>
     <string name="order_total">Total: R$ %1$.2f</string>
     <string name="product_price">R$ %1$.2f</string>
+    <string name="msg_product_ordered">Success! Your order number is %d</string>
+    <string name="msg_product_order_failed">Product ordering failed. Try again</string>
+    <string name="msg_select_quantity">Select a quantity first</string>
 
 </resources>

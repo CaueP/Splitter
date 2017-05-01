@@ -59,9 +59,6 @@ public class MenuFragment extends Fragment{
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            //Log.d(TAG, bundle.getString(Constants.KEY.CARDAPIO_DATA));
-            //mListaProduto = (ArrayList<Produto>) new Gson().fromJson(bundle.getString(Constants.KEY.CARDAPIO_DATA), ArrayList.class);
-            //mListaProduto = (ArrayList<Produto>) new Gson().fromJson(bundle.getString(Constants.KEY.CARDAPIO_DATA), ArrayList.class);
             mListaProduto = (ArrayList<Produto>) bundle.getSerializable(Constants.KEY.CARDAPIO_DATA);
             if(mMenuAdapter != null){
                 mMenuAdapter = null;
@@ -75,7 +72,7 @@ public class MenuFragment extends Fragment{
 
             @Override
             public void onItemClick(int itemPosition) {
-                Toast.makeText(getActivity(), "onListItemSelected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "onListItemSelected", Toast.LENGTH_SHORT).show();
                 mListener.onListItemSelected(itemPosition);
             }
         });

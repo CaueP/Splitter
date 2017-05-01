@@ -83,8 +83,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
                     if(mItemClickListener != null){
                         mItemClickListener.onItemClick(getLayoutPosition());
                     }
-                    Toast.makeText(view.getContext(),"Item clicado" + getLayoutPosition(), Toast.LENGTH_SHORT)
-                            .show();
+//                    Toast.makeText(view.getContext(),"Item clicado" + getLayoutPosition(), Toast.LENGTH_SHORT)
+//                            .show();
                 }
             });
         }

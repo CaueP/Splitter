@@ -68,4 +68,7 @@
     <string name="txt_hint_obs">Observação</string>
     <string name="order_total">Total: R$ %1$.2f</string>
     <string name="product_price">R$ %1$.2f</string>
+    <string name="msg_product_ordered">Pedido realizado! O número do seu pedido é %d</string>
+    <string name="msg_product_order_failed">Falha ao realizar pedido. Tente novamente</string>
+    <string name="msg_select_quantity">Selecione a quantidade</string>
 </resources>
