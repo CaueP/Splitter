@@ -224,6 +224,48 @@ public class CheckedInActivity extends AppCompatActivity
         return true;
     }
 
+    /*
+    Callbacks
+     */
+
+    /**
+     * Callback de resposta para a consulta do cardapio
+     * @param cardapioRecebido Cardapio recebido da consulta
+     */
+    public void responseCardapioReceived(ArrayList<Produto> cardapioRecebido) {
+        Log.d(ACTIVITY_TAG, "Cardapio disponivel para consulta");
+        cardapio = cardapioRecebido;
+    }
+
+    /*
+    Interfaces
+     */
+
+    /**
+     * Implementação da Interface do MenuFragment para realizar a chamada dos Detalhes do Produto
+     * @param itemPosition Posição do produto na lista
+     */
+    @Override
+    public void onListItemSelected(int itemPosition) {
+
+
+        if(cardapio != null){
+            Produto produtoSelecionado = cardapio.get(itemPosition);
+
+            Fragment productDetailsFragment = new ProductDetailsFragment();
+            Bundle productBundle = new Bundle();
+            productBundle.putSerializable(Constants.KEY.PRODUTO_DATA, produtoSelecionado);
+            productDetailsFragment.setArguments(productBundle);
+            // realização transição do fragment
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, productDetailsFragment)
+                    .addToBackStack(null)        // add to back stack
+                    .commit();
+        }
+    }
+
+
     /**
      * Overriding onBackPressed para alterar funcionalidade ao pressionar o botão para voltar
      */
@@ -250,34 +292,6 @@ public class CheckedInActivity extends AppCompatActivity
                     super.onBackPressed();
                 }
             }
-        }
-    }
-
-    /*
-    Callbacks
-     */
-
-    /**
-     * Callback de resposta para a consulta do cardapio
-     * @param cardapioRecebido Cardapio recebido da consulta
-     */
-    public void responseCardapioReceived(ArrayList<Produto> cardapioRecebido) {
-        Log.d(ACTIVITY_TAG, "Cardapio disponivel para consulta");
-        cardapio = cardapioRecebido;
-    }
-
-    /**
-     * Implementação da Interface do MenuFragment para realizar a chamada dos Detalhes do Produto
-     * @param itemPosition Posição do produto na lista
-     */
-    @Override
-    public void onListItemSelected(int itemPosition) {
-        if(cardapio != null){
-            Produto produtoSelecionado = cardapio.get(itemPosition);
-            getSupportFragmentManager().beginTransaction()
-                    //.replace(R.id.content_frame, MovieFragment.newInstance(movie))
-                    .addToBackStack(null)
-                    .commit();
         }
     }
 }

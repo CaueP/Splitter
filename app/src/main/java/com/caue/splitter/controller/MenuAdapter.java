@@ -117,7 +117,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
 //        holder.tipo.setText(imovel.getTipo());
 //        DecimalFormat df = new DecimalFormat("###,###,###,###,###");
         holder.preco.setText("R$ " + String.format(Locale.US,"%.2f", produto.getValor()));
-
+        holder.nome.setText(produto.getNome());
 
         String editDescription = produto.getDescricao();
         if(editDescription.length() > 20) {
@@ -138,7 +138,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
 
     // Interface para consumir o clique no item e enviar para a MainActivity
     public interface OnItemClickListener {
-        public void onItemClick(int codImovel);
+        public void onItemClick(int itemPosition);
     }
 
     // hook the listener inside the ViewHolder to be used in the Fragment

@@ -18,5 +18,6 @@ public class Constants {
         public static final String USER_DATA = "UserData";
         public static final String CHECKIN_DATA = "CheckinData";
         public static final String CARDAPIO_DATA = "CardapioData";
+        public static final String PRODUTO_DATA = "ProdutoData";
     }
 }

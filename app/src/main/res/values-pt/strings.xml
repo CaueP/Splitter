@@ -53,8 +53,19 @@
     <string name="user_updated">Usuário atualizado</string>
     <string name="user_not_deleted">Usuário não excluído</string>
     <string name="check_internet_connection">Verifique sua conexão com a internet</string>
+
+    <!-- Main Page Activity -->
     <string name="aim_to_qrcode">Por favor, aponte a camera para o QR Code</string>
     <string name="accound_should_be_closed">Sua conta deve ser fechada antes de voltar</string>
+
+    <!-- CheckedIn Activity -->
     <string name="menu">Cardápio</string>
     <string name="close_bill">Fechar conta</string>
+
+    <!-- Product Details Fragment -->
+    <string name="button_text_send_order">Pedir</string>
+    <string name="button_cancel">Cancelar</string>
+    <string name="txt_hint_obs">Observação</string>
+    <string name="order_total">Total: R$ %1$.2f</string>
+    <string name="product_price">R$ %1$.2f</string>
 </resources>

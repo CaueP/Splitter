@@ -1,5 +1,6 @@
 package com.caue.splitter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,8 @@ import android.widget.Toast;
 import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Produto;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by CaueGarciaPolimanti on 4/30/2017.
@@ -25,12 +24,27 @@ import java.util.List;
 
 public class MenuFragment extends Fragment{
 
-    private static final String MENU_FRAGMENT_TAG = "MenuFragment";
+    private static final String TAG = "MenuFragment";
     View rootView;
 
     ArrayList<Produto> mListaProduto = null;
     private RecyclerView mRecyclerView;
     private MenuAdapter mMenuAdapter;
+
+    // listener implementado na Activty
+    OnListItemSelectedListener mListener;
+
+    @Override
+    public void onAttach(Context context){
+        Log.d("RecyclerViewFragment","Entered in onAttach");
+        super.onAttach(context);
+        try {
+            mListener = (OnListItemSelectedListener) getActivity();
+        }catch (ClassCastException e) {
+            throw new ClassCastException(getActivity().toString() +
+                    "must implement OnFragmentInteractionListener");
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
@@ -45,7 +59,7 @@ public class MenuFragment extends Fragment{
 
         Bundle bundle = getArguments();
         if(bundle != null) {
-            //Log.d(MENU_FRAGMENT_TAG, bundle.getString(Constants.KEY.CARDAPIO_DATA));
+            //Log.d(TAG, bundle.getString(Constants.KEY.CARDAPIO_DATA));
             //mListaProduto = (ArrayList<Produto>) new Gson().fromJson(bundle.getString(Constants.KEY.CARDAPIO_DATA), ArrayList.class);
             //mListaProduto = (ArrayList<Produto>) new Gson().fromJson(bundle.getString(Constants.KEY.CARDAPIO_DATA), ArrayList.class);
             mListaProduto = (ArrayList<Produto>) bundle.getSerializable(Constants.KEY.CARDAPIO_DATA);
@@ -54,14 +68,15 @@ public class MenuFragment extends Fragment{
             }
             setDataRecyclerViewer();
         } else{
-            Log.d(MENU_FRAGMENT_TAG, "Bundle com lista de produtos vazia");
+            Log.d(TAG, "Bundle com lista de produtos vazia");
         }
 
         mMenuAdapter.setOnItemClickListener(new MenuAdapter.OnItemClickListener(){
 
             @Override
-            public void onItemClick(int codImovel) {
+            public void onItemClick(int itemPosition) {
                 Toast.makeText(getActivity(), "onListItemSelected", Toast.LENGTH_SHORT).show();
+                mListener.onListItemSelected(itemPosition);
             }
         });
 
