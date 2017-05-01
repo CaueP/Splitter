@@ -103,6 +103,7 @@ public class MainPageActivity extends AppCompatActivity
     //QR Code
     static final int QR_CODE_SCAN = 49374;  // request code for scan qr intent
     private static final String CHECKIN_FRAGMENT_TAG = "checkin_fragment";
+    Checkin checkin = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -342,18 +343,18 @@ public class MainPageActivity extends AppCompatActivity
                     //Toast.makeText(this, "QR Code Lido:" + qrCodeResult, Toast.LENGTH_SHORT).show();
 
                     // setting checkin parameters
-                    Checkin check = new Checkin();
-                    check.setUsuario(usuario);
-                    check.getMesa().setQrCode(qrCodeResult);
-                    check.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
-                    check.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
+                    checkin = new Checkin();
+                    checkin.setUsuario(usuario);
+                    checkin.getMesa().setQrCode(qrCodeResult);
+                    checkin.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
+                    checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
 
                     if(usuario != null){
-                        Log.d("qrCodeRead"," qrCode" + check.getMesa().getQrCode());
-                        Log.d("qrCodeRead", "Email usuario: "+ check.getUsuario().getEmail() +
-                                " CodEstabelecimento: " + check.getMesa().getCodEstabelecimento()+
-                                " NrMesa:" + check.getMesa().getNrMesa());
-                        check.realizarCheckin(this);
+                        Log.d("qrCodeRead"," qrCode" + checkin.getMesa().getQrCode());
+                        Log.d("qrCodeRead", "Email usuario: "+ checkin.getUsuario().getEmail() +
+                                " CodEstabelecimento: " + checkin.getMesa().getCodEstabelecimento()+
+                                " NrMesa:" + checkin.getMesa().getNrMesa());
+                        checkin.realizarCheckin(this);
                     } else {
                         Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
                     }

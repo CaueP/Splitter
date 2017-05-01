@@ -143,16 +143,18 @@ public class Checkin implements Serializable {
 
         stringBuilder
                 .append("Mesa: ")
-                .append( mesa != null ? getMesa().getNrMesa() : "null")
+                .append(mesa != null ? getMesa().getNrMesa() : "null")
                 .append(" ")
+                .append("codEstabelecimento: ")
+                .append(mesa != null && mesa.getCodEstabelecimento() != null ? getMesa().getCodEstabelecimento() : "null")
                 .append("Comanda: ")
-                .append(comanda != null ? getComanda().getCodComanda() : "null")
+                .append(comanda != null ? comanda.getCodComanda() : "null")
                 .append(" ")
                 .append("QR Ocupado")
-                .append(mesa.getQrCodeOcupado() != null ? mesa.getQrCodeOcupado() : "null")
+                .append(mesa != null && mesa.getQrCodeOcupado() != null ? mesa.getQrCodeOcupado() : "null")
                 .append(" ")
                 .append("Responsavel: ")
-                .append(mesa.getUsuarioResponsavel() != null ? mesa.getUsuarioResponsavel() : "null");
+                .append(mesa != null && mesa.getUsuarioResponsavel() != null ? mesa.getUsuarioResponsavel() : "null");
         return stringBuilder.toString();
     }
 

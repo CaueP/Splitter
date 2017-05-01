@@ -25,18 +25,23 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
+import com.caue.splitter.model.Produto;
 import com.caue.splitter.model.Usuario;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by CaueGarciaPolimanti on 4/30/2017.
+ * Activity exibida quando o usuário realizar check-in em um estabelecimento
+ * @author Caue Polimanti
+ * @version 1.0
+ * Created on 4/30/2017.
  */
-
 public class CheckedInActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -58,9 +63,12 @@ public class CheckedInActivity extends AppCompatActivity
     // in order to be restored when the activity is destroyed, after
     // rotating the screen
 
-    // Data from previous activity
+    // Dados da activity anterior
     Usuario user = null;
     Checkin checkin = null;
+
+    // Cardapio do estabelecimento
+    ArrayList<Produto> cardapio = null;
 
     // Fragment IDs
     private static final String CHECKIN_FRAGMENT_TAG = "checkin_fragment";
@@ -120,6 +128,9 @@ public class CheckedInActivity extends AppCompatActivity
                 .replace(R.id.content_frame, mContent,CHECKIN_FRAGMENT_TAG)
                 .commit();
         }
+
+        Produto produto = new Produto();
+        produto.obterCardapio(checkin.getMesa().getCodEstabelecimento(), this);
     }
 
     @MainThread
@@ -227,5 +238,18 @@ public class CheckedInActivity extends AppCompatActivity
                 }
             }
         }
+    }
+
+    /*
+    Callbacks
+     */
+
+    /**
+     * Callback de resposta para a consulta do cardapio
+     * @param cardapioRecebido Cardapio recebido da consulta
+     */
+    public void responseCardapioReceived(ArrayList<Produto> cardapioRecebido) {
+        Log.d(ACTIVITY_TAG, "Cardapio disponivel para consulta");
+        cardapio = cardapioRecebido;
     }
 }
