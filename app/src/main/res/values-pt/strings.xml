@@ -54,5 +54,7 @@
     <string name="user_not_deleted">Usuário não excluído</string>
     <string name="check_internet_connection">Verifique sua conexão com a internet</string>
     <string name="aim_to_qrcode">Por favor, aponte a camera para o QR Code</string>
-    <string name="accound_should_be_closed">Sua conta deve ser fechada primeiro</string>
+    <string name="accound_should_be_closed">Sua conta deve ser fechada antes de voltar</string>
+    <string name="menu">Cardápio</string>
+    <string name="close_bill">Fechar conta</string>
 </resources>

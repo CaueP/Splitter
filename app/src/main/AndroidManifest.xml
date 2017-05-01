@@ -33,6 +33,9 @@
         <activity android:name=".UserRegistrationActivity"
             android:theme="@style/PurpleTheme"
             />
+        <activity android:name=".CheckedInActivity"
+            android:theme="@style/PurpleTheme"
+            />
     </application>
 
 </manifest>

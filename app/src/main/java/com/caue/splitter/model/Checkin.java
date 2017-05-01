@@ -136,5 +136,26 @@ public class Checkin implements Serializable {
         // call
         checkinCall.enqueue(realizarCheckinCallback);
     }
+
+    @Override
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("Mesa: ")
+                .append( mesa != null ? getMesa().getNrMesa() : "null")
+                .append(" ")
+                .append("Comanda: ")
+                .append(comanda != null ? getComanda().getCodComanda() : "null")
+                .append(" ")
+                .append("QR Ocupado")
+                .append(mesa.getQrCodeOcupado() != null ? mesa.getQrCodeOcupado() : "null")
+                .append(" ")
+                .append("Responsavel: ")
+                .append(mesa.getUsuarioResponsavel() != null ? mesa.getUsuarioResponsavel() : "null");
+        return stringBuilder.toString();
+    }
+
+
 }
 

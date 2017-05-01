@@ -14,4 +14,12 @@ public class Comanda implements Serializable {
     @Expose
     @SerializedName("codComanda")
     private int codComanda;
+
+    public int getCodComanda() {
+        return codComanda;
+    }
+
+    public void setCodComanda(int codComanda) {
+        this.codComanda = codComanda;
+    }
 }

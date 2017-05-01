@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.controller.ServiceGenerator;
+import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Usuario;
 import com.caue.splitter.model.services.UsuarioClient;
@@ -100,7 +101,6 @@ public class MainPageActivity extends AppCompatActivity
     static final int REGISTRATION_SUCCESSFULL = 1;  // The request code
 
     //QR Code
-    private Button scanBtn;
     static final int QR_CODE_SCAN = 49374;  // request code for scan qr intent
     private static final String CHECKIN_FRAGMENT_TAG = "checkin_fragment";
 
@@ -387,10 +387,17 @@ public class MainPageActivity extends AppCompatActivity
         Log.d("responseCheckinReceived", "Status resposta: " + checkinResponse.isSucesso());
 
         if(checkinResponse.isSucesso()) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.content_frame, CheckedInFragment.newInstance(R.id.checked_in_fragment, usuario, checkinResponse),CHECKIN_FRAGMENT_TAG)
-                    .addToBackStack(null)
-                    .commit();
+            Intent checkInActivityIntent = new Intent(MainPageActivity.this, CheckedInActivity.class);
+
+            Bundle checkinExtras = new Bundle();
+            checkinExtras.putSerializable(Constants.KEY.USER_DATA, usuario);
+            checkinExtras.putSerializable(Constants.KEY.CHECKIN_DATA, checkinResponse);
+            checkInActivityIntent.putExtras(checkinExtras);
+            startActivity(checkInActivityIntent);
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.content_frame, CheckedInFragment.newInstance(R.id.checked_in_fragment, usuario, checkinResponse),CHECKIN_FRAGMENT_TAG)
+//                    .addToBackStack(null)
+//                    .commit();
         } else {
             switch (checkinResponse.getError()) {
                 case "MesaOcupada":

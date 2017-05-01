@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/menu"
+            android:checked="false"
+            android:icon="@drawable/ic_assignment_white_24dp"
+            android:title="@string/menu" />
+
+        <item
+            android:id="@+id/orders"
+            android:checked="false"
+            android:icon="@drawable/ic_orders"
+            android:title="@string/orders_menu" />
+
+        <item
+            android:id="@+id/close_bill"
+            android:checked="false"
+            android:icon="@drawable/ic_sign_out"
+            android:title="@string/close_bill" />
+
+        <item
+            android:id="@+id/about"
+            android:checked="false"
+            android:icon="@drawable/ic_info_about"
+            android:title="@string/about_splitter" />
+
+    </group>
+</menu>

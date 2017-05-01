@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Usuario;
 import com.google.zxing.BarcodeFormat;
@@ -27,6 +28,7 @@ import butterknife.ButterKnife;
  */
 
 public class CheckedInFragment extends Fragment {
+    private static final String FRAGMENT_TAG = "CheckedInFragment";
     @BindView(R.id.estabelecimento_place_name)
     TextView placeName;
 
@@ -40,8 +42,8 @@ public class CheckedInFragment extends Fragment {
         CheckedInFragment fragment = new CheckedInFragment();
         Bundle args = new Bundle();
         //args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        args.putSerializable("UserData",usuario);
-        args.putSerializable("CheckIn",checkInResponse);
+        args.putSerializable(Constants.KEY.USER_DATA,usuario);
+        args.putSerializable(Constants.KEY.CHECKIN_DATA,checkInResponse);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,13 +64,15 @@ public class CheckedInFragment extends Fragment {
         ButterKnife.bind(this, rootView);
 
         // get user and checkin data
-        usuario = (Usuario) getArguments().getSerializable("UserData");
-        checkinResponse = (Checkin) getArguments().getSerializable("CheckIn");
+        usuario = (Usuario) getArguments().getSerializable(Constants.KEY.USER_DATA);
+        checkinResponse = (Checkin) getArguments().getSerializable(Constants.KEY.CHECKIN_DATA);
 
         placeName.setText("Bar");
 
+        Log.d(FRAGMENT_TAG, checkinResponse != null ? checkinResponse.toString() : "CheckinResponse == null");
+
         // Se houver qrCodeOcupado, gera o QRCode
-        if(checkinResponse.getMesa().getQrCodeOcupado() != null){
+        if( checkinResponse != null && checkinResponse.getMesa().getQrCodeOcupado() != null){
             message.setText("Mostre o QR Code abaixo para seus amigos");
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             try{

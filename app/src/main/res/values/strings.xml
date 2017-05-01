@@ -52,7 +52,9 @@
     <string name="user_not_deleted">User not deleted</string>
     <string name="check_internet_connection">Check your internet connection</string>
     <string name="aim_to_qrcode">Please, aim to your QR Code</string>
-    <string name="accound_should_be_closed">Your account should be closed first</string>
+    <string name="accound_should_be_closed">Your bill should be closed before exiting</string>
+    <string name="menu">Menu</string>
+    <string name="close_bill">Close bill</string>
 
 
 </resources>
