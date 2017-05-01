@@ -30,6 +30,7 @@ import com.caue.splitter.model.Usuario;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -113,6 +114,8 @@ public class CheckedInActivity extends AppCompatActivity
 
         // getting data from intent
         Bundle bundle = getIntent().getExtras();
+        Log.d(ACTIVITY_TAG, "Bundle String:");
+        Log.d(ACTIVITY_TAG, bundle.toString());
         if(bundle != null) {
             user = (Usuario) bundle.getSerializable(Constants.KEY.USER_DATA);
             checkin = (Checkin) bundle.getSerializable(Constants.KEY.CHECKIN_DATA);
@@ -177,12 +180,18 @@ public class CheckedInActivity extends AppCompatActivity
         switch (id){
             case R.id.menu:
                 Toast.makeText(CheckedInActivity.this, R.string.menu, Toast.LENGTH_SHORT).show();
-//                Bundle data = new Bundle();
-//                data.putSerializable("UserData",usuario);
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.content_frame, AccountInfoFragment.newInstance(R.id.account_info_fragment, usuario))
-//                        .addToBackStack(null)        // add to back stack
-//                        .commit();
+
+                Fragment menuFragment = new MenuFragment();
+                if(cardapio != null){   // se o cardapio foi baixado com sucesso
+                    Bundle menuBundle = new Bundle();
+                    menuBundle.putString(Constants.KEY.CARDAPIO_DATA, new Gson().toJson(cardapio));
+                    menuFragment.setArguments(menuBundle);
+                }
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, menuFragment)
+                        .addToBackStack(null)        // add to back stack
+                        .commit();
                 break;
             case R.id.orders:
                 Toast.makeText(CheckedInActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();

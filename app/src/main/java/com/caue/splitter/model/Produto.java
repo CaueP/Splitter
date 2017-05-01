@@ -1,12 +1,9 @@
 package com.caue.splitter.model;
 
-import android.app.Activity;
-import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.caue.splitter.CheckedInActivity;
 import com.caue.splitter.controller.ServiceGenerator;
-import com.caue.splitter.model.services.CheckinClient;
 import com.caue.splitter.model.services.ProdutoClient;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
