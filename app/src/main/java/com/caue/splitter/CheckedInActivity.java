@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Produto;
@@ -44,7 +45,8 @@ import butterknife.ButterKnife;
  * Created on 4/30/2017.
  */
 public class CheckedInActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener,
+        MenuFragment.OnListItemSelectedListener{
 
     // custom toolbars and navigation drawer
     private Toolbar toolbar;
@@ -262,5 +264,20 @@ public class CheckedInActivity extends AppCompatActivity
     public void responseCardapioReceived(ArrayList<Produto> cardapioRecebido) {
         Log.d(ACTIVITY_TAG, "Cardapio disponivel para consulta");
         cardapio = cardapioRecebido;
+    }
+
+    /**
+     * Implementação da Interface do MenuFragment para realizar a chamada dos Detalhes do Produto
+     * @param itemPosition Posição do produto na lista
+     */
+    @Override
+    public void onListItemSelected(int itemPosition) {
+        if(cardapio != null){
+            Produto produtoSelecionado = cardapio.get(itemPosition);
+            getSupportFragmentManager().beginTransaction()
+                    //.replace(R.id.content_frame, MovieFragment.newInstance(movie))
+                    .addToBackStack(null)
+                    .commit();
+        }
     }
 }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
@@ -22,9 +23,10 @@ import java.util.List;
  * Created by CaueGarciaPolimanti on 4/30/2017.
  */
 
-public class MenuFragment extends Fragment {
+public class MenuFragment extends Fragment{
 
     private static final String MENU_FRAGMENT_TAG = "MenuFragment";
+    View rootView;
 
     ArrayList<Produto> mListaProduto = null;
     private RecyclerView mRecyclerView;
@@ -32,7 +34,7 @@ public class MenuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.fragment_checkedin_menu, container, false);
+        rootView = inflater.inflate(R.layout.fragment_checkedin_menu, container, false);
 
         // find views
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
@@ -55,6 +57,14 @@ public class MenuFragment extends Fragment {
             Log.d(MENU_FRAGMENT_TAG, "Bundle com lista de produtos vazia");
         }
 
+        mMenuAdapter.setOnItemClickListener(new MenuAdapter.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(int codImovel) {
+                Toast.makeText(getActivity(), "onListItemSelected", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
         return rootView;
     }
@@ -64,4 +74,14 @@ public class MenuFragment extends Fragment {
         mRecyclerView.setAdapter(mMenuAdapter);
     }
 
+    /**
+     * Interface que será implementada pela CheckedInActivity para chamada do detalhe dos items
+     */
+    public interface OnListItemSelectedListener {
+        /**
+         * Função para enviar o produto clicado à Activity
+         * @param itemPosition Posição do produto na lista
+         */
+        public void onListItemSelected(int itemPosition);
+    }
 }

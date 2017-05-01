@@ -129,4 +129,24 @@ public class Produto implements Serializable {
         // call
         checkinCall.enqueue(consultarCardapioCallback);
     }
+
+    public String toString(){
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder
+                .append("Codigo: ")
+                .append(codigo)
+                .append(" ")
+                .append("Nome: ")
+                .append(nome != null? nome : "null")
+                .append("Tipo Alimento: ")
+                .append(codTipoAlimento)
+                .append(" ")
+                .append("Descrição")
+                .append(descricao != null? descricao: "null")
+                .append(" ")
+                .append("Valor: ")
+                .append(valor);
+        return stringBuilder.toString();
+    }
 }

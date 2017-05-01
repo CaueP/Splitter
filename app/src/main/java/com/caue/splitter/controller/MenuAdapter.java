@@ -3,6 +3,7 @@ package com.caue.splitter.controller;
 import android.content.Context;
 import android.graphics.PointF;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,24 +19,26 @@ import com.caue.splitter.model.Produto;
 import org.w3c.dom.Text;
 
 import java.text.DecimalFormat;
+import java.text.Format;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by CaueGarciaPolimanti on 4/30/2017.
  */
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
-    private static final String MENU_ADAPTER_TAG = "MenuAdapter";
+    private static final String TAG = "MenuAdapter";
     Context mContext;
 
-    OnListItemSelectedListener mListener = null;
+    OnItemClickListener mItemClickListener = null;
 
     private ArrayList<Produto> mMenu;
 
     // constructor
     public MenuAdapter(ArrayList<Produto> lista){
-        Log.d(MENU_ADAPTER_TAG, "Entered in MenuAdapter constructor");
+        Log.d(TAG, "Entered in MenuAdapter constructor");
         mMenu = lista;//new ArrayList<>();
     }
 
@@ -55,8 +58,42 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         return new MenuAdapter.Holder(row);
     }
 
+
+    public class Holder extends RecyclerView.ViewHolder{
+
+        public ImageView foto;
+        public TextView nome;
+        public TextView descricao;
+        public TextView preco;
+
+        public Holder(View itemView) {
+            super(itemView);
+
+            //find views
+            foto = (ImageView) itemView.findViewById(R.id.image_foto_produto);
+            nome = (TextView) itemView.findViewById(R.id.txt_nome_produto);
+            preco = (TextView) itemView.findViewById(R.id.txt_preco_produto);
+            descricao = (TextView) itemView.findViewById(R.id.txt_descricao_produto);
+
+            // configurando click listener para detectar ação de clique no card
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "itemView.onClick (adapter)");
+                    if(mItemClickListener != null){
+                        mItemClickListener.onItemClick(getLayoutPosition());
+                    }
+                    Toast.makeText(view.getContext(),"Item clicado" + getLayoutPosition(), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
+        }
+
+    }
+
     @Override
     public void onBindViewHolder(Holder holder, int position) {
+
         View view = holder.itemView;
 
         Produto produto = mMenu.get(position);
@@ -73,17 +110,21 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
                     //.placeholder(R.drawable.img_temp)
                     .crossFade()
                     .into(holder.foto);
+
+        // definindo um nome de transição para animação ao abrir os detalhes de um item do cardapio
+        holder.foto.setTransitionName(String.valueOf(produto.getCodigo()));
 //
 //        holder.tipo.setText(imovel.getTipo());
 //        DecimalFormat df = new DecimalFormat("###,###,###,###,###");
-        holder.preco.setText("R$ " + produto.getValor());
+        holder.preco.setText("R$ " + String.format(Locale.US,"%.2f", produto.getValor()));
 
-        holder.descricao.setText(produto.getDescricao());
-        //holder.endereco.setInputType(TYPE_TEXT_FLAG_CAP_WORDS);
 
-//        holder.nome.setText(imovel.getQtdDormitorio() + " dorms, " +
-//                imovel.getQtdVaga() + " vaga, " +
-//                imovel.getAreaTotal() + "m\u00B2");
+        String editDescription = produto.getDescricao();
+        if(editDescription.length() > 20) {
+            editDescription = editDescription.substring(0, 20);      // truncate the description
+            editDescription = editDescription.concat("...");        // add reticences to the end
+        }
+        holder.descricao.setText(editDescription);  // set the description on the screen to the truncated description
 
         //preco.setText(Double.toString(imovel.getPrecoVenda()));
 
@@ -94,40 +135,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         return mMenu.size();
     }
 
-    public class Holder extends RecyclerView.ViewHolder implements View.OnClickListener{
-
-
-        ImageView foto;
-        TextView nome;
-        TextView descricao;
-        TextView preco;
-
-        public Holder(View itemView) {
-            super(itemView);
-            itemView.setOnClickListener(this);
-
-            //find views
-            foto = (ImageView) itemView.findViewById(R.id.image_foto_produto);
-            nome = (TextView) itemView.findViewById(R.id.txt_nome_produto);
-            preco = (TextView) itemView.findViewById(R.id.txt_preco_produto);
-            descricao = (TextView) itemView.findViewById(R.id.txt_descricao_produto);
-        }
-
-        @Override
-        public void onClick(View view) {
-            Produto produto = mMenu.get(getAdapterPosition());
-            mListener.onListItemSelected(produto.getCodigo());
-
-            Toast.makeText(view.getContext(),"Codigo do produto clicado" + produto.getCodigo(), Toast.LENGTH_SHORT)
-                  .show();
-        }
-
-
-    }
 
     // Interface para consumir o clique no item e enviar para a MainActivity
-    public interface OnListItemSelectedListener {
-        public void onListItemSelected(int codImovel);
+    public interface OnItemClickListener {
+        public void onItemClick(int codImovel);
+    }
+
+    // hook the listener inside the ViewHolder to be used in the Fragment
+    public void setOnItemClickListener(final OnItemClickListener mItemClickListener){
+        this.mItemClickListener = mItemClickListener;
     }
 
 }
