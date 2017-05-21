@@ -320,14 +320,14 @@ public class CheckedInActivity extends AppCompatActivity
         if(cardapio != null){
             Pedido pedidoSelecionado = conta.getPedidos().get(itemPosition);
 
-            Fragment productDetailsFragment = new ProductDetailsFragment();
+            Fragment pedidoDetailsFragment = new OrderDetailsFragment();
             Bundle productBundle = new Bundle();
             productBundle.putSerializable(Constants.KEY.PRODUTO_DATA, pedidoSelecionado);
-            productDetailsFragment.setArguments(productBundle);
+            pedidoDetailsFragment.setArguments(productBundle);
             // realização transição do fragment
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.content_frame, productDetailsFragment)
+                    .replace(R.id.content_frame, pedidoDetailsFragment)
                     .addToBackStack(null)        // add to back stack
                     .commit();
         }

@@ -21,4 +21,12 @@ public class Constants {
         public static final String PRODUTO_DATA = "ProdutoData";
         public static final String PEDIDOS_DATA = "PedidosData";
     }
+
+
+    public static class STATUS_PEDIDO {
+        public static final int AGUARDANDO = 0;
+        public static final int ENTREGUE = 1;
+        public static final int FINALIZADO = 2;
+        public static final int CANCELADO = 3;
+    }
 }

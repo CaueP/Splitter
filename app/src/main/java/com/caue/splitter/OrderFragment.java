@@ -130,6 +130,7 @@ public class OrderFragment extends Fragment {
         if(contaFechada != null) {
             conta = contaFechada;
             setDataRecyclerViewer();
+            Log.d(TAG, "Total: " + conta.getTotal());
             tvTotalConta.setText("R$ " + String.format(Locale.US, "%.2f", conta.getTotal()));
             mListener.onCloseBillClicked(contaFechada);
         }

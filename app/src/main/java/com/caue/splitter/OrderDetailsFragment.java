@@ -32,9 +32,9 @@ public class OrderDetailsFragment extends Fragment {
     TextView vNome;
     TextView vDescricao;
     TextView vPreco;
-    EditText vObservacao;
-    Spinner vQuantidade;
-    TextView vTotal;
+    TextView vObservacao;
+    TextView vQuantidade;
+    TextView txtStatusPedido;
     Button btnCancelOrder;
 
     // Dado recebido da activity
@@ -46,17 +46,18 @@ public class OrderDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
-        rootView = inflater.inflate(R.layout.fragment_product_details, container, false);
+        rootView = inflater.inflate(R.layout.fragment_order_details, container, false);
 
         // find views
-        vFoto = (ImageView) rootView.findViewById(R.id.img_foto_produto);
+        vFoto = (ImageView) rootView.findViewById(R.id.image_imagem_produto);
         vNome = (TextView) rootView.findViewById(R.id.txt_nome_produto);
         vDescricao = (TextView) rootView.findViewById(R.id.txt_descricao_produto);
-        vPreco = (TextView) rootView.findViewById(R.id.txt_preco_produto);
-        vObservacao = (EditText) rootView.findViewById(R.id.txt_input_observacao_produto);
-        vQuantidade = (Spinner) rootView.findViewById(R.id.spn_qtd_produto);
-        btnCancelOrder = (Button) rootView.findViewById(R.id.btn_send_order);
-        vTotal = (TextView) rootView.findViewById(R.id.order_total);
+        vPreco = (TextView) rootView.findViewById(R.id.txt_preco_individual);
+        vQuantidade = (TextView) rootView.findViewById(R.id.txt_qtd_produto);
+        vObservacao = (TextView) rootView.findViewById(R.id.txt_observacao_pedido);
+        txtStatusPedido = (TextView) rootView.findViewById(R.id.txt_status_pedido);
+
+        btnCancelOrder = (Button) rootView.findViewById(R.id.btn_cancelar);
 
         final Bundle bundle = getArguments();
         if(bundle != null) {
@@ -71,15 +72,7 @@ public class OrderDetailsFragment extends Fragment {
             public void onClick(View view) {
 
                 try{
-                    // obter o valor selecionado
-                    String qtdSelecionada  = (String) vQuantidade.getSelectedItem();
-                    qtdPedido = Integer.valueOf(qtdSelecionada);
-                    // definir string de observacao
-                    String txtObservacao = "";
-                    if (!vObservacao.getText().toString().isEmpty())
-                        txtObservacao = vObservacao.getText().toString();
                 } catch(Exception exc) {
-                    Toast.makeText(getActivity(), R.string.msg_select_quantity, Toast.LENGTH_SHORT).show();
                     Log.d(TAG, exc.toString());
                 }
             }
@@ -101,13 +94,28 @@ public class OrderDetailsFragment extends Fragment {
                     .crossFade()
                     .into(vFoto);
         vNome.setText(pedido.getNomeProduto());
-        vDescricao.setText(pedido.getDescObservacao());
+        //vDescricao.setText(pedido.getDescObservacao());
+
+        switch (pedido.getCodStatusPedido()) {
+            case Constants.STATUS_PEDIDO.AGUARDANDO:
+                txtStatusPedido.setText("Aguardando");
+                break;
+            case Constants.STATUS_PEDIDO.ENTREGUE:
+                txtStatusPedido.setText("Entregue");
+                break;
+            case Constants.STATUS_PEDIDO.CANCELADO:
+                txtStatusPedido.setText("Cancelado");
+                break;
+            case Constants.STATUS_PEDIDO.FINALIZADO:
+                txtStatusPedido.setText("Finalizado");
+                break;
+        }
+        vDescricao.setText("BLA BLA BLA");
+        vObservacao.setText("BLA BLA BLA");
 
         // using Resources to set values of a resource string
         Resources res = getResources();
         String priceText = res.getString(R.string.product_price, pedido.getValorTotal());
         vPreco.setText(priceText);
-        String totalText = res.getString(R.string.order_total, 0.0);
-        vTotal.setText(totalText);
     }
 }
