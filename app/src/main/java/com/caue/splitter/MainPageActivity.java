@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.ExceptionCatchingInputStream;
 import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
@@ -67,6 +68,7 @@ public class MainPageActivity extends AppCompatActivity
     implements NavigationView.OnNavigationItemSelectedListener,
                 AccountInfoFragment.OnFragmentInteractionListener,DatePickerFragment.OnDateSetListener{
 
+    final static String TAG = "MainPageActivity";
 
     @BindView(R.id.main_page_progressBar)
     ProgressBar mainPageProgressBar;
@@ -341,23 +343,28 @@ public class MainPageActivity extends AppCompatActivity
                     qrCodeResult = result.getContents();
 
                     //Toast.makeText(this, "QR Code Lido:" + qrCodeResult, Toast.LENGTH_SHORT).show();
+                    try{
+                        // setting checkin parameters
+                        checkin = new Checkin();
+                        checkin.setUsuario(usuario);
+                        checkin.getMesa().setQrCode(qrCodeResult);
+                        checkin.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
+                        checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
 
-                    // setting checkin parameters
-                    checkin = new Checkin();
-                    checkin.setUsuario(usuario);
-                    checkin.getMesa().setQrCode(qrCodeResult);
-                    checkin.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
-                    checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
-
-                    if(usuario != null){
-                        Log.d("qrCodeRead"," qrCode" + checkin.getMesa().getQrCode());
-                        Log.d("qrCodeRead", "Email usuario: "+ checkin.getUsuario().getEmail() +
-                                " CodEstabelecimento: " + checkin.getMesa().getCodEstabelecimento()+
-                                " NrMesa:" + checkin.getMesa().getNrMesa());
-                        checkin.realizarCheckin(this);
-                    } else {
-                        Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
+                        if(usuario != null){
+                            Log.d("qrCodeRead"," qrCode" + checkin.getMesa().getQrCode());
+                            Log.d("qrCodeRead", "Email usuario: "+ checkin.getUsuario().getEmail() +
+                                    " CodEstabelecimento: " + checkin.getMesa().getCodEstabelecimento()+
+                                    " NrMesa:" + checkin.getMesa().getNrMesa());
+                            checkin.realizarCheckin(this);
+                        } else {
+                            Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
+                        }
+                    } catch(Exception ex) {
+                        Log.e(TAG, "Erro ao transformar codigo qr em checkin");
                     }
+
+
 
                     mainPageProgressBar.setVisibility(View.INVISIBLE);
                 }

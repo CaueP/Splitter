@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
+import com.caue.splitter.model.Conta;
 import com.caue.splitter.model.Pedido;
 import com.caue.splitter.model.Produto;
 import com.caue.splitter.model.Usuario;
@@ -49,7 +50,8 @@ import butterknife.ButterKnife;
 public class CheckedInActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MenuFragment.OnListItemSelectedListener,
-        ProductDetailsFragment.OnOrderListener{
+        ProductDetailsFragment.OnOrderListener,
+        OrderFragment.OnListItemSelectedListener{
 
     // custom toolbars and navigation drawer
     private Toolbar toolbar;
@@ -72,6 +74,7 @@ public class CheckedInActivity extends AppCompatActivity
     // Dados da activity anterior
     Usuario user = null;
     Checkin checkin = null;
+    Conta conta = null;
 
     // Cardapio do estabelecimento
     ArrayList<Produto> cardapio = null;
@@ -208,10 +211,18 @@ public class CheckedInActivity extends AppCompatActivity
                 break;
             case R.id.orders:
                 Toast.makeText(CheckedInActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();
-//                getSupportFragmentManager().beginTransaction()
-//                        .replace(R.id.content_frame, NewOrderFragment.newInstance(R.id.new_order_fragment))
-//                        .addToBackStack(null)
-//                        .commit();
+
+                Fragment orderFragment = new OrderFragment();
+                if(checkin != null){   // se o cardapio foi baixado com sucesso
+                    Bundle orderBundle = new Bundle();
+                    orderBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkin);
+                    orderFragment.setArguments(orderBundle);
+                }
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, orderFragment)
+                        .addToBackStack(null)        // add to back stack
+                        .commit();
                 break;
             case R.id.close_bill:
                 Toast.makeText(CheckedInActivity.this, R.string.close_bill, Toast.LENGTH_SHORT).show();
@@ -270,8 +281,6 @@ public class CheckedInActivity extends AppCompatActivity
      */
     @Override
     public void onListItemSelected(int itemPosition) {
-
-
         if(cardapio != null){
             Produto produtoSelecionado = cardapio.get(itemPosition);
 
@@ -299,6 +308,38 @@ public class CheckedInActivity extends AppCompatActivity
         Pedido pedido = new Pedido(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), codProduto, qtdProduto,obs);
         // realizar pedido
         pedido.pedir(this);
+    }
+
+    /**
+     * Implementação da interface quando um pedido é selecionado
+     * @param itemPosition Posição do produto na lista
+     */
+    @Override
+    public void onPedidoSelected(Conta conta, int itemPosition) {
+        this.conta = conta;
+        if(cardapio != null){
+            Pedido pedidoSelecionado = conta.getPedidos().get(itemPosition);
+
+            Fragment productDetailsFragment = new ProductDetailsFragment();
+            Bundle productBundle = new Bundle();
+            productBundle.putSerializable(Constants.KEY.PRODUTO_DATA, pedidoSelecionado);
+            productDetailsFragment.setArguments(productBundle);
+            // realização transição do fragment
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, productDetailsFragment)
+                    .addToBackStack(null)        // add to back stack
+                    .commit();
+        }
+    }
+
+    /**
+     * Implementação da interface quando é selecionada a tela para fechar conta
+     * @param contaFechada Conta fechada recebida
+     */
+    @Override
+    public void onCloseBillClicked(Conta contaFechada) {
+        this.conta = contaFechada;
     }
 
 

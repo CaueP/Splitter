@@ -150,6 +150,10 @@ public class Pedido implements Serializable {
         this.descObservacao = descObservacao;
     }
 
+    /**
+     * Realizar o pedido de um item
+     * @param activity activity que receberá a resposta da REST API
+     */
     public void pedir(final CheckedInActivity activity) {
         Log.d("Pedido", "Realizar pedido");
         PedidoClient service = ServiceGenerator.createService(PedidoClient.class);

@@ -36,7 +36,7 @@ public class MenuFragment extends Fragment{
 
     @Override
     public void onAttach(Context context){
-        Log.d("RecyclerViewFragment","Entered in onAttach");
+        Log.d("MenuFragment","Entered in onAttach");
         super.onAttach(context);
         try {
             mListener = (OnListItemSelectedListener) getActivity();

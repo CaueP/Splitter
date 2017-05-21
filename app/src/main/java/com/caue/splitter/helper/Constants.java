@@ -9,8 +9,8 @@ package com.caue.splitter.helper;
 public class Constants {
     public static class HTTP{
 
-        public static final String API_URL = "http://splitter.mybluemix.net/api/";
-        //public static final String API_URL = "http://192.168.2.170:6003/api/";
+        //public static final String API_URL = "http://splitter.mybluemix.net/api/";
+        public static final String API_URL = "http://192.168.2.170:6002/api/";
     }
 
     public static class KEY {
@@ -19,5 +19,6 @@ public class Constants {
         public static final String CHECKIN_DATA = "CheckinData";
         public static final String CARDAPIO_DATA = "CardapioData";
         public static final String PRODUTO_DATA = "ProdutoData";
+        public static final String PEDIDOS_DATA = "PedidosData";
     }
 }
