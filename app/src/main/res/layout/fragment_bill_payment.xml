@@ -1,0 +1,248 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1"
+    android:background="#fff">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="8dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"><![CDATA[>
+
+
+
+            />
+
+
+
+
+
+
+            ]]>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="0dp"
+                android:layout_height="233dp"
+                android:layout_marginEnd="11dp"
+                android:layout_marginLeft="11dp"
+                android:layout_marginRight="11dp"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="8dp"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1"
+                tools:listitem="@layout/cardview_bill_order_item" />
+
+            <EditText
+                android:id="@+id/txt_input_numero_cartao"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="Número do Cartão"
+                android:inputType="textPersonName"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_input_nome_cartao" />
+
+            <EditText
+                android:id="@+id/txt_input_nome_cartao"
+                android:layout_width="0dp"
+                android:layout_height="43dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:ems="10"
+                android:hint="Nome no Cartão"
+                android:inputType="textPersonName"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_total_conta"
+                android:layout_marginTop="8dp" />
+
+            <Button
+                android:id="@+id/btn_realizar_pagamento"
+                android:layout_width="178dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="103dp"
+                android:layout_marginStart="103dp"
+                android:layout_marginTop="7dp"
+                android:text="Realizar Pagamento"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_input_cvc"
+                card_view:layout_constraintVertical_bias="0.0"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintRight_creator="1" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                tools:layout_constraintTop_creator="1"
+                card_view:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"><![CDATA[>
+
+
+
+
+
+                ]]>
+
+                <TextView
+                    android:id="@+id/txt_nome_produto"
+                    android:layout_width="160dp"
+                    android:layout_height="22dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="194dp"
+                    android:layout_marginStart="19dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Nome do Produto"
+                    android:textAlignment="textStart"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textStyle="normal|bold"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintLeft_toLeftOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintVertical_bias="1.0"
+                    tools:layout_constraintLeft_creator="1" />
+
+                <TextView
+                    android:id="@+id/txt_qtd"
+                    android:layout_width="35dp"
+                    android:layout_height="22dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="72dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Qtd"
+                    android:textAlignment="center"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textStyle="bold"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintLeft_toRightOf="@+id/txt_nome_produto"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txt_preco_individual"
+                    android:layout_width="50dp"
+                    android:layout_height="35dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="6dp"
+                    android:gravity="center_vertical"
+                    android:text="Indiv"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textStyle="normal|bold"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintLeft_toRightOf="@+id/txt_valor_total"
+                    card_view:layout_constraintRight_toRightOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintVertical_bias="0.444"
+                    tools:layout_constraintLeft_creator="1"
+                    tools:layout_constraintRight_creator="1" />
+
+                <TextView
+                    android:id="@+id/txt_valor_total"
+                    android:layout_width="50dp"
+                    android:layout_height="22dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_vertical"
+                    android:text="Total"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    android:textStyle="normal|bold"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintLeft_toRightOf="@+id/txt_qtd"
+                    card_view:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <EditText
+                android:id="@+id/txt_input_data_vencimento"
+                android:layout_width="95dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="9dp"
+                android:ems="10"
+                android:hint="@string/mm_aa"
+                android:inputType="date"
+                android:textAlignment="center"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_input_numero_cartao"
+                android:layout_marginStart="16dp" />
+
+            <EditText
+                android:id="@+id/txt_input_cvc"
+                android:layout_width="88dp"
+                android:layout_height="43dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="9dp"
+                android:ems="10"
+                android:hint="CVC"
+                android:inputType="number"
+                android:textAlignment="center"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/txt_input_numero_cartao"
+                android:layout_marginEnd="16dp" />
+
+            <TextView
+                android:id="@+id/txt_total_conta"
+                android:layout_width="368dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Total:"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                card_view:layout_constraintLeft_toLeftOf="parent"
+                card_view:layout_constraintRight_toRightOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

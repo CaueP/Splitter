@@ -317,7 +317,7 @@ public class CheckedInActivity extends AppCompatActivity
     @Override
     public void onPedidoSelected(Conta conta, int itemPosition) {
         this.conta = conta;
-        if(cardapio != null){
+        if(conta != null){
             Pedido pedidoSelecionado = conta.getPedidos().get(itemPosition);
 
             Fragment pedidoDetailsFragment = new OrderDetailsFragment();
@@ -340,6 +340,20 @@ public class CheckedInActivity extends AppCompatActivity
     @Override
     public void onCloseBillClicked(Conta contaFechada) {
         this.conta = contaFechada;
+
+        if(conta != null && checkin != null){
+            Fragment billPaymentFragment = new BillPaymentFragment();
+            Bundle billBundle = new Bundle();
+            billBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkin);
+            billBundle.putSerializable(Constants.KEY.CONTA_DATA, conta);
+            billPaymentFragment.setArguments(billBundle);
+            // realização transição do fragment
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.content_frame, billPaymentFragment)
+                    .addToBackStack(null)        // add to back stack
+                    .commit();
+        }
     }
 
 

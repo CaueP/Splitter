@@ -71,4 +71,10 @@
     <string name="msg_product_ordered">Pedido realizado! O número do seu pedido é %d</string>
     <string name="msg_product_order_failed">Falha ao realizar pedido. Tente novamente</string>
     <string name="msg_select_quantity">Selecione a quantidade</string>
+    <string name="mm_aa">MM/YYYY</string>
+    <string name="msg_invalid_cvv">CVV inválido</string>
+    <string name="msg_expired_card">Cartão vencido</string>
+    <string name="msg_invalid_name">Nome inválido</string>
+    <string name="msg_invalid_card_number">Número inválido</string>
+    <string name="msg_invalid_dexp">Data de validade inválida</string>
 </resources>

@@ -2,6 +2,7 @@ package com.caue.splitter.model;
 
 import android.util.Log;
 
+import com.caue.splitter.BillPaymentFragment;
 import com.caue.splitter.CheckedInActivity;
 import com.caue.splitter.OrderFragment;
 import com.caue.splitter.controller.ServiceGenerator;
@@ -61,7 +62,7 @@ public class Conta implements Serializable {
      * @param fragment activity que receberá a resposta da REST API
      */
     public void consultar(final OrderFragment fragment) {
-        Log.d("Pedido", "Realizar pedido");
+        Log.d("Conta", "Consultar conta");
         ContaClient service = ServiceGenerator.createService(ContaClient.class);
         Call<Conta> contaCall = service.consultarConta(this.codEstabelecimento, this.codComanda);
 
@@ -69,7 +70,7 @@ public class Conta implements Serializable {
             @Override
             public void onResponse(Call<Conta> call, Response<Conta> response) {
                 Conta contaResposta;
-                Log.d("onResponse", "entered in onResponse - Pedido");
+                Log.d("onResponse", "entered in onResponse - Conta (Fechar)");
                 if (response.isSuccessful()) {
                     Log.d("onResponse", "isSuccessful");
                     Log.d("onResponse", "Body: " + response.body());
@@ -84,7 +85,7 @@ public class Conta implements Serializable {
 
             @Override
             public void onFailure(Call<Conta> call, Throwable t) {
-                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Pedido");
+                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Conta - Consultar conta");
                 fragment.responseConsultarContaReceived(null);
             }
         };
@@ -99,7 +100,7 @@ public class Conta implements Serializable {
      * @param fragment activity que receberá a resposta da REST API
      */
     public void fechar(final OrderFragment fragment) {
-        Log.d("Pedido", "Realizar pedido");
+        Log.d("Conta", "Fechar conta");
         ContaClient service = ServiceGenerator.createService(ContaClient.class);
         Call<Conta> contaCall = service.consultarConta(this.codEstabelecimento, this.codComanda);
 
@@ -107,7 +108,7 @@ public class Conta implements Serializable {
             @Override
             public void onResponse(Call<Conta> call, Response<Conta> response) {
                 Conta contaResposta;
-                Log.d("onResponse", "entered in onResponse - Pedido");
+                Log.d("onResponse", "entered in onResponse - Conta (Fechar)");
                 if (response.isSuccessful()) {
                     Log.d("onResponse", "isSuccessful");
                     Log.d("onResponse", "Body: " + response.body());
@@ -122,13 +123,52 @@ public class Conta implements Serializable {
 
             @Override
             public void onFailure(Call<Conta> call, Throwable t) {
-                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Pedido");
+                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Conta - Fechar conta");
+                Log.d("onFailure", t.getMessage());
                 fragment.responseFecharContaReceived(null);
             }
         };
 
         // call
         contaCall.enqueue(consultarContaCallback);
-
     }
+
+    /**
+     * Pagar a conta
+     * @param fragment activity que receberá a resposta da REST API
+     */
+    public void pagar(final BillPaymentFragment fragment, Cartao cartao) {
+        Log.d("Pedido", "Realizar pedido");
+        ContaClient service = ServiceGenerator.createService(ContaClient.class);
+        Call<Conta> contaCall = service.consultarConta(this.codEstabelecimento, this.codComanda);
+
+        Callback<Conta> consultarContaCallback = new Callback<Conta>() {
+            @Override
+            public void onResponse(Call<Conta> call, Response<Conta> response) {
+                Conta contaResposta;
+                Log.d("onResponse", "entered in onResponse - Pedido");
+                if (response.isSuccessful()) {
+                    Log.d("onResponse", "isSuccessful");
+                    Log.d("onResponse", "Body: " + response.body());
+                    contaResposta = response.body();
+                    //Log.d("resposta Checkin", "isSucesso: " + Boolean.toString(resposta.isSucesso()));
+                    fragment.responsePagarContaReceived(contaResposta);
+                } else {
+                    Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+                    fragment.responsePagarContaReceived(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Conta> call, Throwable t) {
+                Log.d("onFailure", "Ocorreu um erro ao chamar a API - Pedido");
+                fragment.responsePagarContaReceived(null);
+            }
+        };
+
+        // call
+        contaCall.enqueue(consultarContaCallback);
+    }
+
+
 }

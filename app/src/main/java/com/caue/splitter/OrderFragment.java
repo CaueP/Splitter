@@ -123,7 +123,8 @@ public class OrderFragment extends Fragment {
     }
 
     private void closeBill() {
-        conta.fechar(this);
+        Conta fecharConta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda());
+        fecharConta.fechar(this);
     }
 
     public void responseFecharContaReceived(Conta contaFechada) {

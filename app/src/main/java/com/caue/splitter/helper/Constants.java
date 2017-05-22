@@ -9,8 +9,8 @@ package com.caue.splitter.helper;
 public class Constants {
     public static class HTTP{
 
-        //public static final String API_URL = "http://splitter.mybluemix.net/api/";
-        public static final String API_URL = "http://192.168.2.170:6002/api/";
+        public static final String API_URL = "http://splitter.mybluemix.net/api/";
+        //public static final String API_URL = "http://192.168.2.170:6002/api/";
     }
 
     public static class KEY {
@@ -20,6 +20,7 @@ public class Constants {
         public static final String CARDAPIO_DATA = "CardapioData";
         public static final String PRODUTO_DATA = "ProdutoData";
         public static final String PEDIDOS_DATA = "PedidosData";
+        public static final String CONTA_DATA = "ContaData";
     }
 
 
@@ -29,4 +30,13 @@ public class Constants {
         public static final int FINALIZADO = 2;
         public static final int CANCELADO = 3;
     }
+
+    public static class CARTAO_EXCEPTION {
+        public static final String NomeInvalido = "NomeInvalido";
+        public static final String NumeroInvalido = "NumeroInvalido";
+        public static final String DataValidadeInvalida = "DataValidadeInvalida";
+        public static final String CartaoVencido = "CartaoVencido";
+        public static final String CVVInvalido = "CVVInvalido";
+    }
+
 }
