@@ -21,16 +21,21 @@ import retrofit2.Response;
 public class Pedido implements Serializable {
 
     @Expose
-    @SerializedName("cod_pedido")
-    private int codigo;
-
-    @Expose
     @SerializedName("codEstabelecimento")
     private String codEstabelecimento;
+
+
+    @Expose
+    @SerializedName("nrMesa")
+    private int nrMesa;
 
     @Expose
     @SerializedName("cod_comanda")
     private int codComanda;
+
+    @Expose
+    @SerializedName("cod_pedido")
+    private int codigo;
 
     @Expose
     @SerializedName("cod_produto")
@@ -53,6 +58,10 @@ public class Pedido implements Serializable {
     private double valorTotal;
 
     @Expose
+    @SerializedName("val_a_pagar")
+    private double valorPagar;
+
+    @Expose
     @SerializedName("cod_status_pedido")
     private int codStatusPedido;
 
@@ -63,6 +72,22 @@ public class Pedido implements Serializable {
     // getters and setters
     public int getCodigo() {
         return codigo;
+    }
+
+    public double getValorPagar() {
+        return valorPagar;
+    }
+
+    public void setValorPagar(double valorPagar) {
+        this.valorPagar = valorPagar;
+    }
+
+    public int getNrMesa() {
+        return nrMesa;
+    }
+
+    public void setNrMesa(int nrMesa) {
+        this.nrMesa = nrMesa;
     }
 
     public void setCodigo(int codigo) {
@@ -142,8 +167,9 @@ public class Pedido implements Serializable {
     }
 
     // construtor
-    public Pedido(String codEstabelecimento, int codComanda, int codProduto, int qtdProduto, String descObservacao){
+    public Pedido(String codEstabelecimento, int nrMesa, int codComanda, int codProduto, int qtdProduto, String descObservacao){
         this.codEstabelecimento = codEstabelecimento;
+        this.nrMesa = nrMesa;
         this.codComanda = codComanda;
         this.codProduto = codProduto;
         this.qtdProduto = qtdProduto;

@@ -126,7 +126,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         }
         holder.descricao.setText(editDescription);  // set the description on the screen to the truncated description
 
-        //preco.setText(Double.toString(imovel.getPrecoVenda()));
+        //precoPagar.setText(Double.toString(imovel.getPrecoVenda()));
 
     }
 

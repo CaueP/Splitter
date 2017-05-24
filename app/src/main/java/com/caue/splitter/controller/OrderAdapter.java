@@ -57,7 +57,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         public ImageView foto;
         public TextView nome;
         public TextView quantidade;
-        public TextView preco;
+        public TextView precoPagar;
 
         public Holder(View itemView) {
             super(itemView);
@@ -65,7 +65,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
             //find views
             foto = (ImageView) itemView.findViewById(R.id.image_foto_produto);
             nome = (TextView) itemView.findViewById(R.id.txt_nome_produto);
-            preco = (TextView) itemView.findViewById(R.id.txt_preco_individual);
+            precoPagar = (TextView) itemView.findViewById(R.id.txt_preco_individual);
             quantidade = (TextView) itemView.findViewById(R.id.txt_quantidade);
 
             // configurando click listener para detectar ação de clique no card
@@ -107,12 +107,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
         // definindo um nome de transição para animação ao abrir os detalhes de um item dos pedidos
         holder.foto.setTransitionName(String.valueOf(pedido.getCodigo()));
 
-        holder.preco.setText("R$ " + String.format(Locale.US,"%.2f", pedido.getValorTotal()));
+        holder.precoPagar.setText("R$ " + String.format(Locale.US,"%.2f", pedido.getValorPagar()));
         holder.nome.setText(pedido.getNomeProduto());
 
         holder.quantidade.setText("x" + pedido.getQtdProduto());  // set the description on the screen to the truncated description
 
-        //preco.setText(Double.toString(imovel.getPrecoVenda()));
+        //precoPagar.setText(Double.toString(imovel.getPrecoVenda()));
 
     }
 

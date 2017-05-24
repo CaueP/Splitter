@@ -1,6 +1,8 @@
 package com.caue.splitter;
 
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,15 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.bumptech.glide.Glide;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Pedido;
-import com.caue.splitter.model.Produto;
 
 /**
  * Created by CaueGarciaPolimanti on 5/21/2017.
@@ -98,20 +97,25 @@ public class OrderDetailsFragment extends Fragment {
 
         switch (pedido.getCodStatusPedido()) {
             case Constants.STATUS_PEDIDO.AGUARDANDO:
-                txtStatusPedido.setText("Aguardando");
+                txtStatusPedido.setText(R.string.order_status_waiting);
+                //txtStatusPedido.setTextColor(Color.YELLOW);
                 break;
             case Constants.STATUS_PEDIDO.ENTREGUE:
-                txtStatusPedido.setText("Entregue");
+                txtStatusPedido.setText(R.string.order_status_delivered);
+               //txtStatusPedido.setTextColor(Color.GREEN);
                 break;
             case Constants.STATUS_PEDIDO.CANCELADO:
-                txtStatusPedido.setText("Cancelado");
+                txtStatusPedido.setText(R.string.order_status_canceled);
+                //txtStatusPedido.setTextColor(Color.RED);
                 break;
             case Constants.STATUS_PEDIDO.FINALIZADO:
-                txtStatusPedido.setText("Finalizado");
+                txtStatusPedido.setText(R.string.order_status_done);
+                //txtStatusPedido.setTextColor(Color.BLUE);
                 break;
         }
-        vDescricao.setText("BLA BLA BLA");
-        vObservacao.setText("BLA BLA BLA");
+        vDescricao.setText("");
+        vQuantidade.setText("x" + pedido.getQtdProduto());
+        vObservacao.setText(pedido.getDescObservacao());
 
         // using Resources to set values of a resource string
         Resources res = getResources();

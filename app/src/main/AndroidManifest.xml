@@ -21,9 +21,9 @@
         </activity>
         <!-- android:theme="@style/AppTheme"> -->
         <activity android:name=".LoginActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/PurpleTheme"/>
         <activity android:name=".SignedInActivity"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/PurpleTheme"/>
         <activity android:name=".MainPageActivity"
             android:theme="@style/PurpleTheme">
             <intent-filter>

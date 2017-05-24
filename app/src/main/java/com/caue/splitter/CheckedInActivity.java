@@ -161,8 +161,8 @@ public class CheckedInActivity extends AppCompatActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
 
 //        ImageView mUserProfilePicture = (ImageView) findViewById(R.id.user_profile_picture);
-//        TextView mUserDisplayName = (TextView) this.findViewById(R.id.user_display_name);
-//        TextView mUserEmail = (TextView) findViewById(R.id.user_email);
+        TextView mUserDisplayName = (TextView) this.findViewById(R.id.user_display_name);
+        TextView mUserEmail = (TextView) findViewById(R.id.user_email);
 
         // can be changed to restaurant's picture
 //        if (userProfilePictureUri != null) {
@@ -172,8 +172,8 @@ public class CheckedInActivity extends AppCompatActivity
 //                    .into(mUserProfilePicture);
 //        }
 
-//        mUserDisplayName.setText(userDisplayName);
-//        mUserEmail.setText(userEmail);
+        mUserDisplayName.setText("Estabelecimento: " + checkin.getMesa().getCodEstabelecimento());
+        mUserEmail.setText("Mesa: " + checkin.getMesa().getNrMesa());
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -305,7 +305,7 @@ public class CheckedInActivity extends AppCompatActivity
      */
     @Override
     public void orderProduct(int codProduto, int qtdProduto, String obs) {
-        Pedido pedido = new Pedido(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), codProduto, qtdProduto,obs);
+        Pedido pedido = new Pedido(checkin.getMesa().getCodEstabelecimento(), checkin.getMesa().getNrMesa(), checkin.getComanda().getCodComanda(), codProduto, qtdProduto,obs);
         // realizar pedido
         pedido.pedir(this);
     }

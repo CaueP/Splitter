@@ -69,14 +69,15 @@ public class BillAdapter  extends RecyclerView.Adapter<BillAdapter.Holder> {
 
     @Override
     public void onBindViewHolder(BillAdapter.Holder holder, int position) {
-        View view = holder.itemView;
+        //View view = holder.itemView;
 
         Pedido pedido = mPedidos.get(position);
 
         holder.nome.setText(pedido.getNomeProduto());
-        holder.quantidade.setText("x" + pedido.getQtdProduto());  // set the description on the screen to the truncated description
+        //holder.quantidade.setText("x" + pedido.getQtdProduto());
+        holder.quantidade.setText(String.format(Locale.US,"%d", pedido.getQtdProduto()));
         holder.preco_total.setText(String.format(Locale.US,"%.2f", pedido.getValorTotal()));
-        holder.preco_individual.setText(String.format(Locale.US,"%.2f", pedido.getValorTotal()));   // substituir pelo valor individual
+        holder.preco_individual.setText(String.format(Locale.US,"%.2f", pedido.getValorPagar()));
     }
 
     @Override

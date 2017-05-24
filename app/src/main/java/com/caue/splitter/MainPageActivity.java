@@ -349,7 +349,7 @@ public class MainPageActivity extends AppCompatActivity
                         checkin.setUsuario(usuario);
                         checkin.getMesa().setQrCode(qrCodeResult);
                         checkin.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
-                        checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
+                        checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,qrCodeResult.length()));
 
                         if(usuario != null){
                             Log.d("qrCodeRead"," qrCode" + checkin.getMesa().getQrCode());
@@ -361,7 +361,7 @@ public class MainPageActivity extends AppCompatActivity
                             Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
                         }
                     } catch(Exception ex) {
-                        Log.e(TAG, "Erro ao transformar codigo qr em checkin");
+                        Log.e(TAG, "Erro ao transformar codigo qr em checkin: " + ex.getMessage());
                     }
 
 
@@ -404,6 +404,9 @@ public class MainPageActivity extends AppCompatActivity
                     break;
                 case "MesaNaoEncontrada":
                     Toast.makeText(this, "Mesa inexistente", Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    Toast.makeText(this, "Erro desconhecido", Toast.LENGTH_LONG).show();
                     break;
 
             }

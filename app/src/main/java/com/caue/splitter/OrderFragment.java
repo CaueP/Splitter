@@ -78,7 +78,7 @@ public class OrderFragment extends Fragment {
                 mOrderAdapter = null;
             }
             if (checkin != null) {
-                conta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda());
+                conta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), checkin.getMesa().getNrMesa());
                 conta.consultar(this);
             }
         } else{
@@ -118,12 +118,12 @@ public class OrderFragment extends Fragment {
         if(contaResposta != null) {
             conta = contaResposta;
             setDataRecyclerViewer();
-            tvTotalConta.setText("R$ " + String.format(Locale.US,"%.2f", conta.getTotal()));
+            tvTotalConta.setText("R$ " + String.format(Locale.US,"%.2f", conta.getTotalIndividual()));
         }
     }
 
     private void closeBill() {
-        Conta fecharConta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda());
+        Conta fecharConta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), checkin.getMesa().getNrMesa());
         fecharConta.fechar(this);
     }
 
@@ -131,8 +131,8 @@ public class OrderFragment extends Fragment {
         if(contaFechada != null) {
             conta = contaFechada;
             setDataRecyclerViewer();
-            Log.d(TAG, "Total: " + conta.getTotal());
-            tvTotalConta.setText("R$ " + String.format(Locale.US, "%.2f", conta.getTotal()));
+            Log.d(TAG, "Total: " + conta.getTotalMesa());
+            tvTotalConta.setText("R$ " + String.format(Locale.US, "%.2f", conta.getTotalIndividual()));
             mListener.onCloseBillClicked(contaFechada);
         }
     }

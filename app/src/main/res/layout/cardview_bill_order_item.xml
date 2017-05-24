@@ -37,7 +37,6 @@
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -56,6 +55,8 @@
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="5"
@@ -63,10 +64,9 @@
                     android:textColor="@android:color/black"
                     android:textSize="13sp"
                     card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent"
-                    card_view:layout_constraintVertical_bias="0.0"
                     card_view:layout_constraintLeft_toRightOf="@+id/txt_nome_produto"
-                    android:layout_marginLeft="8dp" />
+                    card_view:layout_constraintTop_toTopOf="parent"
+                    card_view:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/txt_preco_individual"

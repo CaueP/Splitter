@@ -76,5 +76,22 @@
     <string name="msg_invalid_dexp">Invalid expiration date</string>
     <string name="msg_invalid_name">Invalid name</string>
     <string name="msg_invalid_card_number">Invalid card number</string>
+    <string name="order_status_waiting">On queue</string>
+    <string name="order_status_delivered">Delivered</string>
+    <string name="order_status_canceled">Canceled</string>
+    <string name="order_status_done">Ready for delivery</string>
+    <string name="txt_btn_pay">Pay</string>
+    <string name="txt_label_total_indiv">Your total:</string>
+    <string name="txt_btn_cancel_order">Cancel order</string>
+    <string name="txt_label_card_number">Card Number</string>
+    <string name="txt_label_holder_name">Card holder name</string>
+    <string name="txt_label_card_cvc">CVC</string>
+    <string name="label_product_name">Product Name</string>
+    <string name="label_product_qty">Qty</string>
+    <string name="label_product_total_table">Table total</string>
+    <string name="label_product_total_person">Your total</string>
+    <string name="txt_hint_card_expiration_date">Expiration date</string>
+    <string name="msg_txt_bill_paid_success">Bill payment registered succesfully</string>
+    <string name="msg_txt_bill_paid_failed">Bill payment failed. Try again</string>
 
 </resources>

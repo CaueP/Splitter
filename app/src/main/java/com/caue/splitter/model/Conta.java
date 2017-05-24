@@ -3,7 +3,6 @@ package com.caue.splitter.model;
 import android.util.Log;
 
 import com.caue.splitter.BillPaymentFragment;
-import com.caue.splitter.CheckedInActivity;
 import com.caue.splitter.OrderFragment;
 import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.model.services.ContaClient;
@@ -26,21 +25,34 @@ public class Conta implements Serializable {
 
     private String codEstabelecimento;
     private int codComanda;
+    private int nrMesa;
 
     @Expose
-    @SerializedName("total")
-    private float total;
+    @SerializedName("total_mesa")
+    private float totalMesa;
+
+    @Expose
+    @SerializedName("total_individual")
+    private float totalIndividual;
 
     @Expose
     @SerializedName("pedidos")
     private ArrayList<Pedido> pedidos;
 
-    public float getTotal() {
-        return total;
+
+    // construtor
+    public Conta(String codEstabelecimento, int codComanda, int nrMesa){
+        this.codEstabelecimento = codEstabelecimento;
+        this.codComanda = codComanda;
+        this.nrMesa = nrMesa;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
+    public float getTotalMesa() {
+        return totalMesa;
+    }
+
+    public void setTotalMesa(float totalMesa) {
+        this.totalMesa = totalMesa;
     }
 
     public ArrayList<Pedido> getPedidos() {
@@ -51,14 +63,17 @@ public class Conta implements Serializable {
         this.pedidos = pedidos;
     }
 
-    // construtor
-    public Conta(String codEstabelecimento, int codComanda){
-        this.codEstabelecimento = codEstabelecimento;
-        this.codComanda = codComanda;
+    public float getTotalIndividual() {
+        return totalIndividual;
     }
 
+    public void setTotalIndividual(float totalIndividual) {
+        this.totalIndividual = totalIndividual;
+    }
+
+
     /**
-     * Consultar os pedidos e o total de uma comanda
+     * Consultar os pedidos e o totalMesa de uma comanda
      * @param fragment activity que receberá a resposta da REST API
      */
     public void consultar(final OrderFragment fragment) {
@@ -140,19 +155,19 @@ public class Conta implements Serializable {
     public void pagar(final BillPaymentFragment fragment, Cartao cartao) {
         Log.d("Pedido", "Realizar pedido");
         ContaClient service = ServiceGenerator.createService(ContaClient.class);
-        Call<Conta> contaCall = service.consultarConta(this.codEstabelecimento, this.codComanda);
+        Call<Pagamento> pagarContaCall = service.pagarConta(this.nrMesa, this.codComanda);
 
-        Callback<Conta> consultarContaCallback = new Callback<Conta>() {
+        Callback<Pagamento> pagarContaCallback = new Callback<Pagamento>() {
             @Override
-            public void onResponse(Call<Conta> call, Response<Conta> response) {
-                Conta contaResposta;
+            public void onResponse(Call<Pagamento> call, Response<Pagamento> response) {
+                Pagamento respostaPagamento;
                 Log.d("onResponse", "entered in onResponse - Pedido");
                 if (response.isSuccessful()) {
                     Log.d("onResponse", "isSuccessful");
                     Log.d("onResponse", "Body: " + response.body());
-                    contaResposta = response.body();
+                    respostaPagamento = response.body();
                     //Log.d("resposta Checkin", "isSucesso: " + Boolean.toString(resposta.isSucesso()));
-                    fragment.responsePagarContaReceived(contaResposta);
+                    fragment.responsePagarContaReceived(respostaPagamento);
                 } else {
                     Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
                     fragment.responsePagarContaReceived(null);
@@ -160,14 +175,14 @@ public class Conta implements Serializable {
             }
 
             @Override
-            public void onFailure(Call<Conta> call, Throwable t) {
+            public void onFailure(Call<Pagamento> call, Throwable t) {
                 Log.d("onFailure", "Ocorreu um erro ao chamar a API - Pedido");
                 fragment.responsePagarContaReceived(null);
             }
         };
 
         // call
-        contaCall.enqueue(consultarContaCallback);
+        pagarContaCall.enqueue(pagarContaCallback);
     }
 
 

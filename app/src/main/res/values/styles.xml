@@ -14,7 +14,7 @@
     </style>
 
 
-    <!-- Red Theme-->
+    <!-- PurpleTheme-->
     <!--<style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
     <!-- without action bar-->
     <style name="PurpleTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -26,5 +26,22 @@
         <item name="colorPrimaryDark">@color/colorPurpleDark</item>
         <item name="colorAccent">@color/colorPurpleAccent</item>
     </style>
+
+    <!-- Red Theme-->
+    <!--<style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
+    <!-- without action bar-->
+    <style name="RedTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- <item name="colorPrimary">@color/colorPrimaryRed</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
+        <item name="colorAccent">@color/colorAccentRed</item>
+        <item name="android:textColor">@color/textColorRed</item> -->
+        <item name="colorPrimary">@color/colorPrimaryRed</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
+        <item name="colorAccent">@color/colorAccentRed</item>
+        <item name="colorButtonNormal">@color/colorPrimaryRed</item>
+        <item name="android:colorButtonNormal">@color/colorPrimaryRed</item>
+    </style>
+
+
 
 </resources>

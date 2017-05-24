@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="1"
-    android:padding="2dp"
-    android:background="#FFE8E8E8">
+    android:padding="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -21,7 +20,7 @@
                 card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="@dimen/card_margin"
                 tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="16dp">>
+                tools:layout_editor_absoluteY="0dp">>
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -49,7 +48,7 @@
                     <TextView
                         android:id="@+id/txt_descricao_produto"
                         android:layout_width="0dp"
-                        android:layout_height="37dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="20dp"
                         android:layout_marginStart="72dp"
                         android:layout_marginTop="8dp"
@@ -58,7 +57,9 @@
                         android:textSize="16sp"
                         card_view:layout_constraintLeft_toLeftOf="parent"
                         card_view:layout_constraintRight_toRightOf="parent"
-                        card_view:layout_constraintTop_toBottomOf="@+id/txt_nome_produto" />
+                        card_view:layout_constraintTop_toBottomOf="@+id/txt_nome_produto"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="8dp" />
 
                     <ImageView
                         android:id="@+id/image_foto_produto"
