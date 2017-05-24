@@ -117,9 +117,9 @@ public class Conta implements Serializable {
     public void fechar(final OrderFragment fragment) {
         Log.d("Conta", "Fechar conta");
         ContaClient service = ServiceGenerator.createService(ContaClient.class);
-        Call<Conta> contaCall = service.consultarConta(this.codEstabelecimento, this.codComanda);
+        Call<Conta> fecharContaCall = service.fecharConta(this.codEstabelecimento, this.nrMesa, this.codComanda);
 
-        Callback<Conta> consultarContaCallback = new Callback<Conta>() {
+        Callback<Conta> fecharContaCallback = new Callback<Conta>() {
             @Override
             public void onResponse(Call<Conta> call, Response<Conta> response) {
                 Conta contaResposta;
@@ -145,7 +145,7 @@ public class Conta implements Serializable {
         };
 
         // call
-        contaCall.enqueue(consultarContaCallback);
+        fecharContaCall.enqueue(fecharContaCallback);
     }
 
     /**

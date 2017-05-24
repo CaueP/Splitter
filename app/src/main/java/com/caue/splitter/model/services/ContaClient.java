@@ -16,6 +16,10 @@ public interface ContaClient {
     @GET("conta/{codEstabelecimento}/{codComanda}")
     Call<Conta> consultarConta(@Path("codEstabelecimento") String codEstabelecimento, @Path("codComanda") int codComanda);
 
+    // GET para Fechar a comanda
+    @GET("conta/{codEstabelecimento}/{nrMesa}/{codComanda}")
+    Call<Conta> fecharConta(@Path("codEstabelecimento") String codEstabelecimento, @Path("nrMesa") int nrMesa,@Path("codComanda") int codComanda);
+
     // POST para registrar o pagamento da conta
     @POST("conta/pagar/{nrMesa}/{codComanda}")
     Call<Pagamento> pagarConta(@Path("nrMesa") int nrMesa, @Path("codComanda") int codComanda);
