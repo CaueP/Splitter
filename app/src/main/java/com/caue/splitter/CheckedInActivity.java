@@ -224,18 +224,18 @@ public class CheckedInActivity extends AppCompatActivity
                         .addToBackStack(null)        // add to back stack
                         .commit();
                 break;
-            case R.id.close_bill:
-                Toast.makeText(CheckedInActivity.this, R.string.close_bill, Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
-                //startActivity(intent);
-                break;
-            case R.id.about:
-                Toast.makeText(CheckedInActivity.this, R.string.about_splitter, Toast.LENGTH_SHORT).show();
-                //getSupportFragmentManager().beginTransaction()
-                //       .replace(R.id.container, AboutMeFragment.newInstance(R.id.about_me_fragment))
-                //     .addToBackStack(null)
-                //   .commit();
-                break;
+//            case R.id.close_bill:
+//                Toast.makeText(CheckedInActivity.this, R.string.close_bill, Toast.LENGTH_SHORT).show();
+//                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
+//                //startActivity(intent);
+//                break;
+//            case R.id.about:
+//                Toast.makeText(CheckedInActivity.this, R.string.about_splitter, Toast.LENGTH_SHORT).show();
+//                //getSupportFragmentManager().beginTransaction()
+//                //       .replace(R.id.container, AboutMeFragment.newInstance(R.id.about_me_fragment))
+//                //     .addToBackStack(null)
+//                //   .commit();
+//                break;
             default:
                 Toast.makeText(CheckedInActivity.this, "Option not found", Toast.LENGTH_SHORT).show();
         }

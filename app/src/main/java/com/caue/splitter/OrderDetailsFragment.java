@@ -119,7 +119,7 @@ public class OrderDetailsFragment extends Fragment {
 
         // using Resources to set values of a resource string
         Resources res = getResources();
-        String priceText = res.getString(R.string.product_price, pedido.getValorTotal());
+        String priceText = res.getString(R.string.product_price, pedido.getValorPagar());
         vPreco.setText(priceText);
     }
 }

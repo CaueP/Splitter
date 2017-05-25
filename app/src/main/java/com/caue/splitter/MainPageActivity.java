@@ -349,7 +349,7 @@ public class MainPageActivity extends AppCompatActivity
                         checkin.setUsuario(usuario);
                         checkin.getMesa().setQrCode(qrCodeResult);
                         checkin.getMesa().setNrMesa(Integer.parseInt(qrCodeResult.substring(1,3)));
-                        checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,qrCodeResult.length()));
+                        checkin.getMesa().setCodEstabelecimento(qrCodeResult.substring(3,12));
 
                         if(usuario != null){
                             Log.d("qrCodeRead"," qrCode" + checkin.getMesa().getQrCode());
