@@ -9,7 +9,7 @@ The app applies the following technologies:
 - FirebaseAuth
 - Gson
 - Glide
-- QRCode Reader and Generator
+- QRCode Reader and Generator (ZXing)
 - Retrofit 2
 - RecyclerView
 - Cardviews
