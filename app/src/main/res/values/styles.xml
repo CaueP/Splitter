@@ -42,6 +42,24 @@
         <item name="android:colorButtonNormal">@color/colorPrimaryRed</item>
     </style>
 
+    <style name="redButtonTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimaryRed</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
+        <item name="colorAccent">@color/colorAccentRed</item>
+        <item name="android:colorButtonNormal">@color/colorPrimaryRed</item>
+        <item name="android:button">@color/colorPrimaryRed</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="RedButton" parent="android:Widget.Button">
+        <item name="background">@drawable/red_button</item>
+        <item name="focusable">true</item>
+        <item name="clickable">true</item>
+        <item name="textAppearance">?attr/textAppearanceSmallInverse</item>
+        <item name="textColor">@color/primary_text_light</item>
+        <item name="gravity">center_vertical|center_horizontal</item>
+
+    </style>
 
 
 </resources>
