@@ -93,5 +93,6 @@
     <string name="txt_hint_card_expiration_date">Expiration date</string>
     <string name="msg_txt_bill_paid_success">Bill payment registered succesfully</string>
     <string name="msg_txt_bill_paid_failed">Bill payment failed. Try again</string>
+    <string name="card_information">Card information</string>
 
 </resources>

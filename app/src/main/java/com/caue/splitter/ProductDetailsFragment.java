@@ -41,7 +41,7 @@ public class ProductDetailsFragment extends Fragment implements AdapterView.OnIt
     Spinner vQuantidade;
     TextView vTotal;
     Button vOrder;
-    Button vCancel;
+    //Button vCancel;
 
     // Dado recebido da activity
     Produto produto = null;
@@ -78,7 +78,7 @@ public class ProductDetailsFragment extends Fragment implements AdapterView.OnIt
         vQuantidade = (Spinner) rootView.findViewById(R.id.spn_qtd_produto);
         vQuantidade.setOnItemSelectedListener(this);
         vOrder = (Button) rootView.findViewById(R.id.btn_send_order);
-        vCancel = (Button) rootView.findViewById(R.id.btn_cancel_order);
+        //vCancel = (Button) rootView.findViewById(R.id.btn_cancel_order);
         vTotal = (TextView) rootView.findViewById(R.id.order_total);
 
         final Bundle bundle = getArguments();
@@ -115,13 +115,13 @@ public class ProductDetailsFragment extends Fragment implements AdapterView.OnIt
             }
         });
 
-        vCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Botao cancelar clicado");
-                getFragmentManager().popBackStack();
-            }
-        });
+//        vCancel.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "Botao cancelar clicado");
+//                getFragmentManager().popBackStack();
+//            }
+//        });
 
         return rootView;
     }

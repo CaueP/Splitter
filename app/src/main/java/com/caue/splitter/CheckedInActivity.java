@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.MainThread;
-import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -14,27 +13,22 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Conta;
 import com.caue.splitter.model.Pedido;
 import com.caue.splitter.model.Produto;
 import com.caue.splitter.model.Usuario;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -65,7 +59,7 @@ public class CheckedInActivity extends AppCompatActivity
     ProgressBar progressBarLoading;
 
     @BindView(android.R.id.content)
-    View mRootView;
+    View mContentView;
 
     Fragment mContent;      // Fragment object that will receive the current Fragment on the screen
     // in order to be restored when the activity is destroyed, after
@@ -82,12 +76,29 @@ public class CheckedInActivity extends AppCompatActivity
     // Fragment IDs
     private static final String CHECKIN_FRAGMENT_TAG = "checkin_fragment";
 
+    /**
+     * The system "short" animation time duration, in milliseconds. This duration is ideal for
+     * subtle animations or animations that occur very frequently.
+     */
+    private int mShortAnimationDuration;
+
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_checkedin);
-        ButterKnife.bind(this);
+        mContentView = findViewById(android.R.id.content);
+        // Initially hide the content view.
+        //mContentView.setVisibility(View.GONE);
+
+        // Retrieve and cache the system's default "short" animation time.
+//        mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
+//
+//        Slide slide = new Slide(Gravity.RIGHT);
+//        getWindow().setReturnTransition(slide);
+//
+//
+//        setContentView(R.layout.activity_checkedin);
+//        ButterKnife.bind(this);
 
         // Inicializando a Toolbar and a configurando como a ActionBar
         toolbar = (Toolbar) findViewById(R.id.checkedin_page_toolbar);
@@ -146,13 +157,13 @@ public class CheckedInActivity extends AppCompatActivity
 
     @MainThread
     private void showSnackbar(@StringRes int errorMessageRes) {
-        Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContentView, errorMessageRes, Snackbar.LENGTH_LONG)
                 .show();
     }
 
     @MainThread
     private void showSnackbarMessage(String message) {
-        Snackbar.make(mRootView, message, Snackbar.LENGTH_LONG)
+        Snackbar.make(mContentView, message, Snackbar.LENGTH_LONG)
                 .show();
     }
 
@@ -205,6 +216,7 @@ public class CheckedInActivity extends AppCompatActivity
                 }
                 getSupportFragmentManager()
                         .beginTransaction()
+                        //.setCustomAnimations(R.anim.move_up)
                         .replace(R.id.content_frame, menuFragment)
                         .addToBackStack(null)        // add to back stack
                         .commit();
