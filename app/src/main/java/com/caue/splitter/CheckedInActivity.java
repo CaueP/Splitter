@@ -97,15 +97,15 @@ public class CheckedInActivity extends AppCompatActivity
 //        getWindow().setReturnTransition(slide);
 //
 //
-//        setContentView(R.layout.activity_checkedin);
-//        ButterKnife.bind(this);
+        setContentView(R.layout.activity_checkedin);
+        ButterKnife.bind(this);
 
         // Inicializando a Toolbar and a configurando como a ActionBar
         toolbar = (Toolbar) findViewById(R.id.checkedin_page_toolbar);
         setSupportActionBar(toolbar);
 
         // Inicializando a NavigationView
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view_checkedin);
         navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
 
         // Inicializando Drawer Layout
@@ -153,6 +153,7 @@ public class CheckedInActivity extends AppCompatActivity
 
         Produto produto = new Produto();
         produto.obterCardapio(checkin.getMesa().getCodEstabelecimento(), this);
+        progressBarLoading.setVisibility(View.INVISIBLE);
     }
 
     @MainThread
@@ -236,11 +237,15 @@ public class CheckedInActivity extends AppCompatActivity
                         .addToBackStack(null)        // add to back stack
                         .commit();
                 break;
-//            case R.id.close_bill:
-//                Toast.makeText(CheckedInActivity.this, R.string.close_bill, Toast.LENGTH_SHORT).show();
-//                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
-//                //startActivity(intent);
-//                break;
+            case R.id.participants:
+                Toast.makeText(CheckedInActivity.this, R.string.participants_menu, Toast.LENGTH_SHORT).show();
+                Fragment participantsFragment = new ParticipantsFragment();
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.content_frame, participantsFragment)
+                        .addToBackStack(null)        // add to back stack
+                        .commit();
+                break;
 //            case R.id.about:
 //                Toast.makeText(CheckedInActivity.this, R.string.about_splitter, Toast.LENGTH_SHORT).show();
 //                //getSupportFragmentManager().beginTransaction()

@@ -95,4 +95,5 @@
     <string name="msg_txt_bill_paid_success">Pagamento registrado com sucesso</string>
     <string name="msg_txt_bill_paid_failed">Falha ao registrar pagamento. Tente novamente</string>
     <string name="card_information">Dados do cartão</string>
+    <string name="participants_menu">Participantes</string>
 </resources>

@@ -8,8 +8,8 @@
     <!--Color Schema: http://paletton.com/#uid=54R0u0kpuz3fsLKkOE4vTvgwOnA -->
     <color name="colorPurpleBase">#9c27b0</color>
     <color name="colorPurplePrimary">#C671D5</color>
-    <color name="colorPurpleDark">#6A037C</color>
-    <color name="colorPurpleAccent">#6333B6</color>
+    <color name="colorPurpleDark">#6a037c</color>
+    <color name="colorPurpleAccent">#6333b6</color>
     <color name="textColorWhite">#FFF</color>
     <color name="colorDarkGray">#505050</color>
     <color name="colorBlack">#000</color>
@@ -24,5 +24,17 @@
     <color name="colorAccentRed">#D50000</color>
     <color name="textColorRed">#F8F8F8</color>
 
+
+    <!-- Other colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="gray">#999999</color>
+    <color name="gray_light">#CCCCCC</color>
+    <color name="gray_very_light">#e0e0e0</color>
+    <color name="gray_deep">#666666</color>
+    <color name="black_overlay">#66000000</color>
+    <color name="activity_background">#EEEEEE</color>
+    <color name="transparent">#00000000</color>
+    <color name="main_background">#eeeeee</color>
 
 </resources>

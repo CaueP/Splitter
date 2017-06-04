@@ -14,6 +14,12 @@
             android:checked="false"
             android:icon="@drawable/ic_orders"
             android:title="@string/orders_menu" />
+
+        <item
+            android:id="@+id/participants"
+            android:checked="false"
+            android:icon="@drawable/ic_people_white_24dp"
+            android:title="@string/participants_menu" />
         <!--
                 <item
                     android:id="@+id/close_bill"
