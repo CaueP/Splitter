@@ -13,14 +13,34 @@ import java.io.Serializable;
  */
 public class Participante implements Serializable{
 
+
     @Expose
     @SerializedName("nome")
     private String nome;
 
     @Expose
+    @SerializedName("email")
+    private String email;
+
+    @Expose
     @SerializedName("url_foto")
     private String urlFoto;
 
+    @Expose
+    @SerializedName("comanda")
+    private String comanda;
+
+    /**
+     * Construtor
+     * @param nome
+     * @param urlFoto
+     */
+    public Participante(String nome, String urlFoto) {
+        this.nome = nome;
+        this.urlFoto = urlFoto;
+    }
+
+    // getters e setter
     public String getNome() {
         return nome;
     }
@@ -29,8 +49,11 @@ public class Participante implements Serializable{
         return urlFoto;
     }
 
-    public Participante(String nome, String urlFoto) {
-        this.nome = nome;
-        this.urlFoto = urlFoto;
+    public String getEmail() {
+        return email;
+    }
+
+    public String getComanda() {
+        return comanda;
     }
 }

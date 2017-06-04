@@ -63,17 +63,8 @@ public class Mesa implements Serializable {
     public String getQrCodeOcupado() {
         return qrCodeOcupado;
     }
-
-    public void setQrCodeOcupado(String qrCodeOcupado) {
-        this.qrCodeOcupado = qrCodeOcupado;
-    }
-
-
     public String getUsuarioResponsavel() {
         return usuarioResponsavel;
     }
 
-    public void setUsuarioResponsavel(String usuarioResponsavel) {
-        this.usuarioResponsavel = usuarioResponsavel;
-    }
 }

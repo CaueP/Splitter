@@ -21,6 +21,7 @@ public class Constants {
         public static final String PRODUTO_DATA = "ProdutoData";
         public static final String PEDIDOS_DATA = "PedidosData";
         public static final String CONTA_DATA = "ContaData";
+        public static final String MESA_DATA = "MesaData";
     }
 
 

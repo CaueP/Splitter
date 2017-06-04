@@ -51,6 +51,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
         private ImageView foto;
         private TextView nome;
         private TextView nrComanda;
+        private TextView email;
 
         private Holder(View itemView) {
             super(itemView);
@@ -58,6 +59,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
             //find views
             foto = (ImageView) itemView.findViewById(R.id.participant_profile_picture);
             nome = (TextView) itemView.findViewById(R.id.tv_participant_name);
+            email = (TextView) itemView.findViewById(R.id.tv_participant_email);
             nrComanda = (TextView) itemView.findViewById(R.id.tv_participant_account_number);
         }
 
@@ -94,7 +96,8 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
                     .crossFade()
                     .into(holder.foto);
 
-        holder.nrComanda.setText("232");
+        holder.nrComanda.setText(participante.getComanda());
+        holder.email.setText(participante.getEmail());
 
         holder.foto.startAnimation(aa);
     }
@@ -102,5 +105,10 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     @Override
     public int getItemCount() {
         return mParticipantes.size();
+    }
+
+    public void setItems(ArrayList<Participante> novaLista) {
+        this.mParticipantes = novaLista;
+        notifyDataSetChanged();
     }
 }

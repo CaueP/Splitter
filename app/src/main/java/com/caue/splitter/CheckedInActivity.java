@@ -226,7 +226,7 @@ public class CheckedInActivity extends AppCompatActivity
                 Toast.makeText(CheckedInActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();
 
                 Fragment orderFragment = new OrderFragment();
-                if(checkin != null){   // se o cardapio foi baixado com sucesso
+                if(checkin != null){
                     Bundle orderBundle = new Bundle();
                     orderBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkin);
                     orderFragment.setArguments(orderBundle);
@@ -240,6 +240,11 @@ public class CheckedInActivity extends AppCompatActivity
             case R.id.participants:
                 Toast.makeText(CheckedInActivity.this, R.string.participants_menu, Toast.LENGTH_SHORT).show();
                 Fragment participantsFragment = new ParticipantsFragment();
+                if(checkin != null){
+                    Bundle participantBundle = new Bundle();
+                    participantBundle.putSerializable(Constants.KEY.MESA_DATA, checkin.getMesa());
+                    participantsFragment.setArguments(participantBundle);
+                }
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.content_frame, participantsFragment)
