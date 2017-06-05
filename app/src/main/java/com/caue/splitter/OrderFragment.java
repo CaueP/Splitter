@@ -25,7 +25,7 @@ import java.util.Locale;
 /**
  * @author Caue Polimanti
  * @version 2.0
- * Created on 5/20/2017.
+ *          Created on 5/20/2017.
  */
 public class OrderFragment extends Fragment {
     private static final String TAG = "OrderFragment";
@@ -46,19 +46,19 @@ public class OrderFragment extends Fragment {
     OrderFragment.OnListItemSelectedListener mListener;
 
     @Override
-    public void onAttach(Context context){
-        Log.d("OrderFragment","Entered in onAttach");
+    public void onAttach(Context context) {
+        Log.d("OrderFragment", "Entered in onAttach");
         super.onAttach(context);
         try {
             mListener = (OrderFragment.OnListItemSelectedListener) getActivity();
-        }catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             throw new ClassCastException(getActivity().toString() +
                     "must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_checkedin_orders, container, false);
 
 
@@ -67,21 +67,25 @@ public class OrderFragment extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(
-                getActivity().getApplicationContext(),LinearLayoutManager.VERTICAL,false));
+                getActivity().getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         tvTotalConta = (TextView) rootView.findViewById(R.id.txt_total_conta);
         btnFecharConta = (Button) rootView.findViewById(R.id.btn_fechar_conta);
 
         Bundle bundle = getArguments();
-        if(bundle != null) {
+        if (bundle != null) {
             checkin = (Checkin) bundle.getSerializable(Constants.KEY.CHECKIN_DATA);
-            if(mOrderAdapter != null){
+            if (mOrderAdapter != null) {
                 mOrderAdapter = null;
             }
             if (checkin != null) {
-                conta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), checkin.getMesa().getNrMesa());
-                conta.consultar(this);
+                if (conta == null) {
+                    conta = new Conta(checkin.getMesa().getCodEstabelecimento(), checkin.getComanda().getCodComanda(), checkin.getMesa().getNrMesa());
+                    conta.consultar(this);
+                } else {
+                    populateViews();
+                }
             }
-        } else{
+        } else {
             Log.d(TAG, "Bundle com lista de produtos vazia");
         }
 
@@ -89,9 +93,9 @@ public class OrderFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                try{
+                try {
                     closeBill();
-                } catch(Exception exc) {
+                } catch (Exception exc) {
                     Log.d(TAG, exc.toString());
                 }
             }
@@ -104,7 +108,7 @@ public class OrderFragment extends Fragment {
     private void setDataRecyclerViewer() {
         mOrderAdapter = new OrderAdapter(conta.getPedidos());
         mRecyclerView.setAdapter(mOrderAdapter);
-        mOrderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener(){
+        mOrderAdapter.setOnItemClickListener(new OrderAdapter.OnItemClickListener() {
 
             @Override
             public void onItemClick(int itemPosition) {
@@ -114,12 +118,16 @@ public class OrderFragment extends Fragment {
         });
     }
 
-    public void responseConsultarContaReceived (Conta contaResposta) {
-        if(contaResposta != null) {
+    public void responseConsultarContaReceived(Conta contaResposta) {
+        if (contaResposta != null) {
             conta = contaResposta;
-            setDataRecyclerViewer();
-            tvTotalConta.setText("R$ " + String.format(Locale.US,"%.2f", conta.getTotalIndividual()));
+            populateViews();
         }
+    }
+
+    private void populateViews() {
+        setDataRecyclerViewer();
+        tvTotalConta.setText("R$ " + String.format(Locale.US, "%.2f", conta.getTotalIndividual()));
     }
 
     private void closeBill() {
@@ -128,7 +136,7 @@ public class OrderFragment extends Fragment {
     }
 
     public void responseFecharContaReceived(Conta contaFechada) {
-        if(contaFechada != null) {
+        if (contaFechada != null) {
             conta = contaFechada;
             setDataRecyclerViewer();
             Log.d(TAG, "Total: " + conta.getTotalMesa());
@@ -143,12 +151,14 @@ public class OrderFragment extends Fragment {
     public interface OnListItemSelectedListener {
         /**
          * Função para enviar o pedido clicado à Activity
+         *
          * @param itemPosition Posição do produto na lista
          */
         public void onPedidoSelected(Conta conta, int itemPosition);
 
         /**
          * Função para enviar a conta fechada à activity
+         *
          * @param contaFechada Conta fechada recebida
          */
         public void onCloseBillClicked(Conta contaFechada);
