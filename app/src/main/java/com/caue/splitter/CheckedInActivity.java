@@ -279,6 +279,7 @@ public class CheckedInActivity extends AppCompatActivity
         cardapio = cardapioRecebido;
     }
 
+    Snackbar snackBarMessage;
     /**
      * Callback de resposta para a realização de pedido
      */
@@ -291,6 +292,19 @@ public class CheckedInActivity extends AppCompatActivity
             msgResponse = res.getString(R.string.msg_product_order_failed);
         }
         showSnackbarMessage(msgResponse);
+
+        snackBarMessage = Snackbar.make(mContentView, msgResponse, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.ok_string, new MyOKListener());
+        snackBarMessage.setActionTextColor(getResources().getColor(R.color.white));
+
+        snackBarMessage.show();
+    }
+    public class MyOKListener implements View.OnClickListener{
+        @Override
+        public void onClick(View v) {
+            snackBarMessage.dismiss();
+            // Code to undo the user's last action
+        }
     }
 
     /*

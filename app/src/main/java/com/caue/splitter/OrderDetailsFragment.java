@@ -56,7 +56,7 @@ public class OrderDetailsFragment extends Fragment {
         vObservacao = (TextView) rootView.findViewById(R.id.txt_observacao_pedido);
         txtStatusPedido = (TextView) rootView.findViewById(R.id.txt_status_pedido);
 
-        btnCancelOrder = (Button) rootView.findViewById(R.id.btn_cancelar);
+//        btnCancelOrder = (Button) rootView.findViewById(R.id.btn_cancelar);
 
         final Bundle bundle = getArguments();
         if(bundle != null) {
@@ -66,16 +66,16 @@ public class OrderDetailsFragment extends Fragment {
             Log.d(TAG, "Bundle com lista de pedidos vazia");
         }
 
-        btnCancelOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                try{
-                } catch(Exception exc) {
-                    Log.d(TAG, exc.toString());
-                }
-            }
-        });
+//        btnCancelOrder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                try{
+//                } catch(Exception exc) {
+//                    Log.d(TAG, exc.toString());
+//                }
+//            }
+//        });
 
         return rootView;
     }
