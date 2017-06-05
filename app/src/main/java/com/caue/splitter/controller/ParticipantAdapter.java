@@ -87,7 +87,7 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
         holder.nome.setText(participante.getNome());
 
         String imagemURL = participante.getUrlFoto();
-        if (imagemURL != null)
+        if (imagemURL != null && imagemURL.length() > 0)
             Glide.with(view.getContext())
                     .load(imagemURL)
                     //.bitmapTransform(new VignetteFilterTransformation(mContext, new PointF(0.5f, 0.5f),new float[] { 0.0f, 0.0f, 0.0f }, 0f, 0.75f))
