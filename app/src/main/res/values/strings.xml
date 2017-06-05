@@ -98,5 +98,6 @@
     <string name="participant_name">Participant name</string>
     <string name="participant_email">participant_email</string>
     <string name="participant_account_number">Participant bill number</string>
+    <string name="label_search">Search</string>
 
 </resources>

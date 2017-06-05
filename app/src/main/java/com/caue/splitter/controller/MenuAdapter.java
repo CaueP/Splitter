@@ -8,6 +8,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -98,7 +101,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
 
         Produto produto = mMenu.get(position);
 
-        //Log.d("JSON (" + position + "): \n", Imovel.imovelToJson(imovel));
+        // setting animation
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.anim_recycler_item_show);
+        view.startAnimation(animation);
+
+        AlphaAnimation aa1 = new AlphaAnimation(1.0f, 0.1f);
+        aa1.setDuration(400);
+        holder.foto.startAnimation(aa1);
+
+        AlphaAnimation aa = new AlphaAnimation(0.1f, 1.0f);
+        aa.setDuration(400);
+
 
         // set values
         String imagemURL = produto.getUrlImagem();

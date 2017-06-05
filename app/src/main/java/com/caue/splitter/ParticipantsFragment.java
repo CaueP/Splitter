@@ -1,9 +1,6 @@
 package com.caue.splitter;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,20 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.caue.splitter.controller.MenuAdapter;
 import com.caue.splitter.controller.ParticipantAdapter;
 import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Mesa;
 import com.caue.splitter.model.Participante;
-import com.caue.splitter.model.Produto;
-import com.caue.splitter.model.Usuario;
 import com.caue.splitter.model.services.MesaClient;
-import com.caue.splitter.model.services.UsuarioClient;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +26,7 @@ import retrofit2.Response;
 /**
  * @author Cauê Garcia Polimanti
  * @version 1.0
- *          Created on 6/4/2017.
+ * Created on 6/4/2017.
  */
 
 public class ParticipantsFragment extends Fragment {
