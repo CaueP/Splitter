@@ -48,7 +48,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
     @Override
     public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_menu_item, null, false);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_menu_item_2, parent, false);
 
         // set the Listener
         try {
@@ -133,7 +133,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.Holder> {
         holder.nome.setText(produto.getNome());
 
         String editDescription = produto.getDescricao();
-        if(editDescription.length() > 20) {
+        if(editDescription.length() > 30) {
             editDescription = editDescription.substring(0, 20);      // truncate the description
             editDescription = editDescription.concat("...");        // add reticences to the end
         }

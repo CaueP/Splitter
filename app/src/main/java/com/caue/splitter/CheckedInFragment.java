@@ -67,13 +67,13 @@ public class CheckedInFragment extends Fragment {
         usuario = (Usuario) getArguments().getSerializable(Constants.KEY.USER_DATA);
         checkinResponse = (Checkin) getArguments().getSerializable(Constants.KEY.CHECKIN_DATA);
 
-        placeName.setText("Bar");
+        placeName.setText(checkinResponse.getMesa().getCodEstabelecimento());
 
         Log.d(FRAGMENT_TAG, checkinResponse != null ? checkinResponse.toString() : "CheckinResponse == null");
 
         // Se houver qrCodeOcupado, gera o QRCode
         if( checkinResponse != null && checkinResponse.getMesa().getQrCodeOcupado() != null){
-            message.setText("Mostre o QR Code abaixo para seus amigos");
+            message.setText(R.string.msg_show_qrcode);
             MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
             try{
                 BitMatrix bitMatrix = multiFormatWriter.encode(checkinResponse.getMesa().getQrCodeOcupado(), BarcodeFormat.QR_CODE,200,200);

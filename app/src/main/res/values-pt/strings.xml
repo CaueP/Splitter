@@ -100,4 +100,7 @@
     <string name="participant_account_number">Número da conta</string>
     <string name="participant_email">Email</string>
     <string name="participant_name">Nome</string>
+    <string name="ok_string">OK</string>
+    <string name="txt_welcome_message">"Bem vindo ao "</string>
+    <string name="msg_show_qrcode">Mostre o QR Code abaixo para seus amigos</string>
 </resources>
