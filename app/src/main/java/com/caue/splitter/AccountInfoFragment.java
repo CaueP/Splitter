@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.caue.splitter.model.Usuario;
@@ -34,7 +35,7 @@ public class AccountInfoFragment extends Fragment{
     @BindView(R.id.user_profile_picture) ImageView userPicture;
     @BindView(R.id.edittext_user_reg_name) EditText name;
     @BindView(R.id.edittext_user_reg_email) EditText email;
-    @BindView(R.id.edittext_user_reg_pass) EditText password;
+//    @BindView(R.id.edittext_user_reg_pass) EditText password;
     @BindView(R.id.edittext_user_reg_phone) EditText phone;
     @BindView(R.id.edittext_user_reg_cpf) EditText cpf;
     @BindView(R.id.edittext_user_reg_dob) EditText dateOfBirth;
@@ -131,15 +132,21 @@ public class AccountInfoFragment extends Fragment{
             public void onClick(View view) {
                 Log.d("AccountInfoFragment", "Update Button Clicked");
 
-                Usuario updatedUser = usuario;
-                usuario.setNome(name.getText().toString().trim());
-                usuario.setCpf(Long.parseLong(cpf.getText().toString()));
-                usuario.setDtNascimento(dateOfBirth.getText().toString());
-                usuario.setEmail(email.getText().toString().trim());
-                usuario.setTelefone(Long.parseLong(phone.getText().toString()));
-                usuario.setSenha(password.getText().toString());
+                Usuario updatedUser = new Usuario(usuario);
+                updatedUser.setNome(name.getText().toString().trim());
+                updatedUser.setCpf(Long.parseLong(cpf.getText().toString()));
+                updatedUser.setDtNascimento(dateOfBirth.getText().toString());
+                updatedUser.setEmail(email.getText().toString().trim());
+                updatedUser.setTelefone(Long.parseLong(phone.getText().toString()));
+//                usuario.setSenha(password.getText().toString());
+                updatedUser.setSenha("");
 
-                mListener.OnUpdateButtonCliked(updatedUser);
+                if(updatedUser.equals(usuario)) {
+                    Toast.makeText(getContext(), R.string.msg_no_changes_user, Toast.LENGTH_LONG)
+                            .show();
+                } else {
+                    mListener.OnUpdateButtonCliked(updatedUser);
+                }
             }
         });
         return rootView;

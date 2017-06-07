@@ -23,8 +23,9 @@
             android:layout_height="56dp"
 
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/text_margin"
+            android:layout_marginEnd="@dimen/text_margin"
             android:contentDescription="@string/profile_picture_content_desc"
+            android:tint="@color/purpleBlueSecondaryText"
             android:src="@drawable/ic_user"
             />
 

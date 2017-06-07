@@ -21,20 +21,20 @@
         </activity>
         <!-- android:theme="@style/AppTheme"> -->
         <activity android:name=".LoginActivity"
-            android:theme="@style/PurpleTheme"/>
+            android:theme="@style/PurpleBlueTheme"/>
         <activity android:name=".SignedInActivity"
-            android:theme="@style/PurpleTheme"/>
+            android:theme="@style/PurpleBlueTheme"/>
         <activity android:name=".MainPageActivity"
-            android:theme="@style/PurpleTheme">
+            android:theme="@style/PurpleBlueTheme">
             <intent-filter>
                 <action android:name="android.intent.action.RUN" /> />
             </intent-filter>
         </activity>
         <activity android:name=".UserRegistrationActivity"
-            android:theme="@style/PurpleTheme"
+            android:theme="@style/PurpleBlueTheme"
             />
         <activity android:name=".CheckedInActivity"
-            android:theme="@style/PurpleTheme"
+            android:theme="@style/PurpleBlueTheme"
             />
     </application>
 

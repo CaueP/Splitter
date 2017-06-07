@@ -18,15 +18,25 @@
     <!--<style name="DarkRedTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
     <!-- without action bar-->
     <style name="PurpleTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- <item name="colorPrimary">@color/colorPrimaryRed</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDarkRed</item>
-        <item name="colorAccent">@color/colorAccentRed</item>
-        <item name="android:textColor">@color/textColorRed</item> -->
         <item name="colorPrimary">@color/colorPurplePrimary</item>
         <item name="colorPrimaryDark">@color/colorPurpleDark</item>
         <item name="colorAccent">@color/colorPurpleAccent</item>
         <item name="android:colorForeground">@color/colorPurpleAccent</item>
         <item name="android:navigationBarColor">@color/colorPurpleDark</item>
+    </style>
+
+    <!-- PurpleBlue Theme-->
+    <style name="PurpleBlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/purpleBluePrimary</item>
+        <item name="colorPrimaryDark">@color/purpleBluePrimaryDark</item>
+        <item name="colorAccent">@color/purpleBlueAccent</item>
+        <item name="android:textColorPrimary">@color/purpleBluePrimaryText</item>
+        <item name="android:textColorSecondary">@color/purpleBlueSecondaryText</item>
+        <item name="android:icon">@color/purpleBlueIcons</item>
+        <item name="android:divider">@color/purpleBlueDivider</item>
+
+        <item name="android:colorForeground">@color/purpleBlueAccent</item>
+        <item name="android:navigationBarColor">@color/purpleBluePrimaryText</item>
     </style>
 
     <!-- Red Theme-->

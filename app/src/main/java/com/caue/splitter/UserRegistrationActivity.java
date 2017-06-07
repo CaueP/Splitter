@@ -36,7 +36,7 @@ public class UserRegistrationActivity extends AppCompatActivity
 
     @BindView(R.id.edittext_user_reg_name) EditText name;
     @BindView(R.id.edittext_user_reg_email) EditText email;
-    @BindView(R.id.edittext_user_reg_pass) EditText password;
+//    @BindView(R.id.edittext_user_reg_pass) EditText password;
     @BindView(R.id.edittext_user_reg_phone) EditText phone;
     @BindView(R.id.edittext_user_reg_cpf) EditText cpf;
     @BindView(R.id.edittext_user_reg_dob) EditText dateOfBirth;
@@ -72,14 +72,20 @@ public class UserRegistrationActivity extends AppCompatActivity
     @OnClick(R.id.save_button)
     public void saveButton() {
         Log.d("UserRegistrationActivit","saveButton Clicked");
+        String urlFoto;
+        if(firebaseUser.getPhotoUrl() != null) {
+            urlFoto = firebaseUser.getPhotoUrl().toString();
+        } else urlFoto = "";
 
         usuario = new Usuario(1,name.getText().toString().trim(),
-                password.getText().toString().trim(),
+//                password.getText().toString().trim(),
+                "",
                 Long.parseLong(cpf.getText().toString()),
                 dateOfBirth.getText().toString(),
                 email.getText().toString().trim(),
                 Long.parseLong(phone.getText().toString()),
-                true
+                true,
+                urlFoto
                 );
 
         // create user on the database

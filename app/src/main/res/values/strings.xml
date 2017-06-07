@@ -102,6 +102,7 @@
     <string name="ok_string">OK</string>
     <string name="txt_welcome_message">"Welcome to "</string>
     <string name="msg_show_qrcode">Show the QR Code below to your friends</string>
-    <string name="imgDesc_product">Imagem ilustrativa do produto</string>
+    <string name="imgDesc_product">Product photo</string>
+    <string name="msg_no_changes_user">No changes were detected</string>
 
 </resources>

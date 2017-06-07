@@ -1,5 +1,7 @@
 package com.caue.splitter.model;
 
+import android.util.Log;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -12,6 +14,7 @@ import java.io.Serializable;
  */
 
 public class Usuario implements Serializable {
+
     @Expose
     @SerializedName("id")
     private int id;
@@ -44,10 +47,14 @@ public class Usuario implements Serializable {
     @SerializedName("contaAtiva")
     private boolean contaAtiva;
 
+    @Expose
+    @SerializedName("url_foto")
+    private String urlFoto;
+
     // construtor
 
 
-    public Usuario(int id, String nome, String senha, long cpf, String dtNascimento, String email, long telefone, boolean contaAtiva) {
+    public Usuario(int id, String nome, String senha, long cpf, String dtNascimento, String email, long telefone, boolean contaAtiva, String urlFoto) {
         this.id = id;
         this.nome = nome;
         this.senha = senha;
@@ -56,6 +63,23 @@ public class Usuario implements Serializable {
         this.email = email;
         this.telefone = telefone;
         this.contaAtiva = contaAtiva;
+        this.urlFoto = urlFoto;
+    }
+
+    /**
+     * Copy constructor
+     * @param usuario usuario que sera copiado
+     */
+    public Usuario(Usuario usuario) {
+        this.id = usuario.getId();
+        this.nome = usuario.getNome();
+        this.senha = usuario.getSenha();
+        this.cpf = usuario.getCpf();
+        this.dtNascimento = usuario.getDtNascimento();
+        this.email = usuario.getEmail();
+        this.telefone = usuario.getTelefone();
+        this.contaAtiva = usuario.getContaAtiva();
+        this.urlFoto = usuario.getUrlFoto();
     }
 
     // Getters e Setters
@@ -123,4 +147,32 @@ public class Usuario implements Serializable {
         this.contaAtiva = contaAtiva;
     }
 
+    public boolean isContaAtiva() {
+        return contaAtiva;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Usuario) {
+            Usuario usuario = (Usuario) obj;
+            try {
+                if (usuario.getNome().equals(this.getNome()) &&
+                        usuario.getDtNascimento().equals(this.getDtNascimento()) &&
+                        usuario.getEmail().equals(this.getEmail()) &&
+                        usuario.getCpf() == this.getCpf() &&
+                        usuario.getTelefone() == this.getTelefone())
+                    return true;
+                else return false;
+            } catch (Exception ex) {
+                Log.d("Objeto Usuario", "Erro ao comparar objetos Usuario: " + ex.getMessage());
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }

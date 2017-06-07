@@ -38,7 +38,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.Holder> {
     @Override
     public OrderAdapter.Holder onCreateViewHolder(ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_order_item, null, false);
+        View row = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview_order_item_2, parent, false);
 
         // set the Listener
         try {
