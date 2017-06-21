@@ -104,5 +104,6 @@
     <string name="msg_show_qrcode">Show the QR Code below to your friends</string>
     <string name="imgDesc_product">Product photo</string>
     <string name="msg_no_changes_user">No changes were detected</string>
+    <string name="msg_click_on_button_qrcode">Click on the button below to capture your table\'s QR Code</string>
 
 </resources>

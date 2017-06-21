@@ -105,4 +105,5 @@
     <string name="msg_show_qrcode">Mostre o QR Code abaixo para seus amigos</string>
     <string name="imgDesc_product">Imagem ilustrativa do produto</string>
     <string name="msg_no_changes_user">Sem alterações</string>
+    <string name="msg_click_on_button_qrcode">Clique no botão abaixo para ler o QR Code em sua mesa</string>
 </resources>
