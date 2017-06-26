@@ -274,11 +274,11 @@ public class MainPageActivity extends AppCompatActivity
                      .addToBackStack(null)        // add to back stack
                    .commit();
                 break;
-            case R.id.payments:
-                Toast.makeText(MainPageActivity.this, R.string.payments_menu, Toast.LENGTH_SHORT).show();
-                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
-                //startActivity(intent);
-                break;
+//            case R.id.payments:
+//                Toast.makeText(MainPageActivity.this, R.string.payments_menu, Toast.LENGTH_SHORT).show();
+//                //intent = new Intent(this, RecyclerViewActivity_Task3.class);
+//                //startActivity(intent);
+//                break;
 
             case R.id.about:
                 Toast.makeText(MainPageActivity.this, R.string.about_splitter, Toast.LENGTH_SHORT).show();
@@ -335,7 +335,7 @@ public class MainPageActivity extends AppCompatActivity
             IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
             if(result != null){
                 if(result.getContents()==null){
-                    Toast.makeText(this, "You cancelled the scanning", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_scan_canceled, Toast.LENGTH_LONG).show();
                 }
                 else {
                     mainPageProgressBar.setVisibility(View.VISIBLE);
@@ -397,16 +397,16 @@ public class MainPageActivity extends AppCompatActivity
         } else {
             switch (checkinResponse.getError()) {
                 case "MesaOcupada":
-                    Toast.makeText(this, "Obtenha o código de acesso com o usuário " + checkinResponse.getMesa().getUsuarioResponsavel(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_get_valid_qr_code, Toast.LENGTH_LONG).show();
                     break;
                 case "ErroDesconhecido":
-                    Toast.makeText(this, "Ocorreu um erro com sua solicização. Tente novamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_request_error, Toast.LENGTH_LONG).show();
                     break;
                 case "MesaNaoEncontrada":
-                    Toast.makeText(this, "Mesa inexistente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_table_not_found, Toast.LENGTH_LONG).show();
                     break;
                 default:
-                    Toast.makeText(this, "Erro desconhecido", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.msg_unknown_error, Toast.LENGTH_LONG).show();
                     break;
 
             }

@@ -105,5 +105,10 @@
     <string name="imgDesc_product">Product photo</string>
     <string name="msg_no_changes_user">No changes were detected</string>
     <string name="msg_click_on_button_qrcode">Click on the button below to capture your table\'s QR Code</string>
+    <string name="msg_scan_canceled">QR Code scanning was canceled</string>
+    <string name="msg_get_valid_qr_code">Get the valid QR Code with your friend</string>
+    <string name="msg_table_not_found">Invalid table number</string>
+    <string name="msg_request_error">There was an error with your request. Try again</string>
+    <string name="msg_unknown_error">Unknown error</string>
 
 </resources>

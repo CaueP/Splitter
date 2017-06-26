@@ -8,11 +8,11 @@
             android:icon="@drawable/ic_account"
             android:title="@string/account_info" />
 
-        <item
-            android:id="@+id/payments"
-            android:checked="false"
-            android:icon="@drawable/ic_credit_card"
-            android:title="@string/payments_menu" />
+        <!--<item-->
+            <!--android:id="@+id/payments"-->
+            <!--android:checked="false"-->
+            <!--android:icon="@drawable/ic_credit_card"-->
+            <!--android:title="@string/payments_menu" />-->
 
         <item
             android:id="@+id/about"

@@ -106,4 +106,9 @@
     <string name="imgDesc_product">Imagem ilustrativa do produto</string>
     <string name="msg_no_changes_user">Sem alterações</string>
     <string name="msg_click_on_button_qrcode">Clique no botão abaixo para ler o QR Code em sua mesa</string>
+    <string name="msg_scan_canceled">A leitura do QR Code foi cancelada</string>
+    <string name="msg_request_error">Ocorreu um erro com sua solicização. Tente novamente</string>
+    <string name="msg_table_not_found">Número de mesa inválido</string>
+    <string name="msg_get_valid_qr_code">Obtenha o QR Code válido com seu amigo</string>
+    <string name="msg_unknown_error">Erro desconhecido</string>
 </resources>
