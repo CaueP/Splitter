@@ -24,6 +24,11 @@ public class Constants {
         public static final String MESA_DATA = "MesaData";
     }
 
+    public static class TIPO_DIVISAO_PEDIDOS {
+        public static final int VAZIO = 0;
+        public static final int MESA = 1;
+        public static final int INDIVIDUAL = 2;
+    }
 
     public static class STATUS_PEDIDO {
         public static final int AGUARDANDO = 0;

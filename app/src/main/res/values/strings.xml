@@ -110,5 +110,9 @@
     <string name="msg_table_not_found">Invalid table number</string>
     <string name="msg_request_error">There was an error with your request. Try again</string>
     <string name="msg_unknown_error">Unknown error</string>
+    <string name="ok">OK</string>
+    <string name="invalid_qr_code">Invalid QR Code</string>
+    <string name="msg_split_method_invalid">Invalid split method</string>
+    <string name="split_method_dialog_title">Bill split method</string>
 
 </resources>

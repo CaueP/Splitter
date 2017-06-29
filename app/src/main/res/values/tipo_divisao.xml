@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipo_divisao">
+        <item>Split between everyone</item>
+        <item>Individualized bill</item>
+    </string-array>
+</resources>

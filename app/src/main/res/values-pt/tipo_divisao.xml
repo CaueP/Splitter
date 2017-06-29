@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipo_divisao">
+        <item>Dividir conta entre todos</item>
+        <item>Comanda individual</item>
+    </string-array>
+</resources>

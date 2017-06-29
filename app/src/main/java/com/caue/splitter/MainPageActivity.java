@@ -356,11 +356,14 @@ public class MainPageActivity extends AppCompatActivity
                             Log.d("qrCodeRead", "Email usuario: "+ checkin.getUsuario().getEmail() +
                                     " CodEstabelecimento: " + checkin.getMesa().getCodEstabelecimento()+
                                     " NrMesa:" + checkin.getMesa().getNrMesa());
-                            checkin.realizarCheckin(this);
+
+                            checkin.getMesa().setTipoDivisao(0);
+                            checkin.realizarCheckin(MainPageActivity.this);
                         } else {
                             Toast.makeText(this,R.string.check_internet_connection, Toast.LENGTH_LONG).show();
                         }
                     } catch(Exception ex) {
+                        Toast.makeText(this,R.string.invalid_qr_code, Toast.LENGTH_LONG).show();
                         Log.e(TAG, "Erro ao transformar codigo qr em checkin: " + ex.getMessage());
                     }
 

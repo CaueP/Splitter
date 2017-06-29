@@ -111,4 +111,8 @@
     <string name="msg_table_not_found">Número de mesa inválido</string>
     <string name="msg_get_valid_qr_code">Obtenha o QR Code válido com seu amigo</string>
     <string name="msg_unknown_error">Erro desconhecido</string>
+    <string name="ok">OK</string>
+    <string name="invalid_qr_code">Código QR Code inválido</string>
+    <string name="msg_split_method_invalid">Tipo de divisão inválido</string>
+    <string name="split_method_dialog_title">Tipo de divisão de conta</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.caue.splitter;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
@@ -75,6 +78,9 @@ public class CheckedInFragment extends Fragment {
         if (checkinResponse != null && checkinResponse.getMesa().getQrCodeOcupado() != null) {
             message.setText(R.string.msg_show_qrcode);
             showQRCode(checkinResponse.getMesa().getQrCodeOcupado());
+            if(checkinResponse.isPrimeiroUsuario()) {
+//                getTipoDivisaoMesa();
+            }
         } else {
             message.setVisibility(View.INVISIBLE);
             qrCodeImage.setVisibility(View.INVISIBLE);
@@ -92,5 +98,46 @@ public class CheckedInFragment extends Fragment {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Abre a caixa de diálogo para obter o tipo de divisão da mesa
+     */
+    private void getTipoDivisaoMesa() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        builder
+//                .setMessage("Selecione o tipo de divisão")
+                .setTitle(R.string.split_method_dialog_title)
+                .setItems(R.array.tipo_divisao, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int selectedOpt) {
+                        selectedOpt++;
+//                        Toast.makeText(MainPageActivity.this, "Opt: " + selectedOpt, Toast.LENGTH_SHORT).show();
+
+                        switch (selectedOpt) {
+                            case Constants.TIPO_DIVISAO_PEDIDOS.MESA:
+                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
+//                                checkinResponse.realizarCheckin(rootView);
+                                break;
+                            case Constants.TIPO_DIVISAO_PEDIDOS.INDIVIDUAL:
+                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
+//                                checkinResponse.realizarCheckin(getActivity());
+                                break;
+                            default:
+                                Toast.makeText(getActivity(), R.string.msg_split_method_invalid, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+//        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                Toast.makeText(MainPageActivity.this, "Opcao selecionada", Toast.LENGTH_SHORT).show();
+//                checkin.realizarCheckin(MainPageActivity.this);
+//            }
+//        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 }

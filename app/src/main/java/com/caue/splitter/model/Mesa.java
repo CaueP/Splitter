@@ -28,11 +28,13 @@ public class Mesa implements Serializable {
     @SerializedName("qrCodeOcupado")
     private String qrCodeOcupado;
 
-
     @Expose
     @SerializedName("usuarioResponsavel")
     private String usuarioResponsavel;
 
+    @Expose
+    @SerializedName("tipoDivisao")
+    private int tipoDivisao;
 
     //getters and setters
 
@@ -58,6 +60,14 @@ public class Mesa implements Serializable {
 
     public void setCodEstabelecimento(String codEstabelecimento) {
         this.codEstabelecimento = codEstabelecimento;
+    }
+
+    public int getTipoDivisao() {
+        return tipoDivisao;
+    }
+
+    public void setTipoDivisao(int tipoDivisao) {
+        this.tipoDivisao = tipoDivisao;
     }
 
     public String getQrCodeOcupado() {
