@@ -20,6 +20,9 @@
 
     <string name="delete_account_succeed">Account Deleted</string>
 
+    <!-- Facebook Login Configuration -->
+    <string name="facebook_application_id" translatable="false">317557405358107</string>
+    <string name="fb_login_protocol_scheme">fb317557405358107</string>
 
     <!-- Drawer Menu Titles -->
     <string name="account_info">My Account</string>
@@ -114,5 +117,6 @@
     <string name="invalid_qr_code">Invalid QR Code</string>
     <string name="msg_split_method_invalid">Invalid split method</string>
     <string name="split_method_dialog_title">Bill split method</string>
+    <string name="msg_txt_bill_closed_success">Bill closed successfully</string>
 
 </resources>

@@ -115,4 +115,5 @@
     <string name="invalid_qr_code">Código QR Code inválido</string>
     <string name="msg_split_method_invalid">Tipo de divisão inválido</string>
     <string name="split_method_dialog_title">Tipo de divisão de conta</string>
+    <string name="msg_txt_bill_closed_success">Conta fechada com sucesso</string>
 </resources>

@@ -47,6 +47,7 @@ dependencies {
 //    compile 'com.google.firebase:firebase-auth:11.0.2'
 //    compile 'com.google.android.gms:play-services-auth:11.0.2'
     compile 'com.firebaseui:firebase-ui:2.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 
     // Facebook authentication
     //compile "com.facebook.android:facebook-android-sdk:[4,5)"

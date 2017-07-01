@@ -97,6 +97,10 @@ public class BillPaymentFragment extends Fragment {
                 mBillAdapter = null;
             }
             if (conta != null) {
+                if(conta.getTotalIndividual() == 0) {
+                    Toast.makeText(getActivity(), R.string.msg_txt_bill_closed_success, Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                }
                 setDataRecyclerViewer();
                 fillViews();
             }

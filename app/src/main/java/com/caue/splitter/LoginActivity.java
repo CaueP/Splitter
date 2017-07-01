@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.ErrorCodes;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.ResultCodes;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -76,9 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                         .setAvailableProviders(
                                 Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                         new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
-//                                        ,
+                                        ,
 //                                        new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build(),
-//                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()
+//                                        ,
 //                                        new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()
                                 ))
                         .setTheme(R.style.PurpleBlueTheme)
@@ -96,19 +100,50 @@ public class LoginActivity extends AppCompatActivity {
 
         showSnackbar(R.string.unknown_response);
     }
+//
+//    @MainThread
+//    private void handleSignInResponse(int resultCode, Intent data) {
+//        if (resultCode == RESULT_OK) {
+//            //startActivity(SignedInActivity.createIntent(this));
+//            startActivity(MainPageActivity.createIntent(this));
+//            finish();
+//            return;
+//        }
+//
+//        if (resultCode == RESULT_CANCELED) {
+//            showSnackbar(R.string.sign_in_cancelled);
+//            return;
+//        }
+//
+//        showSnackbar(R.string.unknown_sign_in_response);
+//    }
 
     @MainThread
     private void handleSignInResponse(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            //startActivity(SignedInActivity.createIntent(this));
+        IdpResponse response = IdpResponse.fromResultIntent(data);
+
+        // Successfully signed in
+        if (resultCode == ResultCodes.OK) {
             startActivity(MainPageActivity.createIntent(this));
             finish();
             return;
-        }
+        } else {
+            // Sign in failed
+            if (response == null) {
+                // User pressed back button
+                showSnackbar(R.string.sign_in_cancelled);
+                return;
+            }
 
-        if (resultCode == RESULT_CANCELED) {
-            showSnackbar(R.string.sign_in_cancelled);
-            return;
+            if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
+                showSnackbar(R.string.check_internet_connection);
+                return;
+            }
+
+            if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
+                showSnackbar(R.string.msg_unknown_error);
+                return;
+            }
         }
 
         showSnackbar(R.string.unknown_sign_in_response);
