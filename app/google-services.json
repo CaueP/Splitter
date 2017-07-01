@@ -1,33 +1,35 @@
 {
   "project_info": {
-    "project_number": "674283432985",
-    "project_id": "firebase-splitter"
+    "project_number": "713397008014",
+    "firebase_url": "https://splitterapp-2f4f4.firebaseio.com",
+    "project_id": "splitterapp-2f4f4",
+    "storage_bucket": "splitterapp-2f4f4.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:674283432985:android:3f923a2ea9956d18",
+        "mobilesdk_app_id": "1:713397008014:android:3f923a2ea9956d18",
         "android_client_info": {
           "package_name": "com.caue.splitter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "674283432985-u2qiflkuk7tdh6uegm0b6bn40lko45c1.apps.googleusercontent.com",
+          "client_id": "713397008014-b1samlmr2bem2k9a4ee83i023i32vo96.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.caue.splitter",
-            "certificate_hash": "F18E7DA3F8EED3719EC34C532664F859A95BFD6A"
+            "certificate_hash": "a6d598951a98b94377dd5df84dfbadf5ed7fdcd1"
           }
         },
         {
-          "client_id": "674283432985-0jkg1k08gu43v17sd0iiu8r6ijb5jlir.apps.googleusercontent.com",
+          "client_id": "713397008014-4a6iaer43ebk271sanh0cv0uhaf9vp7q.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBzWDW_kEmDvI_jf8Xm4O7ucJxBWirg6r4"
+          "current_key": "AIzaSyDNUJiJNddwcWyFdmtgtG7qRvLEuSCFbYg"
         }
       ],
       "services": {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713397008014-4a6iaer43ebk271sanh0cv0uhaf9vp7q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }

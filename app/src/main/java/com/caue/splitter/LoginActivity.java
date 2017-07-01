@@ -16,6 +16,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,23 +62,26 @@ public class LoginActivity extends AppCompatActivity {
 
     @MainThread
     private String getSelectedTosUrl() {
-            return GOOGLE_TOS_URL;
+        return GOOGLE_TOS_URL;
         //return FIREBASE_TOS_URL;
     }
 
 
     @OnClick(R.id.sign_in)
     public void signIn(View view) {
-        Log.d("LoginActivity","SignIn Button Click");
+        Log.d("LoginActivity", "SignIn Button Click");
         startActivityForResult(
-
-                AuthUI.getInstance().createSignInIntentBuilder()
-                        //.setTheme(getSelectedTheme())
-                        //.setLogo(getSelectedLogo())
-                        .setProviders(AuthUI.EMAIL_PROVIDER,
-                                AuthUI.GOOGLE_PROVIDER)
-                        //.setTosUrl(getSelectedTosUrl())
-                        .setIsSmartLockEnabled(!BuildConfig.DEBUG)
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(
+                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build()
+//                                        ,
+//                                        new AuthUI.IdpConfig.Builder(AuthUI.PHONE_VERIFICATION_PROVIDER).build(),
+//                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build(),
+//                                        new AuthUI.IdpConfig.Builder(AuthUI.TWITTER_PROVIDER).build()
+                                ))
+                        .setTheme(R.style.PurpleBlueTheme)
                         .build(),
                 RC_SIGN_IN);
     }
@@ -111,7 +115,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
-
     @MainThread
     @DrawableRes
     private int getSelectedLogo() {
@@ -123,10 +126,10 @@ public class LoginActivity extends AppCompatActivity {
         ArrayList<String> selectedProviders = new ArrayList<>();
 
 
-            selectedProviders.add(AuthUI.EMAIL_PROVIDER);
+        selectedProviders.add(AuthUI.EMAIL_PROVIDER);
 
-            //selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
-            selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
+        //selectedProviders.add(AuthUI.FACEBOOK_PROVIDER);
+        selectedProviders.add(AuthUI.GOOGLE_PROVIDER);
 
         return selectedProviders.toArray(new String[selectedProviders.size()]);
     }
@@ -143,6 +146,7 @@ public class LoginActivity extends AppCompatActivity {
         return !UNCHANGED_CONFIG_VALUE.equals(
                 getResources().getString(R.string.facebook_application_id));
     }
+
     @MainThread
     private void showSnackbar(@StringRes int errorMessageRes) {
         Snackbar.make(mRootView, errorMessageRes, Snackbar.LENGTH_LONG).show();

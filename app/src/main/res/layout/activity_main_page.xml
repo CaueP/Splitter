@@ -57,10 +57,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:backgroundTint="@color/bodyTextColor"
         app:itemIconTint="@color/textColorWhite"
         app:itemTextColor="@color/textColorWhite"
         app:headerLayout="@layout/drawer_header"
         app:menu="@menu/drawer_menu_main_page"
+        android:backgroundTint="@color/purpleBluePrimaryText"
         />
 </android.support.v4.widget.DrawerLayout>
