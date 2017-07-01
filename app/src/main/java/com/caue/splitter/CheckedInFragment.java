@@ -9,14 +9,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
+import com.caue.splitter.model.Mesa;
 import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.services.MesaClient;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -25,13 +27,16 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by cgpolim on 12/04/2017.
  */
 
 public class CheckedInFragment extends Fragment {
-    private static final String FRAGMENT_TAG = "CheckedInFragment";
+    private static final String TAG = "CheckedInFragment";
     @BindView(R.id.estabelecimento_place_name)
     TextView placeName;
 
@@ -72,15 +77,12 @@ public class CheckedInFragment extends Fragment {
 
         placeName.setText(checkinResponse.getMesa().getCodEstabelecimento());
 
-        Log.d(FRAGMENT_TAG, checkinResponse != null ? checkinResponse.toString() : "CheckinResponse == null");
+        Log.d(TAG, checkinResponse != null ? checkinResponse.toString() : "CheckinResponse == null");
 
         // Se houver qrCodeOcupado, gera o QRCode
         if (checkinResponse != null && checkinResponse.getMesa().getQrCodeOcupado() != null) {
             message.setText(R.string.msg_show_qrcode);
             showQRCode(checkinResponse.getMesa().getQrCodeOcupado());
-            if(checkinResponse.isPrimeiroUsuario()) {
-//                getTipoDivisaoMesa();
-            }
         } else {
             message.setVisibility(View.INVISIBLE);
             qrCodeImage.setVisibility(View.INVISIBLE);
@@ -100,44 +102,5 @@ public class CheckedInFragment extends Fragment {
         }
     }
 
-    /**
-     * Abre a caixa de diálogo para obter o tipo de divisão da mesa
-     */
-    private void getTipoDivisaoMesa() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        builder
-//                .setMessage("Selecione o tipo de divisão")
-                .setTitle(R.string.split_method_dialog_title)
-                .setItems(R.array.tipo_divisao, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int selectedOpt) {
-                        selectedOpt++;
-//                        Toast.makeText(MainPageActivity.this, "Opt: " + selectedOpt, Toast.LENGTH_SHORT).show();
-
-                        switch (selectedOpt) {
-                            case Constants.TIPO_DIVISAO_PEDIDOS.MESA:
-                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
-//                                checkinResponse.realizarCheckin(rootView);
-                                break;
-                            case Constants.TIPO_DIVISAO_PEDIDOS.INDIVIDUAL:
-                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
-//                                checkinResponse.realizarCheckin(getActivity());
-                                break;
-                            default:
-                                Toast.makeText(getActivity(), R.string.msg_split_method_invalid, Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-//        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-//            public void onClick(DialogInterface dialog, int id) {
-//                Toast.makeText(MainPageActivity.this, "Opcao selecionada", Toast.LENGTH_SHORT).show();
-//                checkin.realizarCheckin(MainPageActivity.this);
-//            }
-//        });
-
-        AlertDialog dialog = builder.create();
-
-        dialog.show();
-    }
 }

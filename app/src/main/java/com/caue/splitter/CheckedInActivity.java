@@ -1,5 +1,6 @@
 package com.caue.splitter;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -11,11 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.transition.Slide;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,29 +23,36 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.caue.splitter.controller.ServiceGenerator;
 import com.caue.splitter.helper.Constants;
 import com.caue.splitter.model.Checkin;
 import com.caue.splitter.model.Conta;
+import com.caue.splitter.model.Mesa;
 import com.caue.splitter.model.Pedido;
 import com.caue.splitter.model.Produto;
 import com.caue.splitter.model.Usuario;
+import com.caue.splitter.model.services.MesaClient;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Activity exibida quando o usuário realizar check-in em um estabelecimento
+ *
  * @author Caue Polimanti
  * @version 1.0
- * Created on 4/30/2017.
+ *          Created on 4/30/2017.
  */
 public class CheckedInActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         MenuFragment.OnListItemSelectedListener,
         ProductDetailsFragment.OnOrderListener,
-        OrderFragment.OnListItemSelectedListener{
+        OrderFragment.OnListItemSelectedListener {
 
     // custom toolbars and navigation drawer
     private Toolbar toolbar;
@@ -53,7 +60,7 @@ public class CheckedInActivity extends AppCompatActivity
     NavigationView navigationView;
 
     // Log tags
-    private static final String ACTIVITY_TAG = "CheckedInActivity";
+    private static final String TAG = "CheckedInActivity";
 
     @BindView(R.id.progressBar_loading)
     ProgressBar progressBarLoading;
@@ -67,7 +74,7 @@ public class CheckedInActivity extends AppCompatActivity
 
     // Dados da activity anterior
     Usuario user = null;
-    Checkin checkin = null;
+    Checkin checkinResponse = null;
     Conta conta = null;
 
     // Cardapio do estabelecimento
@@ -83,7 +90,7 @@ public class CheckedInActivity extends AppCompatActivity
     private int mShortAnimationDuration;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mContentView = findViewById(android.R.id.content);
@@ -109,14 +116,15 @@ public class CheckedInActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);   // setando o listener do fragment
 
         // Inicializando Drawer Layout
-        drawerLayout =(DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle actionBarDrawerToggle =
-                new ActionBarDrawerToggle(this, drawerLayout, toolbar,R.string.openDrawer,R.string.closeDrawer) {
+                new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.openDrawer, R.string.closeDrawer) {
                     @Override
-                    public void onDrawerClosed(View drawerView){
+                    public void onDrawerClosed(View drawerView) {
                         super.onDrawerClosed(drawerView);
                         invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
                     }
+
                     @Override
                     public void onDrawerOpened(View drawerView) {
                         super.onDrawerOpened(drawerView);
@@ -133,27 +141,24 @@ public class CheckedInActivity extends AppCompatActivity
 
         // getting data from intent
         Bundle bundle = getIntent().getExtras();
-        Log.d(ACTIVITY_TAG, "Bundle String:");
-        Log.d(ACTIVITY_TAG, bundle.toString());
-        if(bundle != null) {
+        Log.d(TAG, "Bundle String:");
+        Log.d(TAG, bundle.toString());
+        if (bundle != null) {
             user = (Usuario) bundle.getSerializable(Constants.KEY.USER_DATA);
-            checkin = (Checkin) bundle.getSerializable(Constants.KEY.CHECKIN_DATA);
-            Log.d(ACTIVITY_TAG, checkin.toString());
+            checkinResponse = (Checkin) bundle.getSerializable(Constants.KEY.CHECKIN_DATA);
+            Log.d(TAG, checkinResponse.toString());
         } else {
-            Log.d(ACTIVITY_TAG, "Bundle NOT FOUND");
+            Log.d(TAG, "Bundle NOT FOUND");
         }
 
-        // Loads CheckedInFragment
-        if(savedInstanceState == null && user != null && checkin != null) {
-            mContent = CheckedInFragment.newInstance(R.id.checked_in_fragment, user, checkin);
-            getSupportFragmentManager().beginTransaction()
-                .replace(R.id.content_frame, mContent,CHECKIN_FRAGMENT_TAG)
-                .commit();
+        if (savedInstanceState == null) {
+            if (checkinResponse.isPrimeiroUsuario()) {
+                getTipoDivisaoMesa();
+            } else {
+                carregarFragmentCheckedIn();
+            }
+            carregarCardapio();
         }
-
-        Produto produto = new Produto();
-        produto.obterCardapio(checkin.getMesa().getCodEstabelecimento(), this);
-        progressBarLoading.setVisibility(View.INVISIBLE);
     }
 
     @MainThread
@@ -184,15 +189,15 @@ public class CheckedInActivity extends AppCompatActivity
 //                    .into(mUserProfilePicture);
 //        }
 
-        mUserDisplayName.setText("Estabelecimento: " + checkin.getMesa().getCodEstabelecimento());
-        mUserEmail.setText("Mesa: " + checkin.getMesa().getNrMesa());
+        mUserDisplayName.setText("Estabelecimento: " + checkinResponse.getMesa().getCodEstabelecimento());
+        mUserEmail.setText("Mesa: " + checkinResponse.getMesa().getNrMesa());
 
         return super.onPrepareOptionsMenu(menu);
     }
 
     // inflate the actionBar
     @Override
-    public boolean onCreateOptionsMenu (Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_actionview_checkedin, menu);
         return true;
     }
@@ -203,14 +208,14 @@ public class CheckedInActivity extends AppCompatActivity
         // Handle navigation view item clicks
         int id = item.getItemId();
         Intent intent;
-        switch (id){
+        switch (id) {
             case R.id.menu:
                 Toast.makeText(CheckedInActivity.this, R.string.menu, Toast.LENGTH_SHORT).show();
 
                 Fragment menuFragment = new MenuFragment();
-                if(cardapio != null){   // se o cardapio foi baixado com sucesso
+                if (cardapio != null) {   // se o cardapio foi baixado com sucesso
                     Bundle menuBundle = new Bundle();
-                    menuBundle.putSerializable(Constants.KEY.CARDAPIO_DATA,cardapio);
+                    menuBundle.putSerializable(Constants.KEY.CARDAPIO_DATA, cardapio);
                     //menuBundle.putParcelableArrayList(Constants.KEY.CARDAPIO_DATA, cardapio);
                     //menuBundle.putString(Constants.KEY.CARDAPIO_DATA, new Gson().toJson(cardapio));
                     menuFragment.setArguments(menuBundle);
@@ -226,9 +231,9 @@ public class CheckedInActivity extends AppCompatActivity
                 Toast.makeText(CheckedInActivity.this, R.string.orders_menu, Toast.LENGTH_SHORT).show();
 
                 Fragment orderFragment = new OrderFragment();
-                if(checkin != null){
+                if (checkinResponse != null) {
                     Bundle orderBundle = new Bundle();
-                    orderBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkin);
+                    orderBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkinResponse);
                     orderFragment.setArguments(orderBundle);
                 }
                 getSupportFragmentManager()
@@ -240,9 +245,9 @@ public class CheckedInActivity extends AppCompatActivity
             case R.id.participants:
                 Toast.makeText(CheckedInActivity.this, R.string.participants_menu, Toast.LENGTH_SHORT).show();
                 Fragment participantsFragment = new ParticipantsFragment();
-                if(checkin != null){
+                if (checkinResponse != null) {
                     Bundle participantBundle = new Bundle();
-                    participantBundle.putSerializable(Constants.KEY.MESA_DATA, checkin.getMesa());
+                    participantBundle.putSerializable(Constants.KEY.MESA_DATA, checkinResponse.getMesa());
                     participantsFragment.setArguments(participantBundle);
                 }
                 getSupportFragmentManager()
@@ -272,23 +277,25 @@ public class CheckedInActivity extends AppCompatActivity
 
     /**
      * Callback de resposta para a consulta do cardapio
+     *
      * @param cardapioRecebido Cardapio recebido da consulta
      */
     public void responseCardapioReceived(ArrayList<Produto> cardapioRecebido) {
-        Log.d(ACTIVITY_TAG, "Cardapio disponivel para consulta");
+        Log.d(TAG, "Cardapio disponivel para consulta");
         cardapio = cardapioRecebido;
     }
 
     Snackbar snackBarMessage;
+
     /**
      * Callback de resposta para a realização de pedido
      */
-    public void responseRealizarPedidoReceived(Pedido pedido){
+    public void responseRealizarPedidoReceived(Pedido pedido) {
         Resources res = getResources();
         String msgResponse = "-";
-        if( pedido != null && pedido.getCodigo() >=0 ){
-            msgResponse= res.getString(R.string.msg_product_ordered, pedido.getCodigo());
-        } else{
+        if (pedido != null && pedido.getCodigo() >= 0) {
+            msgResponse = res.getString(R.string.msg_product_ordered, pedido.getCodigo());
+        } else {
             msgResponse = res.getString(R.string.msg_product_order_failed);
         }
         showSnackbarMessage(msgResponse);
@@ -299,12 +306,115 @@ public class CheckedInActivity extends AppCompatActivity
 
         snackBarMessage.show();
     }
-    public class MyOKListener implements View.OnClickListener{
+
+    public class MyOKListener implements View.OnClickListener {
         @Override
         public void onClick(View v) {
             snackBarMessage.dismiss();
             // Code to undo the user's last action
         }
+    }
+
+    /**
+     * Abre a caixa de diálogo para obter o tipo de divisão da mesa
+     */
+    private void getTipoDivisaoMesa() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(CheckedInActivity.this);
+
+        builder.setTitle(R.string.split_method_dialog_title)
+                .setItems(R.array.tipo_divisao, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int selectedOpt) {
+                        selectedOpt++;
+//                        Toast.makeText(MainPageActivity.this, "Opt: " + selectedOpt, Toast.LENGTH_SHORT).show();
+
+                        switch (selectedOpt) {
+                            case Constants.TIPO_DIVISAO_PEDIDOS.MESA:
+                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
+                                atualizarTipoDivisao();
+                                break;
+                            case Constants.TIPO_DIVISAO_PEDIDOS.INDIVIDUAL:
+                                checkinResponse.getMesa().setTipoDivisao(selectedOpt);
+                                atualizarTipoDivisao();
+                                break;
+                            default:
+                                Toast.makeText(CheckedInActivity.this, R.string.msg_split_method_invalid, Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .setCancelable(false)
+                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        if (checkinResponse.getMesa().getTipoDivisao() != Constants.TIPO_DIVISAO_PEDIDOS.INDIVIDUAL && checkinResponse.getMesa().getTipoDivisao() != Constants.TIPO_DIVISAO_PEDIDOS.MESA) {
+                            getTipoDivisaoMesa();
+                        }
+                    }
+                });
+
+//        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+//            public void onClick(DialogInterface dialog, int id) {
+//                Toast.makeText(MainPageActivity.this, "Opcao selecionada", Toast.LENGTH_SHORT).show();
+//                checkin.realizarCheckin(MainPageActivity.this);
+//            }
+//        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+    }
+
+    /**
+     * Atualiza o tipo de divisão da mesa
+     */
+    private void atualizarTipoDivisao() {
+        Log.d(TAG, "Carregando lista de participantes");
+        // criação do serviço
+        MesaClient service = ServiceGenerator.createService(MesaClient.class);
+        Call<Mesa> listCall = service.atualizarTipoDivisao(checkinResponse.getMesa().getCodEstabelecimento(), checkinResponse.getMesa().getNrMesa(), checkinResponse.getMesa().getTipoDivisao());
+
+        // callback ao receber a resposta da API
+        Callback<Mesa> atualizaTipoDivisaoMesaCallback = new Callback<Mesa>() {
+
+            @Override
+            public void onResponse(Call<Mesa> call, Response<Mesa> response) {
+                Log.d(TAG, "entered in onResponse");
+                if (response.isSuccessful()) {
+                    Log.d(TAG, "isSuccessful");
+                    checkinResponse.getMesa().setTipoDivisao(response.body().getTipoDivisao());
+                    carregarFragmentCheckedIn();
+                } else {
+                    Log.d("onResponse", "isNOTSuccessful (code: " + response.code() + ")");
+                    if (response.code() == 404) {    // usuario nao cadastrado
+                        Log.d(TAG, "Parâmetros incorretos" + response.body());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Mesa> call, Throwable t) {
+                Log.e(TAG, "onFailure - Ocorreu um erro ao chamar a API");
+            }
+        };
+
+        // call
+        listCall.enqueue(atualizaTipoDivisaoMesaCallback);
+    }
+
+    private void carregarFragmentCheckedIn() {
+        // Loads CheckedInFragment
+        if (user != null && checkinResponse != null) {
+            mContent = CheckedInFragment.newInstance(R.id.checked_in_fragment, user, checkinResponse);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.content_frame, mContent, CHECKIN_FRAGMENT_TAG)
+                    .commit();
+        }
+        progressBarLoading.setVisibility(View.INVISIBLE);
+    }
+
+    private void carregarCardapio() {
+        Produto produto = new Produto();
+        produto.obterCardapio(checkinResponse.getMesa().getCodEstabelecimento(), this);
     }
 
     /*
@@ -313,11 +423,12 @@ public class CheckedInActivity extends AppCompatActivity
 
     /**
      * Implementação da Interface do MenuFragment para realizar a chamada dos Detalhes do Produto
+     *
      * @param itemPosition Posição do produto na lista
      */
     @Override
     public void onListItemSelected(int itemPosition) {
-        if(cardapio != null){
+        if (cardapio != null) {
             Produto produtoSelecionado = cardapio.get(itemPosition);
 
             Fragment productDetailsFragment = new ProductDetailsFragment();
@@ -335,25 +446,27 @@ public class CheckedInActivity extends AppCompatActivity
 
     /**
      * Implementação da interface para realizar o pedido de um produto
+     *
      * @param codProduto codigo do produto
      * @param qtdProduto quantidade de itens do produto
-     * @param obs observacao do cliente
+     * @param obs        observacao do cliente
      */
     @Override
     public void orderProduct(int codProduto, int qtdProduto, String obs) {
-        Pedido pedido = new Pedido(checkin.getMesa().getCodEstabelecimento(), checkin.getMesa().getNrMesa(), checkin.getComanda().getCodComanda(), codProduto, qtdProduto,obs);
+        Pedido pedido = new Pedido(checkinResponse.getMesa().getCodEstabelecimento(), checkinResponse.getMesa().getNrMesa(), checkinResponse.getComanda().getCodComanda(), codProduto, qtdProduto, obs);
         // realizar pedido
         pedido.pedir(this);
     }
 
     /**
      * Implementação da interface quando um pedido é selecionado
+     *
      * @param itemPosition Posição do produto na lista
      */
     @Override
     public void onPedidoSelected(Conta conta, int itemPosition) {
         this.conta = conta;
-        if(conta != null){
+        if (conta != null) {
             Pedido pedidoSelecionado = conta.getPedidos().get(itemPosition);
 
             Fragment pedidoDetailsFragment = new OrderDetailsFragment();
@@ -371,16 +484,17 @@ public class CheckedInActivity extends AppCompatActivity
 
     /**
      * Implementação da interface quando é selecionada a tela para fechar conta
+     *
      * @param contaFechada Conta fechada recebida
      */
     @Override
     public void onCloseBillClicked(Conta contaFechada) {
         this.conta = contaFechada;
 
-        if(conta != null && checkin != null){
+        if (conta != null && checkinResponse != null) {
             Fragment billPaymentFragment = new BillPaymentFragment();
             Bundle billBundle = new Bundle();
-            billBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkin);
+            billBundle.putSerializable(Constants.KEY.CHECKIN_DATA, checkinResponse);
             billBundle.putSerializable(Constants.KEY.CONTA_DATA, conta);
             billPaymentFragment.setArguments(billBundle);
             // realização transição do fragment
@@ -401,14 +515,13 @@ public class CheckedInActivity extends AppCompatActivity
 
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             int fragments = getSupportFragmentManager().getBackStackEntryCount();
             Fragment checkinFrag = getSupportFragmentManager().findFragmentByTag(CHECKIN_FRAGMENT_TAG);
 
-            Log.d("onBackPressed","Quantidade de fragments na stack: " + fragments);
-            if (checkinFrag != null && fragments == 0){  // se o checkin frag estiver na stack e houver apenas 1 fragment na stack, nao retornar
-                Log.d("onBackPressed","Checkin fragment está na stack");
+            Log.d("onBackPressed", "Quantidade de fragments na stack: " + fragments);
+            if (checkinFrag != null && fragments == 0) {  // se o checkin frag estiver na stack e houver apenas 1 fragment na stack, nao retornar
+                Log.d("onBackPressed", "Checkin fragment está na stack");
                 //Toast.makeText(this, R.string.accound_should_be_closed, Toast.LENGTH_SHORT).show();
                 showSnackbar(R.string.accound_should_be_closed);
                 //finish();
